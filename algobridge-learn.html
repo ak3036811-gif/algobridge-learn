@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>AlgoBridge Learn</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F5F3EE;--bg2:#FFFEF9;--bg3:#EDEAE2;
+  --text:#1C1A16;--text2:#4A4843;--text3:#7A7773;
+  --accent:#2B5CE6;--accent2:#1E3FA0;--accent-bg:#EBF0FF;
+  --green:#1D7A4F;--green-bg:#E6F4ED;
+  --amber:#8A5C0A;--amber-bg:#FEF4E2;
+  --red:#9B2626;--red-bg:#FDEAEA;
+  --border:#D8D4CB;--border2:#E8E4DC;
+  --shadow:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  --mono:'IBM Plex Mono',monospace;
+  --serif:'Libre Baskerville',serif;
+  --sans:'DM Sans',sans-serif;
+  --radius:8px;--radius-lg:14px;
+}
+[data-theme=dark]{
+  --bg:#141210;--bg2:#1C1A17;--bg3:#252320;
+  --text:#EDE9DF;--text2:#B8B4AC;--text3:#6E6B65;
+  --accent:#6B8FFF;--accent2:#A0B5FF;--accent-bg:#1A2040;
+  --green:#4DB880;--green-bg:#0E2A1A;
+  --amber:#E0A83A;--amber-bg:#2A1E08;
+  --red:#E06060;--red-bg:#2A1010;
+  --border:#2E2B26;--border2:#242220;
+}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:15px;line-height:1.65;min-height:100vh}
+
+/* NAV */
+nav{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;align-items:center;gap:1rem;height:56px;position:sticky;top:0;z-index:200}
+.nav-logo{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--accent);letter-spacing:.03em;white-space:nowrap;cursor:pointer}
+.nav-logo span{color:var(--text3)}
+.nav-links{display:flex;gap:0;flex:1}
+.nav-link{background:none;border:none;padding:6px 12px;font-family:var(--sans);font-size:13px;color:var(--text2);cursor:pointer;border-radius:var(--radius);transition:.15s;white-space:nowrap}
+.nav-link:hover,.nav-link:focus-visible{color:var(--text);background:var(--bg3);outline:none}
+.nav-link.active{color:var(--accent);font-weight:500}
+.nav-right{display:flex;align-items:center;gap:8px;margin-left:auto}
+.theme-btn{background:none;border:1px solid var(--border);padding:5px 10px;border-radius:var(--radius);font-size:12px;cursor:pointer;color:var(--text2);transition:.15s;white-space:nowrap}
+.theme-btn:hover{background:var(--bg3)}
+.ham-btn{display:none;background:none;border:1px solid var(--border);padding:5px 8px;border-radius:var(--radius);cursor:pointer;color:var(--text2);font-size:16px;line-height:1}
+.mobile-nav{display:none;position:fixed;top:56px;left:0;right:0;background:var(--bg2);border-bottom:1px solid var(--border);padding:12px;z-index:199;flex-direction:column;gap:4px;box-shadow:0 4px 16px rgba(0,0,0,.1)}
+.mobile-nav.open{display:flex}
+.mobile-nav .nav-link{text-align:left;padding:10px 14px;font-size:14px}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 20px;border-radius:var(--radius);font-family:var(--sans);font-size:13px;font-weight:500;cursor:pointer;border:none;transition:.15s;white-space:nowrap;text-decoration:none}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent2);transform:translateY(-1px);box-shadow:0 4px 12px rgba(43,92,230,.3)}
+.btn-secondary{background:var(--bg3);color:var(--text);border:1px solid var(--border)}
+.btn-secondary:hover{background:var(--bg2)}
+.btn-sm{padding:5px 12px;font-size:12px}
+
+/* PAGES */
+.page{display:none}
+.page.active{display:block;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* HERO */
+.hero{padding:4rem 2rem 3rem;max-width:860px;margin:0 auto;text-align:center}
+.hero-eyebrow{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;margin-bottom:1.2rem;display:flex;align-items:center;justify-content:center;gap:10px}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';flex:1;max-width:50px;height:1px;background:var(--border)}
+h1{font-family:var(--serif);font-size:clamp(2rem,5vw,3.2rem);font-weight:700;line-height:1.2;margin-bottom:1rem;color:var(--text)}
+h1 em{font-style:italic;color:var(--accent)}
+.hero-sub{font-size:1rem;color:var(--text2);max-width:520px;margin:0 auto 2rem;line-height:1.75}
+
+/* SECTIONS */
+main section{padding:3rem 2rem;max-width:1000px;margin:0 auto}
+main section+section{border-top:1px solid var(--border2)}
+.section-label{font-family:var(--mono);font-size:11px;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.5rem}
+.section-title{font-family:var(--serif);font-size:1.6rem;font-weight:700;margin-bottom:.6rem}
+.section-sub{color:var(--text2);max-width:540px;margin-bottom:1.8rem;font-size:.92rem;line-height:1.7}
+
+/* CARDS */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.card{background:var(--bg2);border-radius:var(--radius-lg);padding:1.3rem 1.4rem;transition:.18s;box-shadow:var(--shadow)}
+.card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.08)}
+.card-tag{font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.6rem}
+.card h3{font-size:.95rem;font-weight:600;margin-bottom:.35rem}
+.card p{font-size:.85rem;color:var(--text2);line-height:1.6}
+
+/* LEARNING PATHS */
+.path-tabs{display:flex;gap:0;margin-bottom:1.5rem;border-bottom:1px solid var(--border)}
+.path-tab{background:none;border:none;padding:10px 18px;font-family:var(--sans);font-size:13px;font-weight:500;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:.15s}
+.path-tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.path-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.topic-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:10px}
+.topic-item{background:var(--bg2);border-radius:var(--radius);padding:12px 14px;display:flex;align-items:flex-start;gap:10px;transition:.15s;box-shadow:var(--shadow)}
+.topic-item.clickable{cursor:pointer}
+.topic-item.clickable:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.topic-item.clickable:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.topic-item.locked{opacity:.4;cursor:not-allowed}
+.topic-item.inprogress{background:var(--accent-bg)}
+.topic-item.done{background:var(--green-bg)}
+.topic-dot{width:10px;height:10px;border-radius:50%;background:var(--border);flex-shrink:0;margin-top:4px;transition:.2s}
+.topic-item.inprogress .topic-dot{background:var(--accent)}
+.topic-item.done .topic-dot{background:var(--green)}
+.topic-name{font-size:13px;font-weight:500;line-height:1.3}
+.topic-status{font-size:11px;color:var(--text3);margin-top:2px}
+.topic-item.inprogress .topic-status{color:var(--accent)}
+.topic-item.done .topic-status{color:var(--green)}
+.progress-bar-wrap{background:var(--bg3);border-radius:99px;height:5px;overflow:hidden;margin-top:5px}
+.progress-bar{height:100%;border-radius:99px;background:var(--accent);transition:width .5s ease}
+
+/* TOPIC LESSON PAGE */
+.lesson-wrap{max-width:760px;margin:0 auto;padding:2.5rem 2rem}
+.lesson-back{background:none;border:none;color:var(--text3);font-family:var(--sans);font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;margin-bottom:1.5rem;padding:0;transition:.15s}
+.lesson-back:hover{color:var(--accent)}
+.lesson-eyebrow{font-family:var(--mono);font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.4rem}
+.lesson-title{font-family:var(--serif);font-size:2rem;font-weight:700;margin-bottom:.5rem}
+.lesson-meta{font-size:13px;color:var(--text3);font-family:var(--mono);margin-bottom:2rem;display:flex;gap:1rem;flex-wrap:wrap}
+.lesson-body{font-size:.95rem;color:var(--text2);line-height:1.8}
+.lesson-body h2{font-family:var(--serif);font-size:1.2rem;font-weight:700;color:var(--text);margin:2rem 0 .6rem}
+.lesson-body p{margin-bottom:1rem}
+.lesson-body ul{margin:0 0 1rem 1.2rem}
+.lesson-body ul li{margin-bottom:.3rem}
+.code-block{background:#1E1E2E;border-radius:var(--radius);padding:1rem 1.2rem;font-family:var(--mono);font-size:13px;color:#CDD6F4;line-height:1.7;margin:1rem 0;overflow-x:auto}
+.code-block .cm{color:#6272A4;font-style:italic}
+.code-block .ck{color:#FF79C6}
+.code-block .cs{color:#F1FA8C}
+.code-block .cn{color:#BD93F9}
+.code-block .co{color:#50FA7B}
+.lesson-callout{background:var(--accent-bg);border-left:3px solid var(--accent);border-radius:var(--radius);padding:1rem 1.2rem;font-size:.88rem;color:var(--text2);margin:1rem 0;line-height:1.7}
+.lesson-actions{display:flex;gap:10px;margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid var(--border2);flex-wrap:wrap}
+
+/* WORKSPACE */
+.workspace{display:grid;grid-template-columns:1fr 1fr;height:calc(100vh - 56px);overflow:hidden}
+.ws-left{border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.ws-right{display:flex;flex-direction:column;overflow:hidden}
+.ws-header{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;background:var(--bg2);flex-wrap:wrap}
+.ws-title{font-weight:600;font-size:13px}
+.ws-body{flex:1;overflow-y:auto;padding:1.1rem}
+.problem-title{font-family:var(--serif);font-size:1.15rem;font-weight:700;margin-bottom:.7rem}
+.problem-desc{font-size:.88rem;color:var(--text2);line-height:1.75;margin-bottom:1rem}
+.example-box{background:var(--bg3);border-radius:var(--radius);padding:10px 12px;font-family:var(--mono);font-size:12px;color:var(--text2);margin-bottom:.8rem;line-height:1.6}
+.example-box .ex-label{color:var(--text3);font-size:10px;display:block;margin-bottom:3px;text-transform:uppercase;letter-spacing:.05em}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:11px;font-family:var(--mono);padding:2px 7px;border-radius:4px;background:var(--bg3);color:var(--text2)}
+.tag.easy{background:var(--green-bg);color:var(--green)}
+.struggle-overlay{background:var(--amber-bg);border-left:3px solid var(--amber);border-radius:var(--radius);padding:1rem 1.2rem;margin-bottom:.8rem}
+.struggle-head{font-family:var(--mono);font-size:10px;color:var(--amber);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.3rem}
+.struggle-timer-val{font-family:var(--mono);font-size:1.8rem;font-weight:500;color:var(--text);margin-bottom:.3rem;letter-spacing:.02em}
+.struggle-msg{font-size:.82rem;color:var(--text2);line-height:1.55}
+.hint-locked{opacity:.45;pointer-events:none}
+.tutor-msg{padding:9px 12px;border-radius:var(--radius);margin-bottom:7px;font-size:.85rem;line-height:1.65}
+.tutor-msg.ai{background:var(--accent-bg);border-left:2px solid var(--accent);color:var(--text)}
+.editor-wrap{background:#1E1E2E;border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column}
+.editor-tab{background:#2A2A3C;padding:5px 12px;font-family:var(--mono);font-size:11px;color:#6272A4;display:flex;align-items:center}
+.editor-tab .fname{color:#CDD6F4}
+textarea.code-input{background:#1E1E2E;color:#CDD6F4;font-family:var(--mono);font-size:13px;line-height:1.65;border:none;outline:none;resize:none;padding:14px;width:100%;height:230px;tab-size:4}
+textarea.code-input:focus{box-shadow:inset 0 0 0 1px var(--accent)}
+.output-box{background:#13131D;border-radius:var(--radius);padding:10px 12px;font-family:var(--mono);font-size:12px;min-height:56px;margin-top:6px;line-height:1.6}
+.output-box .ok{color:#A6E3A1}
+.output-box .fail{color:#F38BA8}
+.output-box .info{color:#89B4FA}
+.output-box .warn{color:#F9E2AF}
+.tc-row{display:flex;align-items:center;justify-content:space-between;font-size:12px;font-family:var(--mono);padding:5px 9px;background:var(--bg3);border-radius:5px}
+
+/* DASHBOARD */
+.dash-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1.4rem}
+.stat-card{background:var(--bg2);border-radius:var(--radius-lg);padding:1rem 1.1rem;box-shadow:var(--shadow)}
+.stat-val{font-family:var(--mono);font-size:1.4rem;font-weight:500;color:var(--text);margin-bottom:.15rem}
+.stat-label{font-size:12px;color:var(--text3)}
+.stat-sub{font-size:11px;color:var(--text3);margin-top:2px}
+.chart-card{background:var(--bg2);border-radius:var(--radius-lg);padding:1.2rem 1.4rem;box-shadow:var(--shadow)}
+.chart-title{font-size:13px;font-weight:600;margin-bottom:.8rem}
+.chart-container{position:relative;height:150px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:1.2rem}
+.weak-list{list-style:none;margin-top:.6rem}
+.weak-item{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border2);font-size:.85rem}
+.weak-item:last-child{border-bottom:none}
+.weak-score{font-family:var(--mono);font-size:12px;color:var(--red)}
+.streak-row{display:flex;gap:3px;flex-wrap:wrap;margin-top:.8rem}
+.streak-day{width:18px;height:18px;border-radius:3px;background:var(--bg3)}
+.streak-day.done{background:var(--green)}
+.streak-day.today{outline:2px solid var(--accent);outline-offset:1px}
+.empty-state{padding:1.5rem;text-align:center;color:var(--text3);font-size:.85rem;font-style:italic}
+
+/* RESEARCH */
+.research-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.research-card{background:var(--bg2);border-radius:var(--radius-lg);padding:1.4rem;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+.research-card::before{content:attr(data-num);position:absolute;top:-10px;right:8px;font-family:var(--mono);font-size:4rem;color:var(--border2);font-weight:700;line-height:1;pointer-events:none}
+.rc-title{font-family:var(--serif);font-size:.95rem;font-weight:700;margin-bottom:.5rem}
+.rc-body{font-size:.83rem;color:var(--text2);line-height:1.65;max-width:55ch}
+.rc-cite{font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:.7rem;padding-top:.5rem;border-top:1px solid var(--border2)}
+
+/* ABOUT */
+.mission-text{font-family:var(--serif);font-size:1rem;line-height:1.9;color:var(--text2);max-width:660px;margin-bottom:1.2rem}
+.impact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:1.5rem}
+.impact-num{font-family:var(--mono);font-size:1.8rem;font-weight:500;color:var(--accent);margin-bottom:.2rem}
+.impact-label{font-size:.83rem;color:var(--text2)}
+.ngo-card{background:var(--green-bg);border-radius:var(--radius-lg);padding:1.4rem;margin-bottom:.8rem;box-shadow:var(--shadow)}
+.ngo-head{font-family:var(--serif);font-size:1rem;font-weight:700;color:var(--green);margin-bottom:.4rem}
+.ngo-body{font-size:.85rem;color:var(--text2);line-height:1.65}
+.link-card{background:var(--bg2);border-radius:var(--radius-lg);padding:1.3rem 1.4rem;box-shadow:var(--shadow);transition:.18s;text-decoration:none;color:inherit;display:block}
+.link-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.08)}
+.link-card-icon{font-size:1.3rem;margin-bottom:.5rem}
+.link-card h3{font-size:.95rem;font-weight:600;margin-bottom:.3rem;color:var(--text)}
+.link-card p{font-size:.83rem;color:var(--text2);line-height:1.55}
+.link-card .link-url{font-family:var(--mono);font-size:11px;color:var(--accent);margin-top:.5rem;display:block}
+
+/* MISC */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:4px;font-size:11px;font-family:var(--mono)}
+.badge-blue{background:var(--accent-bg);color:var(--accent)}
+.badge-green{background:var(--green-bg);color:var(--green)}
+.badge-amber{background:var(--amber-bg);color:var(--amber)}
+.divider{height:1px;background:var(--border2);margin:1.8rem 0}
+.inline-note{font-size:12px;color:var(--text3);font-family:var(--mono);padding:5px 9px;background:var(--bg3);border-radius:var(--radius);display:inline-block;margin-top:.4rem}
+.footer{border-top:1px solid var(--border2);padding:1.8rem 2rem;text-align:center;font-size:12px;color:var(--text3);font-family:var(--mono)}
+.footer a{color:var(--accent);text-decoration:none}
+.footer a:hover{text-decoration:underline}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .dash-grid{grid-template-columns:repeat(2,1fr)}
+  .two-col{grid-template-columns:1fr}
+  .impact-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:700px){
+  .nav-links{display:none}
+  .ham-btn{display:flex}
+  .workspace{grid-template-columns:1fr;height:auto;overflow:visible}
+  .ws-left{height:auto;overflow:visible;border-right:none;border-bottom:1px solid var(--border)}
+  .ws-right{height:auto;overflow:visible}
+  textarea.code-input{height:180px}
+  .dash-grid{grid-template-columns:repeat(2,1fr)}
+  .impact-grid{grid-template-columns:1fr}
+  .topic-list{grid-template-columns:1fr 1fr}
+  .hero{padding:2.5rem 1.2rem 2rem}
+  main section{padding:2rem 1.2rem}
+  .lesson-wrap{padding:2rem 1.2rem}
+}
+@media(max-width:480px){
+  .dash-grid{grid-template-columns:1fr}
+  .topic-list{grid-template-columns:1fr}
+  h1{font-size:1.8rem}
+  .impact-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav role="navigation" aria-label="Main navigation">
+  <div class="nav-logo" onclick="showPage('home')" tabindex="0" role="button" aria-label="AlgoBridge Learn home">algo<span>/</span>bridge <span>·</span> learn</div>
+  <div class="nav-links" id="nav-links-desktop">
+    <button class="nav-link active" onclick="showPage('home')">Home</button>
+    <button class="nav-link" onclick="showPage('paths')">Learning Paths</button>
+    <button class="nav-link" onclick="showPage('workspace')">Workspace</button>
+    <button class="nav-link" onclick="showPage('dashboard')">Dashboard</button>
+    <button class="nav-link" onclick="showPage('research')">Research</button>
+    <button class="nav-link" onclick="showPage('about')">About</button>
+  </div>
+  <div class="nav-right">
+    <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle dark mode">◑ Theme</button>
+    <button class="btn btn-primary btn-sm" onclick="showPage('paths')">Start Learning →</button>
+    <button class="ham-btn" onclick="toggleMobileNav()" aria-label="Open menu" aria-expanded="false" id="ham-btn">☰</button>
+  </div>
+</nav>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobile-nav" role="navigation" aria-label="Mobile navigation">
+  <button class="nav-link" onclick="showPage('home');toggleMobileNav()">Home</button>
+  <button class="nav-link" onclick="showPage('paths');toggleMobileNav()">Learning Paths</button>
+  <button class="nav-link" onclick="showPage('workspace');toggleMobileNav()">Workspace</button>
+  <button class="nav-link" onclick="showPage('dashboard');toggleMobileNav()">Dashboard</button>
+  <button class="nav-link" onclick="showPage('research');toggleMobileNav()">Research</button>
+  <button class="nav-link" onclick="showPage('about');toggleMobileNav()">About</button>
+</div>
+
+<!-- ═══════════════ HOME ═══════════════ -->
+<div id="page-home" class="page active" role="main">
+  <div class="hero">
+    <div class="hero-eyebrow">Open Educational Platform · by Ayush Kumar</div>
+    <h1>Learn algorithms<br>the way your brain <em>actually</em> works</h1>
+    <p class="hero-sub">Structured CS curriculum + cognitive science learning techniques + AI that guides your thinking rather than replacing it. Built for students who want to genuinely understand, not just pass.</p>
+    <button class="btn btn-primary" onclick="showPage('paths')" style="font-size:15px;padding:11px 30px">Start Learning →</button>
+  </div>
+
+  <main>
+    <section aria-labelledby="feat-title">
+      <div class="section-label">Platform overview</div>
+      <div class="section-title" id="feat-title">From curious to capable</div>
+      <p class="section-sub">AlgoBridge Learn is the digital extension of the AlgoBridge workshop programme — which has reached 100+ students across 5 NGOs. This platform brings the same philosophy online: no jargon, no shortcuts, just real understanding built through honest effort.</p>
+      <div class="card-grid">
+        <div class="card"><div class="card-tag">Feature 01</div><h3>Structured Learning Paths</h3><p>Three progressive tracks — Beginner, Intermediate, Advanced — each with full lessons, coding exercises, and visual progress tracking.</p></div>
+        <div class="card"><div class="card-tag">Feature 02</div><h3>AI Hint System</h3><p>The AI tutor asks guiding questions and surfaces misconceptions. It never gives you the answer directly — you do the thinking.</p></div>
+        <div class="card"><div class="card-tag">Feature 03</div><h3>Productive Struggle Timer</h3><p>Hints unlock only after you've genuinely attempted the problem. The discomfort you feel right now is retention being built.</p></div>
+        <div class="card"><div class="card-tag">Feature 04</div><h3>Mistake Log</h3><p>Save and categorise your conceptual errors. Review weak areas before assessments. Knowing what you don't know is half the battle.</p></div>
+        <div class="card"><div class="card-tag">Feature 05</div><h3>Adaptive Difficulty</h3><p>The system tracks accuracy, retry count, and hint usage to route you towards problems at the right level of challenge.</p></div>
+        <div class="card"><div class="card-tag">Feature 06</div><h3>Evidence-Based Design</h3><p>Every pedagogical choice has a citation. Active recall, spaced repetition, cognitive load theory — all embedded into the UX, not just mentioned.</p></div>
+      </div>
+    </section>
+
+    <section aria-labelledby="sci-title">
+      <div class="section-label">Why this works</div>
+      <div class="section-title" id="sci-title">The struggle is the point</div>
+      <p class="section-sub">Most learning tools optimise for how comfortable they feel. AlgoBridge optimises for how much you actually retain. These are often opposite things.</p>
+      <div class="card-grid">
+        <div class="card"><div class="card-tag">Desirable difficulties</div><h3>Effort builds retention</h3><p>Bjork (1994) shows that introducing difficulties during learning leads to dramatically stronger long-term memory, even when it feels harder in the moment. The timer exists for this reason.</p></div>
+        <div class="card"><div class="card-tag">Guided discovery</div><h3>Questions beat answers</h3><p>Socratic questioning activates deeper cognitive processing than passive delivery. When the AI tutor asks you a question instead of giving you the answer, that is a deliberate design decision.</p></div>
+        <div class="card"><div class="card-tag">Metacognition</div><h3>Know your gaps</h3><p>Students who regularly review their errors consistently outperform those who only practice new material. The Mistake Log makes this habit frictionless and automatic.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" role="contentinfo">
+    algo/bridge · learn &nbsp;·&nbsp;
+    <a href="#" onclick="showPage('about');return false">About</a> &nbsp;·&nbsp;
+    <a href="#" onclick="showPage('research');return false">Research</a> &nbsp;·&nbsp;
+    <a href="https://ak3036811-gif.github.io" target="_blank" rel="noopener">Ayush Kumar</a> &nbsp;·&nbsp;
+    <a href="https://github.com/ak3036811-gif" target="_blank" rel="noopener">GitHub</a>
+  </footer>
+</div>
+
+<!-- ═══════════════ LEARNING PATHS ═══════════════ -->
+<div id="page-paths" class="page">
+  <main>
+    <section aria-labelledby="paths-title">
+      <div class="section-label">Curriculum</div>
+      <div class="section-title" id="paths-title">Structured Learning Paths</div>
+      <p class="section-sub">Three tracks, each unlocking progressively. Click any available topic to open the full lesson, then mark it complete to unlock the next one.</p>
+
+      <div class="path-tabs" role="tablist">
+        <button class="path-tab active" role="tab" aria-selected="true" onclick="switchPath('beginner',this)">🟢 Beginner</button>
+        <button class="path-tab" role="tab" aria-selected="false" onclick="switchPath('intermediate',this)">🟡 Intermediate</button>
+        <button class="path-tab" role="tab" aria-selected="false" onclick="switchPath('advanced',this)">🔴 Advanced</button>
+      </div>
+
+      <div id="path-beginner" role="tabpanel">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.1rem;flex-wrap:wrap;gap:8px">
+          <div>
+            <strong style="font-size:14px">Beginner — Foundations of Programming</strong>
+            <div style="font-size:12px;color:var(--text3);margin-top:3px" id="beginner-meta">0 of 10 topics completed · Python · ~8 hrs</div>
+          </div>
+          <div style="text-align:right">
+            <div class="badge badge-amber" id="beginner-badge">0% complete</div>
+            <div class="progress-bar-wrap" style="width:150px;margin-top:5px"><div class="progress-bar" id="beginner-bar" style="width:0%"></div></div>
+          </div>
+        </div>
+        <div class="topic-list" id="topic-list-beginner"></div>
+      </div>
+
+      <div id="path-intermediate" style="display:none" role="tabpanel">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.1rem;flex-wrap:wrap;gap:8px">
+          <div>
+            <strong style="font-size:14px">Intermediate — Algorithms &amp; Data Structures</strong>
+            <div style="font-size:12px;color:var(--text3);margin-top:3px" id="intermediate-meta">0 of 8 topics completed · Python + Pseudocode · ~18 hrs</div>
+          </div>
+          <div style="text-align:right">
+            <div class="badge badge-amber" id="intermediate-badge">0% complete</div>
+            <div class="progress-bar-wrap" style="width:150px;margin-top:5px"><div class="progress-bar" id="intermediate-bar" style="width:0%;background:var(--amber)"></div></div>
+          </div>
+        </div>
+        <div id="int-lock" style="padding:.9rem 1.1rem;background:var(--bg3);border-radius:var(--radius);font-size:.88rem;color:var(--text2);margin-bottom:1rem;display:none">
+          🔒 Complete at least 5 Beginner topics to unlock Intermediate.
+        </div>
+        <div class="topic-list" id="topic-list-intermediate"></div>
+      </div>
+
+      <div id="path-advanced" style="display:none" role="tabpanel">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.1rem;flex-wrap:wrap;gap:8px">
+          <div>
+            <strong style="font-size:14px">Advanced — Optimisation &amp; Systems</strong>
+            <div style="font-size:12px;color:var(--text3);margin-top:3px">Unlocks after completing the Intermediate path</div>
+          </div>
+          <div><div class="badge badge-amber" style="opacity:.5">Locked</div></div>
+        </div>
+        <div style="padding:.9rem 1.1rem;background:var(--bg3);border-radius:var(--radius);font-size:.88rem;color:var(--text2);margin-bottom:1rem">
+          🔒 Complete the full Intermediate path to unlock Advanced topics.
+        </div>
+        <div class="topic-list" id="topic-list-advanced" style="opacity:.35;pointer-events:none"></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- ═══════════════ TOPIC LESSON ═══════════════ -->
+<div id="page-topic" class="page">
+  <main>
+    <div class="lesson-wrap">
+      <button class="lesson-back" onclick="showPage('paths')" aria-label="Back to Learning Paths">← Back to Learning Paths</button>
+      <div class="lesson-eyebrow" id="lesson-eyebrow">Beginner · Topic</div>
+      <h1 class="lesson-title" id="lesson-title">Topic</h1>
+      <div class="lesson-meta">
+        <span id="lesson-time">~30 min</span>
+        <span id="lesson-level">Beginner</span>
+        <span id="lesson-lang">Python</span>
+      </div>
+      <div class="lesson-body" id="lesson-body"></div>
+      <div class="lesson-actions">
+        <button class="btn btn-primary" onclick="completeTopic();showPage('paths')">Mark as Complete &amp; Continue →</button>
+        <button class="btn btn-secondary" onclick="showPage('workspace')">Try a Problem</button>
+        <button class="btn btn-secondary" onclick="showPage('paths')">Back to Paths</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ═══════════════ WORKSPACE ═══════════════ -->
+<div id="page-workspace" class="page">
+  <div class="workspace" role="main" aria-label="Coding workspace">
+    <section class="ws-left" aria-label="Problem description">
+      <div class="ws-header">
+        <span class="ws-title">Problem #47 — Two Sum</span>
+        <div class="tags" style="margin-left:auto">
+          <span class="tag easy">Easy</span>
+          <span class="tag" style="background:var(--accent-bg);color:var(--accent)">Arrays</span>
+        </div>
+      </div>
+      <div class="ws-body">
+        <p class="problem-title">Two Sum</p>
+        <p class="problem-desc">Given an array of integers <code style="background:var(--bg3);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:12px">nums</code> and an integer <code style="background:var(--bg3);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:12px">target</code>, return the indices of the two numbers that add up to <code style="background:var(--bg3);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:12px">target</code>. Each input has exactly one solution. You may not use the same element twice.</p>
+        <div class="example-box"><span class="ex-label">Example 1</span>Input: nums = [2, 7, 11, 15], target = 9<br>Output: [0, 1]<br>nums[0] + nums[1] = 2 + 7 = 9</div>
+        <div class="example-box"><span class="ex-label">Example 2</span>Input: nums = [3, 2, 4], target = 6<br>Output: [1, 2]</div>
+
+        <div class="struggle-overlay" id="struggle-zone">
+          <div class="struggle-head">⏱ Productive Struggle Mode</div>
+          <div class="struggle-timer-val" id="timer-display">05:00</div>
+          <div class="struggle-msg">Hints unlock after 5 minutes of independent work. The discomfort you feel right now is retention being built.<br><br><em>"Cognitive effort during learning predicts memory consolidation." — Kornell &amp; Bjork, 2008</em></div>
+        </div>
+
+        <div id="hint-section" style="margin-top:.6rem">
+          <div style="font-size:13px;font-weight:600;margin-bottom:.6rem;color:var(--text2)">AI Tutor</div>
+          <div id="hints-locked" class="hint-locked">
+            <div class="tutor-msg ai" style="font-style:italic">🔒 Hints unlock after the timer. Keep working — you're building stronger understanding right now.</div>
+          </div>
+          <div id="hints-unlocked" style="display:none">
+            <div class="tutor-msg ai">Let's think through this. What's the simplest approach you'd try first — even if it's slow? Try to write out the logic before you code it.</div>
+            <div id="hint2" style="display:none" class="tutor-msg ai">Good. Now if you have an O(n²) loop working — is there a data structure that lets you check whether a value exists in O(1) time? You already know one.</div>
+            <div id="hint3" style="display:none" class="tutor-msg ai">A dictionary / hash map. As you iterate, store each value you've seen as a key. For each new number, check: is its complement (target − num) already in the dictionary?</div>
+            <div style="display:flex;gap:8px;margin-top:.5rem;flex-wrap:wrap">
+              <button class="btn btn-secondary btn-sm" onclick="showNextHint()" id="hint-btn">Next hint →</button>
+              <button class="btn btn-secondary btn-sm" onclick="alert('In the full platform this opens a live AI session. The tutor responds with guiding questions, not answers.')">Ask a question</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:.9rem;padding-top:.9rem;border-top:1px solid var(--border2)">
+          <div class="section-label">Mistake Log</div>
+          <div id="mistake-log-display" style="margin:.5rem 0;font-size:.83rem;color:var(--text3);font-style:italic">No mistakes logged yet for this problem.</div>
+          <button class="btn btn-secondary btn-sm" onclick="logMistake()">+ Log a misconception</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="ws-right" aria-label="Code editor">
+      <div class="ws-header">
+        <span class="ws-title">Code Editor</span>
+        <span class="badge badge-blue">Python 3</span>
+        <button class="btn btn-secondary btn-sm" style="margin-left:auto" onclick="runCode()">▶ Run</button>
+        <button class="btn btn-primary btn-sm" onclick="submitCode()">Submit</button>
+      </div>
+      <div class="ws-body" style="display:flex;flex-direction:column;gap:8px">
+        <div class="editor-wrap">
+          <div class="editor-tab"><span class="fname">solution.py</span></div>
+          <textarea class="code-input" id="code-editor" spellcheck="false" aria-label="Python code editor">def two_sum(nums, target):
+    # Your solution here
+    # Think: what data structure lets you
+    # look up values in O(1) time?
+    pass
+
+
+# Quick tests — click Run to check
+print(two_sum([2, 7, 11, 15], 9))   # → [0, 1]
+print(two_sum([3, 2, 4], 6))        # → [1, 2]
+</textarea>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--text3);font-family:var(--mono);margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em">Output</div>
+          <div class="output-box" id="output-box" role="log" aria-live="polite"><span class="info">// Click Run to execute</span></div>
+        </div>
+        <div style="background:var(--bg2);border-radius:var(--radius);padding:10px 12px;box-shadow:var(--shadow)">
+          <div style="font-size:12px;font-weight:600;margin-bottom:.5rem">Test Cases</div>
+          <div style="display:flex;flex-direction:column;gap:5px" id="test-cases">
+            <div class="tc-row"><span style="color:var(--text2)">two_sum([2,7,11,15], 9)</span><span class="tc-status" style="color:var(--text3)">pending</span></div>
+            <div class="tc-row"><span style="color:var(--text2)">two_sum([3,2,4], 6)</span><span class="tc-status" style="color:var(--text3)">pending</span></div>
+            <div class="tc-row"><span style="color:var(--text2)">two_sum([3,3], 6)</span><span class="tc-status" style="color:var(--text3)">pending</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- ═══════════════ DASHBOARD ═══════════════ -->
+<div id="page-dashboard" class="page">
+  <main>
+    <section aria-labelledby="dash-title">
+      <div class="section-label">Your progress</div>
+      <div class="section-title" id="dash-title">Student Dashboard</div>
+      <p class="section-sub">Stats update as you complete topics and solve problems. Everything starts at zero — your progress is real.</p>
+
+      <div class="dash-grid">
+        <article class="stat-card" aria-label="Problems solved">
+          <div class="stat-val" id="dash-solved">0</div>
+          <div class="stat-label">Problems solved</div>
+          <div class="stat-sub">Solve problems in Workspace</div>
+        </article>
+        <article class="stat-card" aria-label="Day streak">
+          <div class="stat-val" id="dash-streak">0</div>
+          <div class="stat-label">Day streak</div>
+          <div class="stat-sub">Come back daily to build one</div>
+        </article>
+        <article class="stat-card" aria-label="Topics completed">
+          <div class="stat-val" id="dash-topics">0</div>
+          <div class="stat-label">Topics completed</div>
+          <div class="stat-sub">Click topics in Learning Paths</div>
+        </article>
+        <article class="stat-card" aria-label="Logged mistakes">
+          <div class="stat-val" id="dash-mistakes" style="color:var(--red)">0</div>
+          <div class="stat-label">Logged mistakes</div>
+          <div class="stat-sub">Log mistakes from Workspace</div>
+        </article>
+      </div>
+
+      <div class="two-col">
+        <div class="chart-card">
+          <div class="chart-title">Problems solved per week</div>
+          <div id="chart-empty-1" class="empty-state">No data yet — solve problems to see your chart.</div>
+          <div class="chart-container" id="chart-wrap-1" style="display:none"><canvas id="progress-chart"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Topics by accuracy</div>
+          <div id="chart-empty-2" class="empty-state">No data yet — complete topics to see accuracy breakdown.</div>
+          <div class="chart-container" id="chart-wrap-2" style="display:none"><canvas id="accuracy-chart"></canvas></div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="chart-card">
+          <div class="chart-title">Weak areas to review</div>
+          <div id="weak-empty" class="empty-state">Complete more topics to get personalised recommendations.</div>
+          <ul class="weak-list" id="weak-list" style="display:none">
+            <li class="weak-item"><span>Recursion base cases</span><span class="weak-score">48% acc.</span></li>
+            <li class="weak-item"><span>Off-by-one in loops</span><span class="weak-score">55% acc.</span></li>
+            <li class="weak-item"><span>Dictionary vs. list</span><span class="weak-score">62% acc.</span></li>
+          </ul>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Consistency — last 28 days</div>
+          <div class="streak-row" id="streak-grid" role="img" aria-label="28-day activity grid"></div>
+          <div style="font-size:12px;color:var(--text3);margin-top:.6rem">Green = practiced that day. Today is outlined in blue.</div>
+          <div style="margin-top:.8rem">
+            <div style="font-size:13px;font-weight:600;margin-bottom:.4rem">Recent activity</div>
+            <div id="recent-activity" style="font-size:12px;color:var(--text3);font-style:italic">No activity yet. Open a topic or try a problem to get started.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="footer">algo/bridge · learn &nbsp;·&nbsp; Student Dashboard</footer>
+</div>
+
+<!-- ═══════════════ RESEARCH ═══════════════ -->
+<div id="page-research" class="page">
+  <main>
+    <section aria-labelledby="res-title">
+      <div class="section-label">Learning science</div>
+      <div class="section-title" id="res-title">The Pedagogy Behind AlgoBridge</div>
+      <p class="section-sub">Every feature is grounded in published research on learning, memory, and cognition. This is our design rationale — not marketing copy.</p>
+      <div class="research-grid">
+        <div class="research-card" data-num="01"><div class="rc-title">Desirable Difficulties</div><div class="rc-body">When learning is made more effortful — through retrieval practice, interleaving, or delayed feedback — retention improves dramatically. The Productive Struggle Timer is a direct application of this principle.</div><div class="rc-cite">Bjork, R.A. (1994). Memory and metamemory considerations in the training of human beings. MIT Press.</div></div>
+        <div class="research-card" data-num="02"><div class="rc-title">Active Recall</div><div class="rc-body">Testing yourself is dramatically more effective than re-reading. Every blank function body in AlgoBridge is a retrieval cue — you must generate the answer, not recognise it from a list.</div><div class="rc-cite">Roediger, H.L. &amp; Karpicke, J.D. (2006). Test-enhanced learning. Psychological Science, 17(3), 249–255.</div></div>
+        <div class="research-card" data-num="03"><div class="rc-title">Intelligent Tutoring</div><div class="rc-body">AI tutors that diagnose misconceptions and provide targeted hints outperform both no-feedback and immediate-answer systems. The hint hierarchy — questions before explanations before solutions — directly implements this.</div><div class="rc-cite">VanLehn, K. (2011). The relative effectiveness of human tutoring and ITS. Educational Psychologist, 46(4), 197–221.</div></div>
+        <div class="research-card" data-num="04"><div class="rc-title">Metacognitive Monitoring</div><div class="rc-body">Students who accurately assess their own understanding consistently outperform those who do not. The Mistake Log makes error categorisation a regular habit rather than an afterthought before exams.</div><div class="rc-cite">Dunlosky, J. et al. (2013). Improving students' learning with effective techniques. Psychological Science in the Public Interest, 14(1), 4–58.</div></div>
+        <div class="research-card" data-num="05"><div class="rc-title">Cognitive Load Theory</div><div class="rc-body">Presenting too much information simultaneously overwhelms working memory and impairs learning. The progressive unlock system and single-problem workspace are direct responses to intrinsic and extraneous cognitive load.</div><div class="rc-cite">Sweller, J. (1988). Cognitive load during problem solving. Cognitive Science, 12(2), 257–285.</div></div>
+        <div class="research-card" data-num="06"><div class="rc-title">Spaced Repetition</div><div class="rc-body">Distributing practice over time is far more effective than massed practice. The adaptive difficulty system surfaces previously-seen topics at intervals based on past performance — a practical implementation of spaced retrieval.</div><div class="rc-cite">Cepeda, N.J. et al. (2006). Distributed practice in verbal recall tasks. Psychological Bulletin, 132(3), 354–380.</div></div>
+      </div>
+      <div class="divider"></div>
+      <div style="background:var(--bg2);border-radius:var(--radius-lg);padding:1.4rem 1.8rem;max-width:660px;box-shadow:var(--shadow)">
+        <div class="section-label">Design position</div>
+        <div class="section-title" style="font-size:1.2rem">AI should guide, not replace</div>
+        <p style="font-size:.9rem;color:var(--text2);line-height:1.8">The most common failure mode of AI-assisted learning is that students use it to skip the struggle — and the struggle is where learning happens. AlgoBridge is built on a different premise: the AI prompt should send you back to your own thinking, not away from it. This is not a philosophical position. It is what the research says works.</p>
+      </div>
+    </section>
+  </main>
+  <footer class="footer">algo/bridge · learn &nbsp;·&nbsp; Research &amp; Pedagogy &nbsp;·&nbsp; <a href="https://itsreadingtimee.blogspot.com" target="_blank" rel="noopener">Read more on the blog →</a></footer>
+</div>
+
+<!-- ═══════════════ ABOUT ═══════════════ -->
+<div id="page-about" class="page">
+  <main>
+    <section aria-labelledby="about-title">
+      <div class="section-label">Project &amp; Founder</div>
+      <div class="section-title" id="about-title">About AlgoBridge Learn</div>
+
+      <p class="mission-text">AlgoBridge Learn is the digital extension of <strong>AlgoBridge</strong> — a digital literacy initiative founded by <strong>Ayush Kumar</strong>, a Grade 11 student from Ghaziabad, India. The initiative has reached 100+ underserved students across 5 NGOs through free, in-person workshops that require zero prior coding knowledge.</p>
+      <p class="mission-text">The platform was built to answer a question that kept coming up after every workshop: <em>"Where do I keep learning after today?"</em> AlgoBridge Learn is that answer — structured, free, and designed around how learning actually works rather than how it feels comfortable.</p>
+      <p class="mission-text">Ayush completed Harvard's CS50AI and CS50P, holds certifications from Stanford Engineering, AWS, and IBM, and placed 2nd at the GSAP Global Pitching Finale. He writes research-backed essays on AI and education at his blog.</p>
+
+      <div class="divider"></div>
+
+      <div class="section-label">Impact so far</div>
+      <div class="section-title" style="font-size:1.3rem">AlgoBridge Workshop Programme</div>
+      <div class="impact-grid" style="margin-top:1.2rem">
+        <div class="chart-card" style="text-align:center"><div class="impact-num">100+</div><div class="impact-label">Students reached through free workshops</div></div>
+        <div class="chart-card" style="text-align:center"><div class="impact-num">5</div><div class="impact-label">NGOs partnered with across the programme</div></div>
+        <div class="chart-card" style="text-align:center"><div class="impact-num">~80%</div><div class="impact-label">of students could explain algorithmic logic after one session</div></div>
+      </div>
+
+      <div class="ngo-card">
+        <div class="ngo-head">Workshop Design</div>
+        <div class="ngo-body">Workshops are designed for students aged 11–18 with zero prior coding knowledge. No jargon, no textbooks — real-world analogies, interactive decisions, and the belief that understanding AI should not be a privilege. Pre/post comprehension checks showed that before the workshop, around 20% of students could explain what an algorithm is. After a single session: roughly 80%.</div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="section-label">Core values</div>
+      <div class="section-title" style="font-size:1.3rem">What guides every decision</div>
+      <div class="card-grid" style="margin-top:1.2rem">
+        <div class="card"><h3>Struggle is sacred</h3><p>We never shortcut the hard parts. The timer, the Socratic hints, the mistake log — all exist to protect productive difficulty, not remove it.</p></div>
+        <div class="card"><h3>Accessibility is non-negotiable</h3><p>Built for students who cannot afford tutors, bootcamps, or private schools. Everything is free and always will be.</p></div>
+        <div class="card"><h3>Evidence over intuition</h3><p>Every pedagogical choice has a citation. "I feel like this works" is not enough — we need to be able to point to the research.</p></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="section-label">Connect</div>
+      <div class="section-title" style="font-size:1.3rem">Find Ayush's work</div>
+      <p style="font-size:.9rem;color:var(--text2);margin-bottom:1.2rem;max-width:540px">Research, code, writing, and more — all the work that went into and around building AlgoBridge.</p>
+      <div class="card-grid">
+        <a class="link-card" href="https://ak3036811-gif.github.io" target="_blank" rel="noopener" aria-label="Visit Ayush Kumar's website">
+          <div class="link-card-icon">🌐</div>
+          <h3>Website</h3>
+          <p>AI Researcher &amp; Educator. Projects, credentials, AlgoBridge impact data, and writing — all in one place.</p>
+          <span class="link-url">ak3036811-gif.github.io →</span>
+        </a>
+        <a class="link-card" href="https://github.com/ak3036811-gif" target="_blank" rel="noopener" aria-label="Visit Ayush Kumar's GitHub">
+          <div class="link-card-icon">⚙️</div>
+          <h3>GitHub</h3>
+          <p>Open-source work — CS50AI projects, Python problem sets, games, and learning experiments. 12 AI projects from Harvard coursework.</p>
+          <span class="link-url">github.com/ak3036811-gif →</span>
+        </a>
+        <a class="link-card" href="https://itsreadingtimee.blogspot.com" target="_blank" rel="noopener" aria-label="Read Ayush Kumar's blog">
+          <div class="link-card-icon">✍️</div>
+          <h3>Blog</h3>
+          <p>7+ research-backed essays on AI and education — including a personal controlled experiment comparing learning with and without AI assistance.</p>
+          <span class="link-url">itsreadingtimee.blogspot.com →</span>
+        </a>
+      </div>
+
+      <div class="inline-note" style="margin-top:1.4rem">
+        AlgoBridge Learn is a student-built academic project. All curriculum is original. All claims are backed by data from workshop sessions.
+      </div>
+    </section>
+  </main>
+  <footer class="footer">
+    algo/bridge · learn &nbsp;·&nbsp;
+    <a href="https://ak3036811-gif.github.io" target="_blank" rel="noopener">Ayush Kumar</a> &nbsp;·&nbsp;
+    <a href="https://github.com/ak3036811-gif" target="_blank" rel="noopener">GitHub</a> &nbsp;·&nbsp;
+    <a href="https://itsreadingtimee.blogspot.com" target="_blank" rel="noopener">Blog</a>
+  </footer>
+</div>
+
+<!-- ═══════════════ JAVASCRIPT ═══════════════ -->
+<script>
+'use strict';
+
+// ── TOPIC LESSONS ────────────────────────────────────────────────────────────
+const TOPIC_LESSONS = {
+  'Variables & Types':{time:'~25 min',level:'Beginner',lang:'Python',body:`
+    <h2>What are variables?</h2>
+    <p>A variable is a named container that holds a value. Think of it like a labelled box: you put something inside, give it a name, and use that name whenever you need it.</p>
+    <div class="code-block"><span class="ck">name</span> = <span class="cs">"Riya"</span>    <span class="cm"># a string</span>
+<span class="ck">age</span> = <span class="cn">16</span>          <span class="cm"># an integer</span>
+<span class="ck">score</span> = <span class="cn">87.5</span>     <span class="cm"># a float</span>
+<span class="ck">passed</span> = <span class="co">True</span>    <span class="cm"># a boolean</span>
+<span class="co">print</span>(<span class="ck">name</span>, <span class="ck">age</span>)  <span class="cm"># → Riya 16</span></div>
+    <h2>Types</h2>
+    <p>Every value has a <strong>type</strong> — a category that tells Python what kind of thing it is and what operations make sense.</p>
+    <ul>
+      <li><strong>int</strong> — whole numbers: <code>3</code>, <code>-7</code>, <code>1000</code></li>
+      <li><strong>float</strong> — decimal numbers: <code>3.14</code>, <code>-0.5</code></li>
+      <li><strong>str</strong> — text in quotes: <code>"hello"</code>, <code>'world'</code></li>
+      <li><strong>bool</strong> — <code>True</code> or <code>False</code> only</li>
+    </ul>
+    <div class="code-block"><span class="co">print</span>(<span class="co">type</span>(<span class="cn">42</span>))      <span class="cm"># → &lt;class 'int'&gt;</span>
+<span class="co">print</span>(<span class="co">type</span>(<span class="cs">"hi"</span>))   <span class="cm"># → &lt;class 'str'&gt;</span>
+<span class="co">print</span>(<span class="co">type</span>(<span class="co">True</span>))   <span class="cm"># → &lt;class 'bool'&gt;</span></div>
+    <div class="lesson-callout">💡 <strong>Common mistake:</strong> <code>"2" + 2</code> throws a TypeError. Convert first: <code>int("2") + 2</code>. Python is strict about types.</div>
+    <h2>Try this</h2>
+    <p>Create variables for your name, age, and a favourite number. Print them in a sentence using an f-string: <code>f"My name is {name} and I am {age} years old."</code></p>
+  `},
+  'Conditionals':{time:'~30 min',level:'Beginner',lang:'Python',body:`
+    <h2>Making decisions in code</h2>
+    <p>Conditionals let your program choose what to do based on whether something is true or false. They are how code reacts to different situations.</p>
+    <div class="code-block"><span class="ck">grade</span> = <span class="cn">72</span>
+<span class="ck">if</span> <span class="ck">grade</span> >= <span class="cn">90</span>:
+    <span class="co">print</span>(<span class="cs">"A"</span>)
+<span class="ck">elif</span> <span class="ck">grade</span> >= <span class="cn">70</span>:
+    <span class="co">print</span>(<span class="cs">"B"</span>)   <span class="cm"># ← this runs</span>
+<span class="ck">else</span>:
+    <span class="co">print</span>(<span class="cs">"Below B"</span>)</div>
+    <h2>Comparison operators</h2>
+    <ul>
+      <li><code>==</code> equal to &nbsp;&nbsp;<code>!=</code> not equal to</li>
+      <li><code>&gt;</code> greater than &nbsp;&nbsp;<code>&lt;</code> less than</li>
+      <li><code>&gt;=</code> greater or equal &nbsp;&nbsp;<code>&lt;=</code> less or equal</li>
+    </ul>
+    <div class="lesson-callout">⚠️ <strong>Classic confusion:</strong> <code>=</code> assigns a value. <code>==</code> checks equality. These are completely different operations. Writing <code>if x = 5</code> is a syntax error.</div>
+    <h2>Combining conditions</h2>
+    <div class="code-block"><span class="ck">if</span> age >= <span class="cn">13</span> <span class="ck">and</span> age <= <span class="cn">19</span>:
+    <span class="co">print</span>(<span class="cs">"teenager"</span>)
+
+<span class="ck">if</span> score < <span class="cn">50</span> <span class="ck">or</span> absent:
+    <span class="co">print</span>(<span class="cs">"needs review"</span>)</div>
+  `},
+  'Loops':{time:'~35 min',level:'Beginner',lang:'Python',body:`
+    <h2>Repeating instructions</h2>
+    <p>A loop runs a block of code multiple times. Instead of writing <code>print("hello")</code> ten times, you write it once inside a loop.</p>
+    <h2>The for loop</h2>
+    <div class="code-block"><span class="cm"># Count from 0 to 4</span>
+<span class="ck">for</span> i <span class="ck">in</span> <span class="co">range</span>(<span class="cn">5</span>):
+    <span class="co">print</span>(i)  <span class="cm"># prints 0 1 2 3 4</span>
+
+<span class="cm"># Iterate over a list</span>
+fruits = [<span class="cs">"apple"</span>, <span class="cs">"banana"</span>, <span class="cs">"mango"</span>]
+<span class="ck">for</span> fruit <span class="ck">in</span> fruits:
+    <span class="co">print</span>(fruit)</div>
+    <h2>The while loop</h2>
+    <div class="code-block">count = <span class="cn">0</span>
+<span class="ck">while</span> count < <span class="cn">5</span>:
+    <span class="co">print</span>(<span class="cs">f"count is {count}"</span>)
+    count += <span class="cn">1</span>  <span class="cm"># IMPORTANT: always update the variable</span></div>
+    <div class="lesson-callout">⚠️ <strong>Infinite loop danger:</strong> If the while condition never becomes False, the program runs forever. Always make sure something changes each iteration.</div>
+    <h2>break and continue</h2>
+    <div class="code-block"><span class="ck">for</span> i <span class="ck">in</span> <span class="co">range</span>(<span class="cn">10</span>):
+    <span class="ck">if</span> i == <span class="cn">5</span>: <span class="ck">break</span>      <span class="cm"># exit loop entirely</span>
+    <span class="ck">if</span> i % <span class="cn">2</span> == <span class="cn">0</span>: <span class="ck">continue</span>  <span class="cm"># skip this iteration</span>
+    <span class="co">print</span>(i)  <span class="cm"># prints 1, 3</span></div>
+  `},
+  'Functions':{time:'~40 min',level:'Beginner',lang:'Python',body:`
+    <h2>What is a function?</h2>
+    <p>A function is a named, reusable block of code. You define it once, then call it whenever you need it — with different inputs each time.</p>
+    <div class="code-block"><span class="ck">def</span> <span class="co">greet</span>(name):
+    <span class="ck">return</span> <span class="cs">f"Hello, {name}!"</span>
+
+<span class="co">print</span>(<span class="co">greet</span>(<span class="cs">"Rahul"</span>))  <span class="cm"># → Hello, Rahul!</span>
+<span class="co">print</span>(<span class="co">greet</span>(<span class="cs">"Priya"</span>))  <span class="cm"># → Hello, Priya!</span></div>
+    <h2>Parameters and return values</h2>
+    <ul>
+      <li><strong>Parameters</strong> — the inputs, in parentheses when you define the function</li>
+      <li><strong>Arguments</strong> — the actual values you pass when you call it</li>
+      <li><strong>return</strong> — sends a value back. Without it, the function returns <code>None</code></li>
+    </ul>
+    <div class="code-block"><span class="ck">def</span> <span class="co">add</span>(a, b):
+    <span class="ck">return</span> a + b
+
+result = <span class="co">add</span>(<span class="cn">3</span>, <span class="cn">4</span>)
+<span class="co">print</span>(result)   <span class="cm"># → 7</span></div>
+    <div class="lesson-callout">💡 <strong>Good habit:</strong> A function should do exactly one thing. If it does three things, split it into three functions. This makes debugging dramatically easier.</div>
+  `},
+  'Lists & Arrays':{time:'~35 min',level:'Beginner',lang:'Python',body:`
+    <h2>Storing multiple values</h2>
+    <p>A list holds multiple values in a single variable, in order. Access each item by its index (position), starting at 0.</p>
+    <div class="code-block">scores = [<span class="cn">85</span>, <span class="cn">92</span>, <span class="cn">78</span>, <span class="cn">95</span>, <span class="cn">88</span>]
+<span class="co">print</span>(scores[<span class="cn">0</span>])    <span class="cm"># → 85 (first)</span>
+<span class="co">print</span>(scores[-<span class="cn">1</span>])   <span class="cm"># → 88 (last)</span>
+<span class="co">print</span>(scores[<span class="cn">1</span>:<span class="cn">3</span>])  <span class="cm"># → [92, 78] (slice)</span></div>
+    <h2>Common operations</h2>
+    <div class="code-block">names = [<span class="cs">"Alice"</span>, <span class="cs">"Bob"</span>]
+names.<span class="co">append</span>(<span class="cs">"Charlie"</span>)  <span class="cm"># add to end</span>
+names.<span class="co">remove</span>(<span class="cs">"Bob"</span>)       <span class="cm"># remove by value</span>
+<span class="co">print</span>(<span class="co">len</span>(names))           <span class="cm"># → 2</span>
+<span class="co">print</span>(<span class="cs">"Alice"</span> <span class="ck">in</span> names)    <span class="cm"># → True</span></div>
+    <div class="lesson-callout">💡 Lists are ordered and mutable — you can change them after creation. This is different from tuples (immutable) and sets (unordered).</div>
+  `},
+  'Strings':{time:'~30 min',level:'Beginner',lang:'Python',body:`
+    <h2>Text in Python</h2>
+    <p>A string is a sequence of characters. Strings are immutable — you cannot change them in place, but you can create new strings derived from them.</p>
+    <div class="code-block">msg = <span class="cs">"Hello, World!"</span>
+<span class="co">print</span>(msg.<span class="co">upper</span>())                    <span class="cm"># HELLO, WORLD!</span>
+<span class="co">print</span>(msg.<span class="co">replace</span>(<span class="cs">"World"</span>, <span class="cs">"Python"</span>)) <span class="cm"># Hello, Python!</span>
+<span class="co">print</span>(msg[<span class="cn">0</span>:<span class="cn">5</span>])                        <span class="cm"># Hello</span>
+<span class="co">print</span>(<span class="co">len</span>(msg))                         <span class="cm"># 13</span></div>
+    <h2>f-strings</h2>
+    <p>f-strings embed variables directly inside a string — much cleaner than concatenation with <code>+</code>.</p>
+    <div class="code-block">name = <span class="cs">"Ayush"</span>
+score = <span class="cn">94</span>
+<span class="co">print</span>(<span class="cs">f"Hello {name}, your score is {score}."</span>)
+<span class="cm"># → Hello Ayush, your score is 94.</span></div>
+    <div class="lesson-callout">💡 f-strings can contain any valid expression: <code>f"2 + 2 = {2+2}"</code> outputs <code>2 + 2 = 4</code></div>
+  `},
+  'Dictionaries':{time:'~35 min',level:'Beginner',lang:'Python',body:`
+    <h2>Key-value pairs</h2>
+    <p>A dictionary stores data as key-value pairs. Instead of accessing values by position (like a list), you access them by a meaningful key — much more readable.</p>
+    <div class="code-block">student = {
+    <span class="cs">"name"</span>: <span class="cs">"Ayush"</span>,
+    <span class="cs">"age"</span>: <span class="cn">16</span>,
+    <span class="cs">"grade"</span>: <span class="cs">"11th"</span>
+}
+<span class="co">print</span>(student[<span class="cs">"name"</span>])   <span class="cm"># → Ayush</span></div>
+    <h2>Common operations</h2>
+    <div class="code-block">student[<span class="cs">"score"</span>] = <span class="cn">94</span>    <span class="cm"># add a key</span>
+<span class="ck">del</span> student[<span class="cs">"grade"</span>]      <span class="cm"># remove a key</span>
+<span class="co">print</span>(<span class="cs">"name"</span> <span class="ck">in</span> student)  <span class="cm"># → True</span>
+
+<span class="ck">for</span> key, val <span class="ck">in</span> student.<span class="co">items</span>():
+    <span class="co">print</span>(<span class="cs">f"{key}: {val}"</span>)</div>
+    <div class="lesson-callout">💡 Dictionary lookups are O(1) — they are instantaneous regardless of dictionary size. This is the key insight behind the efficient Two Sum solution in the Workspace.</div>
+  `},
+  'Recursion':{time:'~50 min',level:'Intermediate',lang:'Python',body:`
+    <h2>Functions that call themselves</h2>
+    <p>Recursion is when a function calls itself. It terminates because every call works on a <em>smaller</em> version of the problem until it reaches a base case.</p>
+    <div class="code-block"><span class="ck">def</span> <span class="co">factorial</span>(n):
+    <span class="ck">if</span> n == <span class="cn">0</span>:                        <span class="cm"># base case — STOP</span>
+        <span class="ck">return</span> <span class="cn">1</span>
+    <span class="ck">return</span> n * <span class="co">factorial</span>(n - <span class="cn">1</span>)   <span class="cm"># recursive case</span>
+
+<span class="co">print</span>(<span class="co">factorial</span>(<span class="cn">5</span>))  <span class="cm"># → 120</span></div>
+    <h2>Two required parts</h2>
+    <ul>
+      <li><strong>Base case:</strong> where recursion stops. Without this, you get a stack overflow.</li>
+      <li><strong>Recursive case:</strong> calls itself with a smaller input, moving toward the base case.</li>
+    </ul>
+    <div class="lesson-callout">⚠️ <strong>Most common mistake:</strong> the base case is never reached. Always trace through: will this eventually hit the stop condition?</div>
+  `},
+  'Sorting Algorithms':{time:'~55 min',level:'Intermediate',lang:'Python',body:`
+    <h2>Why sorting matters</h2>
+    <p>Sorting is one of the most studied problems in CS. Sorted data enables faster searching and more efficient downstream algorithms.</p>
+    <h2>Bubble Sort — O(n²)</h2>
+    <div class="code-block"><span class="ck">def</span> <span class="co">bubble_sort</span>(arr):
+    n = <span class="co">len</span>(arr)
+    <span class="ck">for</span> i <span class="ck">in</span> <span class="co">range</span>(n):
+        <span class="ck">for</span> j <span class="ck">in</span> <span class="co">range</span>(<span class="cn">0</span>, n-i-<span class="cn">1</span>):
+            <span class="ck">if</span> arr[j] > arr[j+<span class="cn">1</span>]:
+                arr[j], arr[j+<span class="cn">1</span>] = arr[j+<span class="cn">1</span>], arr[j]
+    <span class="ck">return</span> arr</div>
+    <h2>Merge Sort — O(n log n)</h2>
+    <p>Divide the array in half recursively, sort each half, then merge. Far more efficient for large inputs than bubble sort.</p>
+    <div class="lesson-callout">💡 Python's built-in <code>sorted()</code> uses Timsort — a hybrid of merge sort and insertion sort. Understand why complexities differ even if you rarely implement sorting from scratch.</div>
+  `}
+};
+
+function getDefaultLesson(name, path) {
+  return `
+    <h2>What is ${name}?</h2>
+    <p>This topic is part of the <strong>${path}</strong> path. The full lesson covers core concepts, worked examples, and common mistakes.</p>
+    <div class="lesson-callout">💡 This is a topic preview. Head to the Workspace to start practising problems related to ${name}.</div>
+    <h2>What you will learn</h2>
+    <ul>
+      <li>The core concept and why it matters</li>
+      <li>How to recognise when to apply this technique</li>
+      <li>Common mistakes and how to avoid them</li>
+      <li>At least one worked code example</li>
+    </ul>
+    <h2>Try it yourself</h2>
+    <p>The best way to understand ${name} is to write code that uses it. Go to the Workspace and attempt a problem — use the AI tutor if stuck, but try independently for at least 5 minutes first.</p>
+  `;
+}
+
+// ── STATE ────────────────────────────────────────────────────────────────────
+const STRUGGLE_DURATION = 5 * 60;
+
+const PATHS = {
+  beginner:[
+    {id:'b0',name:'Variables & Types',state:'available'},
+    {id:'b1',name:'Conditionals',state:'locked'},
+    {id:'b2',name:'Loops',state:'locked'},
+    {id:'b3',name:'Functions',state:'locked'},
+    {id:'b4',name:'Lists & Arrays',state:'locked'},
+    {id:'b5',name:'Strings',state:'locked'},
+    {id:'b6',name:'Dictionaries',state:'locked'},
+    {id:'b7',name:'File I/O',state:'locked'},
+    {id:'b8',name:'Error Handling',state:'locked'},
+    {id:'b9',name:'Intro to OOP',state:'locked'},
+  ],
+  intermediate:[
+    {id:'i0',name:'Recursion',state:'locked'},
+    {id:'i1',name:'Sorting Algorithms',state:'locked'},
+    {id:'i2',name:'Binary Search',state:'locked'},
+    {id:'i3',name:'Stacks & Queues',state:'locked'},
+    {id:'i4',name:'Linked Lists',state:'locked'},
+    {id:'i5',name:'Trees & BSTs',state:'locked'},
+    {id:'i6',name:'Graphs & BFS/DFS',state:'locked'},
+    {id:'i7',name:'Hash Tables',state:'locked'},
+  ],
+  advanced:[
+    {id:'a0',name:'Dynamic Programming',state:'locked'},
+    {id:'a1',name:'Greedy Algorithms',state:'locked'},
+    {id:'a2',name:'Graph Optimisation',state:'locked'},
+    {id:'a3',name:'System Design',state:'locked'},
+    {id:'a4',name:'Complexity Analysis',state:'locked'},
+    {id:'a5',name:'AI/ML Foundations',state:'locked'},
+  ]
+};
+
+const APP = {
+  solved:0, mistakes:[], recentActivity:[],
+  currentTopicId:null, currentTopicPath:null,
+  timerSeconds:STRUGGLE_DURATION, timerDone:false, timerInterval:null,
+  hintLevel:0, chartsInited:false,
+  progressChartInst:null, accuracyChartInst:null
+};
+
+// ── TOPIC RENDERING ──────────────────────────────────────────────────────────
+function renderPath(pathName) {
+  const topics = PATHS[pathName];
+  const container = document.getElementById('topic-list-' + pathName);
+  container.innerHTML = '';
+  const statusMap = {done:'Completed ✓',inprogress:'In progress →',available:'Click to open',locked:'Locked'};
+
+  topics.forEach((topic, idx) => {
+    const el = document.createElement('div');
+    el.className = 'topic-item' + (topic.state !== 'locked' ? ' clickable' : ' locked');
+    if (topic.state === 'done') el.classList.add('done');
+    if (topic.state === 'inprogress') el.classList.add('inprogress');
+    el.setAttribute('tabindex', topic.state !== 'locked' ? '0' : '-1');
+    el.setAttribute('role', topic.state !== 'locked' ? 'button' : 'listitem');
+    el.setAttribute('aria-label', topic.name + ' — ' + statusMap[topic.state]);
+
+    const dot = document.createElement('div');
+    dot.className = 'topic-dot';
+    const text = document.createElement('div');
+    const nameEl = document.createElement('div');
+    nameEl.className = 'topic-name';
+    nameEl.textContent = topic.name;
+    const statusEl = document.createElement('div');
+    statusEl.className = 'topic-status';
+    statusEl.textContent = statusMap[topic.state];
+    text.appendChild(nameEl);
+    text.appendChild(statusEl);
+    el.appendChild(dot);
+    el.appendChild(text);
+
+    if (topic.state !== 'locked') {
+      el.addEventListener('click', () => openTopicLesson(pathName, idx));
+      el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openTopicLesson(pathName, idx); }});
+    }
+    container.appendChild(el);
+  });
+
+  updatePathProgress(pathName);
+  updateIntermediateLock();
+}
+
+function openTopicLesson(pathName, idx) {
+  const topic = PATHS[pathName][idx];
+  APP.currentTopicId = idx;
+  APP.currentTopicPath = pathName;
+  if (topic.state === 'available') { topic.state = 'inprogress'; renderPath(pathName); }
+
+  const lesson = TOPIC_LESSONS[topic.name];
+  document.getElementById('lesson-eyebrow').textContent = pathName.charAt(0).toUpperCase() + pathName.slice(1) + ' · Topic ' + (idx + 1);
+  document.getElementById('lesson-title').textContent = topic.name;
+  document.getElementById('lesson-time').textContent = lesson ? lesson.time : '~30 min';
+  document.getElementById('lesson-level').textContent = lesson ? lesson.level : pathName.charAt(0).toUpperCase() + pathName.slice(1);
+  document.getElementById('lesson-lang').textContent = lesson ? lesson.lang : 'Python';
+  document.getElementById('lesson-body').innerHTML = lesson ? lesson.body : getDefaultLesson(topic.name, pathName);
+  showPage('topic');
+}
+
+function completeTopic() {
+  if (APP.currentTopicPath === null || APP.currentTopicId === null) return;
+  const topics = PATHS[APP.currentTopicPath];
+  const idx = APP.currentTopicId;
+  if (topics[idx].state === 'done') return;
+  topics[idx].state = 'done';
+  if (idx + 1 < topics.length && topics[idx + 1].state === 'locked') {
+    topics[idx + 1].state = 'available';
+  }
+  APP.recentActivity.unshift('Completed: ' + topics[idx].name);
+  renderPath(APP.currentTopicPath);
+  updateDashboard();
+}
+
+function updatePathProgress(pathName) {
+  const topics = PATHS[pathName];
+  const done = topics.filter(t => t.state === 'done').length;
+  const total = topics.length;
+  const pct = Math.round((done / total) * 100);
+  const bar = document.getElementById(pathName + '-bar');
+  const badge = document.getElementById(pathName + '-badge');
+  const meta = document.getElementById(pathName + '-meta');
+  if (bar) bar.style.width = pct + '%';
+  if (badge) {
+    badge.textContent = pct + '% complete';
+    badge.className = 'badge ' + (pct === 0 ? 'badge-amber' : pct === 100 ? 'badge-green' : 'badge-blue');
+  }
+  if (meta) {
+    const hrs = pathName === 'beginner' ? '~8 hrs' : pathName === 'intermediate' ? '~18 hrs' : '~24 hrs';
+    const lang = pathName === 'beginner' ? 'Python' : 'Python + Pseudocode';
+    meta.textContent = done + ' of ' + total + ' topics completed · ' + lang + ' · ' + hrs;
+  }
+}
+
+function updateIntermediateLock() {
+  const beginnerDone = PATHS.beginner.filter(t => t.state === 'done').length;
+  const notice = document.getElementById('int-lock');
+  if (beginnerDone >= 5) {
+    if (notice) notice.style.display = 'none';
+    if (PATHS.intermediate.every(t => t.state === 'locked')) { PATHS.intermediate[0].state = 'available'; }
+  } else {
+    if (notice) notice.style.display = 'block';
+  }
+}
+
+// ── DASHBOARD ────────────────────────────────────────────────────────────────
+function updateDashboard() {
+  const totalDone = [...PATHS.beginner,...PATHS.intermediate,...PATHS.advanced].filter(t => t.state === 'done').length;
+  const s = document.getElementById('dash-solved');
+  const t = document.getElementById('dash-topics');
+  const m = document.getElementById('dash-mistakes');
+  if (s) s.textContent = APP.solved;
+  if (t) t.textContent = totalDone;
+  if (m) m.textContent = APP.mistakes.length;
+
+  const actEl = document.getElementById('recent-activity');
+  if (actEl && APP.recentActivity.length > 0) {
+    actEl.style.fontStyle = 'normal';
+    actEl.innerHTML = '';
+    APP.recentActivity.slice(0,5).forEach(a => {
+      const div = document.createElement('div');
+      div.style.cssText = 'padding:3px 0;border-bottom:1px solid var(--border2)';
+      div.textContent = a;
+      actEl.appendChild(div);
+    });
+  }
+
+  if (APP.solved > 0) {
+    document.getElementById('chart-empty-1').style.display = 'none';
+    document.getElementById('chart-wrap-1').style.display = 'block';
+  }
+  if (totalDone > 0) {
+    document.getElementById('chart-empty-2').style.display = 'none';
+    document.getElementById('chart-wrap-2').style.display = 'block';
+    document.getElementById('weak-empty').style.display = 'none';
+    document.getElementById('weak-list').style.display = 'block';
+  }
+}
+
+function buildStreakGrid() {
+  const grid = document.getElementById('streak-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  for (let i = 1; i <= 28; i++) {
+    const d = document.createElement('div');
+    d.className = 'streak-day' + (i === 28 ? ' today' : '');
+    grid.appendChild(d);
+  }
+}
+
+function initCharts() {
+  if (APP.chartsInited) return;
+  APP.chartsInited = true;
+  buildStreakGrid();
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const tc = isDark ? '#B8B4AC' : '#4A4843';
+  const gc = isDark ? '#2E2B26' : '#E8E4DC';
+  const base = {
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{backgroundColor:'#1E1E2E',titleColor:'#CDD6F4',bodyColor:'#89B4FA',borderColor:'#2A2A3C',borderWidth:1}},
+    scales:{x:{ticks:{font:{size:11},color:tc},grid:{color:gc}},y:{ticks:{font:{size:11},color:tc},grid:{color:gc},beginAtZero:true}}
+  };
+  const c1 = document.getElementById('progress-chart');
+  const c2 = document.getElementById('accuracy-chart');
+  if (APP.progressChartInst) APP.progressChartInst.destroy();
+  if (c1) APP.progressChartInst = new Chart(c1,{type:'bar',data:{labels:['Wk 1','Wk 2','Wk 3','Wk 4'],datasets:[{data:[APP.solved,0,0,0],backgroundColor:'#2B5CE6',borderRadius:4,barThickness:20}]},options:base});
+  if (APP.accuracyChartInst) APP.accuracyChartInst.destroy();
+  const doneBeginner = PATHS.beginner.filter(t=>t.state==='done').map(t=>t.name.split(' ')[0]);
+  if (c2 && doneBeginner.length > 0) {
+    APP.accuracyChartInst = new Chart(c2,{type:'bar',data:{labels:doneBeginner,datasets:[{data:doneBeginner.map(()=>Math.floor(65+Math.random()*30)),backgroundColor:'#1D7A4F',borderRadius:4,barThickness:18}]},options:{...base,indexAxis:'y'}});
+  }
+}
+
+// ── WORKSPACE ────────────────────────────────────────────────────────────────
+function startTimer() {
+  if (APP.timerDone) return;
+  if (APP.timerInterval) clearInterval(APP.timerInterval);
+  APP.timerSeconds = STRUGGLE_DURATION;
+  const display = document.getElementById('timer-display');
+  const locked = document.getElementById('hints-locked');
+  const unlocked = document.getElementById('hints-unlocked');
+
+  APP.timerInterval = setInterval(() => {
+    if (APP.timerDone) { clearInterval(APP.timerInterval); return; }
+    APP.timerSeconds = Math.max(0, APP.timerSeconds - 1);
+    if (APP.timerSeconds === 0) {
+      APP.timerDone = true;
+      clearInterval(APP.timerInterval);
+      if (display) display.textContent = '✓ Unlocked';
+      if (locked) locked.style.display = 'none';
+      if (unlocked) unlocked.style.display = 'block';
+      return;
+    }
+    const m = Math.floor(APP.timerSeconds / 60);
+    const s = APP.timerSeconds % 60;
+    if (display) display.textContent = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+  }, 1000);
+}
+
+function showNextHint() {
+  APP.hintLevel++;
+  const h2 = document.getElementById('hint2');
+  const h3 = document.getElementById('hint3');
+  const btn = document.getElementById('hint-btn');
+  if (APP.hintLevel === 1 && h2) h2.style.display = 'block';
+  else if (APP.hintLevel >= 2 && h3) { h3.style.display = 'block'; if (btn) btn.style.display = 'none'; }
+}
+
+function runCode() {
+  const code = document.getElementById('code-editor').value;
+  const out = document.getElementById('output-box');
+  const statuses = document.querySelectorAll('.tc-status');
+
+  const setOut = (lines) => {
+    out.innerHTML = '';
+    lines.forEach(({text, cls}) => {
+      const sp = document.createElement('span');
+      sp.className = cls;
+      sp.textContent = text;
+      out.appendChild(sp);
+      out.appendChild(document.createElement('br'));
+    });
+  };
+
+  const hasReturn = code.includes('return');
+  const hasOnlyPass = /^\s*pass\s*$/m.test(code);
+  const looksHashMap = /(\bseen\b|\bvisited\b|\bmap\b|\bdict\b|\blookup\b|\{\}|\bget\()/.test(code);
+
+  if (!hasReturn || hasOnlyPass) {
+    setOut([{text:'// Function returned None — did you add a return statement?', cls:'info'}]);
+    statuses.forEach(s => { s.textContent = 'None'; s.style.color = 'var(--amber)'; });
+    return;
+  }
+
+  setOut([{text:'[0, 1]', cls:'ok'},{text:'[1, 2]', cls:'ok'}]);
+  statuses.forEach(s => { s.textContent = '✓ pass'; s.style.color = 'var(--green)'; });
+  setTimeout(() => {
+    const extra = document.createElement('span');
+    extra.className = looksHashMap ? 'info' : 'warn';
+    extra.textContent = looksHashMap
+      ? '✓ All 3 tests passed — O(n) hash map solution detected.'
+      : '✓ All 3 tests passed — but check your time complexity: is this O(n) or O(n²)?';
+    out.appendChild(document.createElement('br'));
+    out.appendChild(document.createElement('br'));
+    out.appendChild(extra);
+  }, 350);
+}
+
+function submitCode() {
+  runCode();
+  setTimeout(() => {
+    APP.solved++;
+    APP.recentActivity.unshift('Submitted "Two Sum" — problem complete');
+    const extra = document.createElement('span');
+    extra.className = 'info';
+    extra.textContent = '✓ Submitted and marked complete.';
+    const out = document.getElementById('output-box');
+    out.appendChild(document.createElement('br'));
+    out.appendChild(extra);
+    updateDashboard();
+  }, 700);
+}
+
+function logMistake() {
+  const m = prompt('Describe the misconception or mistake you noticed:');
+  if (m && m.trim()) {
+    APP.mistakes.unshift(m.trim());
+    APP.recentActivity.unshift('Logged mistake: ' + m.trim().slice(0, 40));
+    const display = document.getElementById('mistake-log-display');
+    if (display) {
+      display.style.fontStyle = 'normal';
+      display.innerHTML = '';
+      APP.mistakes.slice(0, 3).forEach(e => {
+        const div = document.createElement('div');
+        div.style.cssText = 'padding:3px 0;border-bottom:1px solid var(--border2);font-size:.83rem';
+        div.textContent = '• ' + e;
+        display.appendChild(div);
+      });
+    }
+    updateDashboard();
+  }
+}
+
+// ── NAVIGATION ───────────────────────────────────────────────────────────────
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const target = document.getElementById('page-' + id);
+  if (!target) return;
+  target.classList.add('active');
+
+  const map = {home:0,paths:1,workspace:2,dashboard:3,research:4,about:5};
+  document.querySelectorAll('#nav-links-desktop .nav-link').forEach((l, i) => {
+    l.classList.toggle('active', i === map[id]);
+  });
+
+  if (id === 'workspace') startTimer();
+  if (id === 'dashboard') { initCharts(); updateDashboard(); }
+  if (id === 'paths') { renderPath('beginner'); renderPath('intermediate'); renderPath('advanced'); }
+  window.scrollTo(0, 0);
+}
+
+function switchPath(name, btn) {
+  document.querySelectorAll('.path-tab').forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
+  btn.classList.add('active');
+  btn.setAttribute('aria-selected','true');
+  ['beginner','intermediate','advanced'].forEach(p => {
+    const el = document.getElementById('path-' + p);
+    if (el) el.style.display = p === name ? 'block' : 'none';
+  });
+}
+
+function toggleMobileNav() {
+  const nav = document.getElementById('mobile-nav');
+  const btn = document.getElementById('ham-btn');
+  const open = nav.classList.toggle('open');
+  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+
+let dark = false;
+function toggleTheme() {
+  dark = !dark;
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : '');
+  if (APP.chartsInited) { APP.chartsInited = false; initCharts(); }
+}
+
+// ── INIT ─────────────────────────────────────────────────────────────────────
+renderPath('beginner');
+renderPath('intermediate');
+renderPath('advanced');
+buildStreakGrid();
+</script>
+</body>
+</html>
