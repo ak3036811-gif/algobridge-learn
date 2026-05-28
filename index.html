@@ -1845,7 +1845,7 @@ async function tcSend() {
   const typingBub = tcAdd('ai', '<span style="opacity:.4;font-family:var(--mono)">···</span>');
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('https://algobridge-tutor.ak3036811.workers.dev', {
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body: JSON.stringify({model:'claude-sonnet-4-20250514', max_tokens:900, system:TC_SYSTEM, messages:tcMsgs})
