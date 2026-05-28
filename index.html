@@ -723,6 +723,7 @@ nav{background:rgba(250,250,248,0.9)}
     <button class="nav-link active" onclick="showPage('home')">Home</button>
     <button class="nav-link" onclick="showPage('paths')">Learning Paths</button>
     <button class="nav-link" onclick="showPage('workspace')">Workspace</button>
+    <button class="nav-link" onclick="showPage('tutor')" style="color:var(--accent)">🧠 AI Tutor</button>
     <button class="nav-link" onclick="showPage('dashboard')">Dashboard</button>
     <button class="nav-link" onclick="showPage('research')">Research</button>
     <button class="nav-link" onclick="showPage('about')">About</button>
@@ -738,6 +739,7 @@ nav{background:rgba(250,250,248,0.9)}
   <button class="nav-link" onclick="showPage('home');toggleMobileNav()">Home</button>
   <button class="nav-link" onclick="showPage('paths');toggleMobileNav()">Learning Paths</button>
   <button class="nav-link" onclick="showPage('workspace');toggleMobileNav()">Workspace</button>
+  <button class="nav-link" onclick="showPage('tutor');toggleMobileNav()" style="color:var(--accent)">🧠 AI Tutor</button>
   <button class="nav-link" onclick="showPage('dashboard');toggleMobileNav()">Dashboard</button>
   <button class="nav-link" onclick="showPage('research');toggleMobileNav()">Research</button>
   <button class="nav-link" onclick="showPage('about');toggleMobileNav()">About</button>
@@ -1651,7 +1653,7 @@ function showPage(id) {
   void target.offsetWidth; // force reflow
   target.classList.add('page-enter');
 
-  const map = {home:0,paths:1,workspace:2,dashboard:3,research:4,about:5};
+  const map = {home:0,paths:1,workspace:2,tutor:3,dashboard:4,research:5,about:6};
   document.querySelectorAll('#nav-links-desktop .nav-link').forEach((l, i) => {
     l.classList.toggle('active', i === map[id]);
   });
@@ -1700,5 +1702,165 @@ renderPath('advanced');
 buildStreakGrid();
 initReveal();
 </script>
+
+<!-- ══ AI TUTOR PAGE ══ -->
+<div id="page-tutor" class="page" role="main">
+<style>
+.tutor-page{max-width:780px;margin:0 auto;padding:2rem 2.5rem;height:calc(100vh - 61px);display:flex;flex-direction:column;gap:0}
+.tutor-page-header{padding-bottom:1.25rem;border-bottom:1px solid var(--border);flex-shrink:0}
+.tutor-page-eyebrow{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem}
+.tutor-page-title{font-family:var(--serif);font-size:1.9rem;font-weight:600;color:var(--text);margin-bottom:.3rem}
+.tutor-page-sub{font-size:.88rem;color:var(--text2);line-height:1.7}
+.tutor-topics{display:flex;flex-wrap:wrap;gap:6px;padding:12px 0;border-bottom:1px solid var(--border2);flex-shrink:0}
+.tutor-topic-pill{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:500;border:1px solid var(--border);background:var(--bg2);color:var(--text3);cursor:pointer;transition:all .15s;font-family:var(--sans)}
+.tutor-topic-pill:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.tutor-chat-area{flex:1;overflow-y:auto;padding:20px 0;display:flex;flex-direction:column;gap:14px;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.tutor-chat-area::-webkit-scrollbar{width:3px}
+.tutor-chat-area::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.tc-msg{display:flex;gap:10px;max-width:680px;animation:pageIn .25s ease}
+.tc-msg.user{align-self:flex-end;flex-direction:row-reverse}
+.tc-msg.ai{align-self:flex-start}
+.tc-av{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:2px}
+.tc-av.ai{background:var(--accent);color:#fff;font-family:var(--serif)}
+.tc-av.user{background:var(--bg3);border:1px solid var(--border);color:var(--text3);font-size:12px}
+.tc-bubble{padding:11px 15px;border-radius:12px;font-size:13.5px;line-height:1.7;max-width:560px}
+.tc-msg.ai .tc-bubble{background:var(--bg2);border:1px solid var(--border);border-radius:3px 12px 12px 12px;color:var(--text)}
+.tc-msg.user .tc-bubble{background:var(--accent);color:#fff;border-radius:12px 3px 12px 12px}
+.tc-starters{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.tc-starter{padding:5px 11px;border:1px solid var(--border);border-radius:20px;font-size:11px;color:var(--text3);background:transparent;cursor:pointer;transition:all .15s;font-family:var(--sans)}
+.tc-starter:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.tutor-input-bar{border-top:1px solid var(--border);padding-top:14px;display:flex;gap:10px;align-items:flex-end;flex-shrink:0}
+.tutor-input-bar textarea{flex:1;background:var(--bg2);border:1.5px solid var(--border);border-radius:12px;padding:10px 14px;font-size:13.5px;font-family:var(--sans);color:var(--text);resize:none;outline:none;min-height:42px;max-height:110px;line-height:1.55;transition:border-color .15s}
+.tutor-input-bar textarea:focus{border-color:var(--accent)}
+.tutor-input-bar textarea::placeholder{color:var(--text3)}
+.tc-send{width:40px;height:40px;border-radius:10px;background:var(--accent);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s,transform .15s}
+.tc-send:hover{background:var(--accent2);transform:translateY(-1px)}
+.tc-send:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.tc-send svg{width:15px;height:15px;fill:#fff}
+.tutor-footer-note{text-align:center;font-size:10px;color:var(--text3);font-family:var(--mono);margin-top:8px;letter-spacing:.04em}
+</style>
+
+<div class="tutor-page">
+  <div class="tutor-page-header fade-up">
+    <div class="tutor-page-eyebrow">🧠 AI Literacy · Free for Everyone</div>
+    <div class="tutor-page-title">AlgoBridge Tutor</div>
+    <div class="tutor-page-sub">Ask anything about AI, algorithms, or technology. No prior knowledge needed — ever. The tutor guides your thinking rather than replacing it.</div>
+  </div>
+
+  <div class="tutor-topics">
+    <span class="tutor-topic-pill" onclick="tcAsk('What is an algorithm? Use a simple real-life example.')">⚙️ Algorithms</span>
+    <span class="tutor-topic-pill" onclick="tcAsk('What is AI bias and why does it matter?')">⚖️ AI Bias</span>
+    <span class="tutor-topic-pill" onclick="tcAsk('How do search engines like Google decide what to show me?')">🔍 Search Systems</span>
+    <span class="tutor-topic-pill" onclick="tcAsk('How does AI make decisions? Give me a real example.')">🤖 AI Decisions</span>
+    <span class="tutor-topic-pill" onclick="tcAsk('What is machine learning in simple terms?')">📈 Machine Learning</span>
+    <span class="tutor-topic-pill" onclick="tcAsk('What is data privacy and why should I care?')">🔒 Data Privacy</span>
+    <span class="tutor-topic-pill" onclick="tcAsk('How does YouTube or Instagram decide what to recommend?')">📱 Recommendations</span>
+    <span class="tutor-topic-pill" onclick="tcAsk('What is the difference between AI, ML, and deep learning?')">🧠 AI vs ML</span>
+  </div>
+
+  <div class="tutor-chat-area" id="tc-messages">
+    <div class="tc-msg ai">
+      <div class="tc-av ai">AB</div>
+      <div>
+        <div class="tc-bubble">
+          Hi! I'm the AlgoBridge Tutor — built to make AI and algorithms accessible to everyone. I won't just give you answers; I'll guide your thinking. What would you like to explore today?
+        </div>
+        <div class="tc-starters">
+          <button class="tc-starter" onclick="tcAsk('What is an algorithm? Explain simply.')">What is an algorithm?</button>
+          <button class="tc-starter" onclick="tcAsk('How is AI biased? Give me a real example.')">How is AI biased?</button>
+          <button class="tc-starter" onclick="tcAsk('Can AI ever be wrong or unfair?')">Can AI be wrong?</button>
+          <button class="tc-starter" onclick="tcAsk('How does Google rank search results?')">How does Google rank results?</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tutor-input-bar">
+    <textarea id="tc-input" placeholder="Ask anything about AI, algorithms, or technology..." rows="1"
+      onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();tcSend()}"
+      oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,110)+'px'"></textarea>
+    <button class="tc-send" id="tc-send-btn" onclick="tcSend()">
+      <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+    </button>
+  </div>
+  <div class="tutor-footer-note">Free to use · No sign-up · Built by AlgoBridge for students everywhere</div>
+</div>
+</div>
+
+<script>
+// ── ALGOBRIDGE TUTOR ──
+const TC_SYSTEM = `You are AlgoBridge Tutor — a friendly AI literacy educator built by AlgoBridge, a nonprofit founded by Ayush Kumar that teaches algorithms, AI bias, search systems, and AI decision-making to underserved students.
+
+Your teaching philosophy:
+- Start with a simple, relatable real-world example before any technical term
+- Guide the student's thinking — ask follow-up questions ~30% of the time
+- Be warm, encouraging, never condescending
+- Keep responses concise and digestible
+- Use examples from everyday life (food delivery, YouTube, cricket, school, maps)
+- Connect topics to social impact and ethics when relevant
+- Use **bold** for key terms when first introduced
+
+You are free to use — no cost, no sign-up — because AlgoBridge believes every student deserves to understand the technology shaping their world.`;
+
+let tcMsgs = [];
+let tcBusy = false;
+
+function tcAsk(text) {
+  document.getElementById('tc-input').value = text;
+  tcSend();
+}
+
+function tcFmt(text) {
+  return text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+}
+
+function tcAdd(role, html) {
+  const box = document.getElementById('tc-messages');
+  const wrap = document.createElement('div');
+  wrap.className = `tc-msg ${role}`;
+  const av = document.createElement('div');
+  av.className = `tc-av ${role}`;
+  av.textContent = role==='ai' ? 'AB' : '👤';
+  const bub = document.createElement('div');
+  bub.className = 'tc-bubble';
+  bub.innerHTML = html;
+  wrap.appendChild(av);
+  wrap.appendChild(bub);
+  box.appendChild(wrap);
+  box.scrollTop = box.scrollHeight;
+  return bub;
+}
+
+async function tcSend() {
+  const inp = document.getElementById('tc-input');
+  const btn = document.getElementById('tc-send-btn');
+  const text = inp.value.trim();
+  if (!text || tcBusy) return;
+  tcBusy = true; btn.disabled = true;
+  inp.value = ''; inp.style.height = 'auto';
+
+  tcAdd('user', tcFmt(text));
+  tcMsgs.push({role:'user', content:text});
+
+  const typingBub = tcAdd('ai', '<span style="opacity:.4;font-family:var(--mono)">···</span>');
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({model:'claude-sonnet-4-20250514', max_tokens:900, system:TC_SYSTEM, messages:tcMsgs})
+    });
+    const data = await res.json();
+    const reply = data.content?.map(b=>b.text||'').join('') || "Something went wrong — please try again!";
+    typingBub.innerHTML = tcFmt(reply);
+    tcMsgs.push({role:'assistant', content:reply});
+  } catch {
+    typingBub.innerHTML = "Connection issue — please try again.";
+  }
+
+  document.getElementById('tc-messages').scrollTop = 99999;
+  tcBusy = false; btn.disabled = false; inp.focus();
+}
+</script>
+
 </body>
-</html>
