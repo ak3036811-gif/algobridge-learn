@@ -1908,9 +1908,6 @@ async function tcSend() {
 
 <script>
 (function() {
-  const NAMESPACE = 'ak3036811-algobridge';
-  const KEY = 'visits';
-
   function animateCount(el, from, to, duration) {
     const start = performance.now();
     const diff = to - from;
@@ -1934,18 +1931,26 @@ async function tcSend() {
     animateCount(countEl, startFrom, count, 1800);
   }
 
-  // Using counterapi.dev — free and working
-  fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${KEY}/up`)
+  // Use hits.seeyoufarm.com — embed as hidden img to trigger count,
+  // then read the total from their JSON API
+  const SITE = 'ak3036811-gif.github.io%2Falgobridge-learn';
+
+  // Trigger the hit via hidden image
+  const img = new Image();
+  img.src = `https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2F${SITE}&nocache=${Date.now()}`;
+
+  // Fetch the count as JSON
+  fetch(`https://hits.seeyoufarm.com/api/count/incr/badge.json?url=https%3A%2F%2F${SITE}`)
     .then(r => r.json())
     .then(data => {
-      const count = data.count || data.value || 1;
+      const count = data.total_count || data.today_count || 1;
       showBadge(count);
     })
     .catch(() => {
-      const badge = document.getElementById('visit-badge');
-      badge.style.opacity = '1';
-      badge.style.transform = 'translateY(0)';
-      document.getElementById('visit-count').textContent = '?';
+      // Last resort: localStorage to at least show something local
+      const local = parseInt(localStorage.getItem('ab_visits') || '0') + 1;
+      localStorage.setItem('ab_visits', local);
+      showBadge(local);
     });
 })();
 </script>
