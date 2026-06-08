@@ -1864,4 +1864,94 @@ async function tcSend() {
 }
 </script>
 
+<!-- ── VISIT COUNTER BADGE ── -->
+<div id="visit-badge" style="
+  position:fixed;
+  bottom:24px;
+  right:24px;
+  z-index:9999;
+  background:#fff;
+  border:1.5px solid rgba(91,63,224,0.18);
+  border-radius:999px;
+  padding:10px 18px 10px 14px;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  box-shadow:0 4px 24px rgba(91,63,224,0.13), 0 1px 4px rgba(0,0,0,0.07);
+  font-family:'Syne',sans-serif;
+  font-size:13px;
+  font-weight:600;
+  color:#0C0C0F;
+  opacity:0;
+  transform:translateY(12px);
+  transition:opacity 0.5s cubic-bezier(0.22,1,0.36,1), transform 0.5s cubic-bezier(0.22,1,0.36,1);
+  cursor:default;
+  user-select:none;
+">
+  <span style="
+    width:28px;height:28px;
+    background:linear-gradient(135deg,#5B3FE0,#7B6AFF);
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  ">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+      <circle cx="12" cy="12" r="3"/>
+    </svg>
+  </span>
+  <span style="display:flex;flex-direction:column;line-height:1.2;">
+    <span id="visit-count" style="font-size:15px;font-weight:700;color:#5B3FE0;letter-spacing:-0.3px;">—</span>
+    <span style="font-size:10px;font-weight:500;color:#9896AB;text-transform:uppercase;letter-spacing:0.5px;">visitors</span>
+  </span>
+</div>
+
+<script>
+(function() {
+  // CountAPI namespace — unique to your site
+  const NAMESPACE = 'algobridge-learn';
+  const KEY = 'pageviews';
+  const BASE = 'https://api.countapi.xyz';
+
+  function animateCount(el, from, to, duration) {
+    const start = performance.now();
+    const diff = to - from;
+    function step(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      // Ease out expo
+      const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+      const current = Math.round(from + diff * ease);
+      el.textContent = current.toLocaleString();
+      if (progress < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  function showBadge(count) {
+    const badge = document.getElementById('visit-badge');
+    const countEl = document.getElementById('visit-count');
+    // Animate number from ~90% of count upward
+    const startFrom = Math.max(0, count - Math.ceil(count * 0.08));
+    badge.style.opacity = '1';
+    badge.style.transform = 'translateY(0)';
+    animateCount(countEl, startFrom, count, 1800);
+  }
+
+  // Hit the counter (increments on each visit) then show
+  fetch(`${BASE}/hit/${NAMESPACE}/${KEY}`)
+    .then(r => r.json())
+    .then(data => {
+      showBadge(data.value || 1);
+    })
+    .catch(() => {
+      // Fallback: just show badge with a dash if API fails
+      const badge = document.getElementById('visit-badge');
+      badge.style.opacity = '1';
+      badge.style.transform = 'translateY(0)';
+      document.getElementById('visit-count').textContent = '—';
+    });
+})();
+</script>
+
 </body>
