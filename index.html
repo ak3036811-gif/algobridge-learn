@@ -1,1903 +1,900 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>AlgoBridge Learn</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ayush Kumar — AI Researcher, Educator & Creative Technologist</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+*{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#FAFAF8;
-  --bg2:#FFFFFF;
-  --bg3:#F3F2EF;
-  --bg4:#ECEAE5;
-  --text:#0C0C0F;
-  --text2:#4A4857;
-  --text3:#9896AB;
-  --accent:#5B3FE0;
-  --accent2:#4029C0;
-  --accent-glow:rgba(91,63,224,0.15);
-  --accent-soft:rgba(91,63,224,0.07);
-  --green:#1A7A50;
-  --green-bg:rgba(26,122,80,0.07);
-  --amber:#8A6A00;
-  --amber-bg:rgba(138,106,0,0.07);
-  --red:#D42B4E;
-  --red-bg:rgba(212,43,78,0.07);
-  --border:rgba(0,0,0,0.08);
-  --border2:rgba(0,0,0,0.05);
-  --mono:'DM Mono',monospace;
-  --serif:'Lora',serif;
-  --sans:'Syne',sans-serif;
-  --radius:10px;
-  --radius-lg:16px;
-  --transition:cubic-bezier(0.22, 1, 0.36, 1);
+  --bg:#fafaf8;--white:#fff;--ink:#0d0d0d;--ink2:#3a3a3a;--ink3:#888;
+  --purple:#4f35d8;--purple-soft:#edeaff;--border:#e4e4e0;--surface:#f4f4f0;
+  --green:#1a7a50;--green-soft:#e6f5ed;
 }
-
-/* ── GLOBAL ── */
 html{scroll-behavior:smooth}
-body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:15px;line-height:1.65;min-height:100vh;overflow-x:hidden}
-::selection{background:var(--accent);color:#fff}
-
-/* ── NOISE TEXTURE OVERLAY ── */
-body::before{
-  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-  opacity:0.4;
-}
-
-/* ── NAV ── */
-nav{
-  background:rgba(12,12,15,0.85);
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
-  border-bottom:1px solid var(--border);
-  padding:0 2rem;
-  display:flex;align-items:center;gap:1rem;height:60px;
-  position:sticky;top:0;z-index:200;
-  transition:box-shadow 0.4s var(--transition);
-}
-nav.scrolled{box-shadow:0 4px 40px rgba(0,0,0,0.4)}
-
-.nav-logo{
-  font-family:var(--mono);font-size:13px;font-weight:500;
-  color:var(--text);letter-spacing:.04em;white-space:nowrap;cursor:pointer;
-  display:flex;align-items:center;gap:2px;
-  transition:color 0.2s;
-}
-.nav-logo:hover{color:var(--accent)}
-.nav-logo .slash{color:var(--accent);margin:0 1px}
-.nav-logo .dot{color:var(--text3)}
-
-.nav-links{display:flex;gap:2px;flex:1;margin-left:1rem}
-.nav-link{
-  background:none;border:none;padding:6px 14px;
-  font-family:var(--sans);font-size:13px;font-weight:500;
-  color:var(--text3);cursor:pointer;border-radius:8px;
-  transition:color 0.2s, background 0.2s;white-space:nowrap;letter-spacing:.01em;
-}
-.nav-link:hover{color:var(--text);background:rgba(255,255,255,0.04)}
-.nav-link.active{color:var(--accent);background:var(--accent-soft)}
-.nav-link:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-
-.nav-right{display:flex;align-items:center;gap:8px;margin-left:auto}
-.theme-btn{
-  background:none;border:1px solid var(--border);
-  padding:5px 12px;border-radius:8px;font-size:12px;
-  cursor:pointer;color:var(--text3);transition:all 0.2s;
-  font-family:var(--sans);white-space:nowrap;
-}
-.theme-btn:hover{border-color:var(--text3);color:var(--text)}
-
-.ham-btn{display:none;background:none;border:1px solid var(--border);padding:5px 10px;border-radius:8px;cursor:pointer;color:var(--text2);font-size:16px;line-height:1;transition:0.2s}
-.ham-btn:hover{border-color:var(--text3)}
-
-.mobile-nav{
-  display:none;position:fixed;top:60px;left:0;right:0;
-  background:rgba(12,12,15,0.97);backdrop-filter:blur(20px);
-  border-bottom:1px solid var(--border);
-  padding:12px;z-index:199;
-  flex-direction:column;gap:4px;
-  box-shadow:0 20px 60px rgba(0,0,0,0.5);
-}
-.mobile-nav.open{display:flex}
-.mobile-nav .nav-link{text-align:left;padding:12px 16px;font-size:14px}
-
-/* ── BUTTONS ── */
-.btn{
-  display:inline-flex;align-items:center;gap:7px;
-  padding:9px 22px;border-radius:10px;
-  font-family:var(--sans);font-size:13px;font-weight:600;
-  cursor:pointer;border:none;
-  transition:transform 0.2s var(--transition), box-shadow 0.2s var(--transition), background 0.2s;
-  white-space:nowrap;text-decoration:none;letter-spacing:.02em;
-}
-.btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-.btn-primary{
-  background:var(--accent);color:#fff;
-  box-shadow:0 0 0 0 rgba(123,97,255,0);
-}
-.btn-primary:hover{
-  background:var(--accent2);transform:translateY(-2px);
-  box-shadow:0 8px 30px rgba(123,97,255,0.4);
-}
-.btn-secondary{
-  background:var(--bg3);color:var(--text);
-  border:1px solid var(--border);
-}
-.btn-secondary:hover{background:var(--bg4);transform:translateY(-1px)}
-.btn-sm{padding:5px 14px;font-size:12px;border-radius:8px}
-.btn-ghost{background:none;border:1px solid var(--border);color:var(--text2)}
-.btn-ghost:hover{border-color:var(--text3);color:var(--text)}
-
-/* ── PAGES ── */
-.page{display:none;position:relative;z-index:1}
-.page.active{display:block}
-
-/* Page transition */
-.page-enter{animation:pageIn 0.4s var(--transition) both}
-@keyframes pageIn{
-  from{opacity:0;transform:translateY(16px)}
-  to{opacity:1;transform:none}
-}
-
-/* ── HERO ── */
-.hero{
-  padding:5rem 2.5rem 4rem;
-  max-width:900px;margin:0 auto;text-align:center;
-  position:relative;
-}
-.hero::before{
-  content:'';position:absolute;
-  top:-100px;left:50%;transform:translateX(-50%);
-  width:600px;height:400px;
-  background:radial-gradient(ellipse at center, rgba(123,97,255,0.12) 0%, transparent 70%);
-  pointer-events:none;
-}
-.hero-eyebrow{
-  font-family:var(--mono);font-size:11px;color:var(--accent);
-  letter-spacing:.15em;text-transform:uppercase;
-  margin-bottom:1.5rem;
-  display:inline-flex;align-items:center;gap:10px;
-  background:var(--accent-soft);border:1px solid rgba(123,97,255,0.2);
-  padding:5px 14px;border-radius:999px;
-}
-.hero-eyebrow .dot{width:5px;height:5px;border-radius:50%;background:var(--accent);animation:pulse 2s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
-
-h1{
-  font-family:var(--serif);
-  font-size:clamp(2.2rem,5.5vw,3.6rem);
-  font-weight:600;line-height:1.15;
-  margin-bottom:1.2rem;color:var(--text);
-  letter-spacing:-0.5px;
-}
-h1 em{font-style:italic;color:var(--accent)}
-
-.hero-sub{
-  font-size:1rem;color:var(--text2);
-  max-width:560px;margin:0 auto 2.5rem;
-  line-height:1.8;font-weight:400;
-}
-
-.hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-
-.hero-stats-row{
-  display:flex;gap:0;justify-content:center;
-  margin-top:3rem;
-  border:1px solid var(--border);border-radius:var(--radius-lg);
-  overflow:hidden;background:var(--bg2);
-}
-.hero-stat{
-  flex:1;padding:1.1rem 1.5rem;text-align:center;
-  border-right:1px solid var(--border);
-  transition:background 0.3s;
-}
-.hero-stat:last-child{border-right:none}
-.hero-stat:hover{background:var(--bg3)}
-.hero-stat-val{
-  font-family:var(--mono);font-size:1.6rem;font-weight:500;
-  color:var(--accent);line-height:1;
-}
-.hero-stat-label{font-size:11px;color:var(--text3);margin-top:4px;letter-spacing:.04em}
-
-/* ── SECTIONS ── */
-main section{padding:3rem 2.5rem;max-width:1060px;margin:0 auto;position:relative}
-main section+section{border-top:1px solid var(--border2)}
-
-.section-label{
-  font-family:var(--mono);font-size:11px;color:var(--text3);
-  letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem;
-}
-.section-title{
-  font-family:var(--serif);font-size:1.7rem;font-weight:600;
-  margin-bottom:.6rem;color:var(--text);
-}
-.section-sub{color:var(--text2);max-width:580px;margin-bottom:2rem;font-size:.93rem;line-height:1.75}
-
-/* ── CARDS ── */
-.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(268px,1fr));gap:1px;background:var(--border)}
-.card{
-  background:var(--bg2);padding:1.5rem 1.6rem;
-  transition:background 0.2s var(--transition), transform 0.2s var(--transition);
-  position:relative;overflow:hidden;
-}
-.card::before{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg, var(--accent-soft) 0%, transparent 60%);
-  opacity:0;transition:opacity 0.3s;
-}
-.card:hover{background:var(--bg3)}
-.card:hover::before{opacity:1}
-.card-tag{
-  font-family:var(--mono);font-size:10px;color:var(--accent);
-  letter-spacing:.08em;text-transform:uppercase;margin-bottom:.7rem;
-}
-.card h3{font-size:.95rem;font-weight:600;margin-bottom:.4rem;color:var(--text)}
-.card p{font-size:.85rem;color:var(--text2);line-height:1.65}
-
-/* ── LEARNING PATHS ── */
-.path-tabs{
-  display:flex;gap:4px;margin-bottom:2rem;
-  background:var(--bg2);border-radius:var(--radius);
-  padding:4px;border:1px solid var(--border);
-  width:fit-content;
-}
-.path-tab{
-  background:none;border:none;padding:8px 20px;
-  font-family:var(--sans);font-size:13px;font-weight:500;
-  color:var(--text3);cursor:pointer;border-radius:8px;
-  transition:all 0.25s var(--transition);letter-spacing:.02em;
-}
-.path-tab:hover{color:var(--text);background:var(--bg3)}
-.path-tab.active{color:var(--text);background:var(--bg4);box-shadow:0 1px 8px rgba(0,0,0,0.3)}
-.path-tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-
-.topic-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
-.topic-item{
-  background:var(--bg2);border:1px solid var(--border);
-  border-radius:var(--radius);padding:12px 16px;
-  display:flex;align-items:flex-start;gap:10px;
-  transition:all 0.25s var(--transition);
-}
-.topic-item.clickable{cursor:pointer}
-.topic-item.clickable:hover{
-  background:var(--bg3);border-color:rgba(123,97,255,0.3);
-  transform:translateY(-2px);
-  box-shadow:0 8px 24px rgba(0,0,0,0.2);
-}
-.topic-item.clickable:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.topic-item.locked{opacity:.3;cursor:not-allowed}
-.topic-item.inprogress{background:var(--accent-soft);border-color:rgba(123,97,255,0.25)}
-.topic-item.done{background:var(--green-bg);border-color:rgba(61,214,140,0.2)}
-
-.topic-dot{
-  width:8px;height:8px;border-radius:50%;
-  background:var(--border);flex-shrink:0;margin-top:5px;
-  transition:all 0.3s;
-}
-.topic-item.inprogress .topic-dot{background:var(--accent);box-shadow:0 0 6px var(--accent)}
-.topic-item.done .topic-dot{background:var(--green);box-shadow:0 0 6px var(--green)}
-.topic-name{font-size:13px;font-weight:600;line-height:1.3;color:var(--text)}
-.topic-status{font-size:11px;color:var(--text3);margin-top:2px;font-family:var(--mono)}
-.topic-item.inprogress .topic-status{color:var(--accent)}
-.topic-item.done .topic-status{color:var(--green)}
-
-.progress-bar-wrap{
-  background:var(--bg3);border-radius:999px;height:4px;
-  overflow:hidden;margin-top:6px;
-}
-.progress-bar{
-  height:100%;border-radius:999px;
-  background:linear-gradient(90deg, var(--accent), #A78BFF);
-  transition:width 0.7s var(--transition);
-}
-
-/* ── LESSON PAGE ── */
-.lesson-wrap{max-width:780px;margin:0 auto;padding:3rem 2.5rem}
-.lesson-back{
-  background:none;border:none;color:var(--text3);
-  font-family:var(--sans);font-size:13px;font-weight:500;
-  cursor:pointer;display:inline-flex;align-items:center;gap:6px;
-  margin-bottom:2rem;padding:6px 0;
-  transition:color 0.2s;
-}
-.lesson-back:hover{color:var(--accent)}
-.lesson-back .arrow{transition:transform 0.2s var(--transition)}
-.lesson-back:hover .arrow{transform:translateX(-3px)}
-
-.lesson-eyebrow{
-  font-family:var(--mono);font-size:11px;color:var(--text3);
-  text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem;
-}
-.lesson-title{font-family:var(--serif);font-size:2.2rem;font-weight:600;margin-bottom:.6rem;color:var(--text)}
-.lesson-meta{
-  font-size:12px;color:var(--text3);font-family:var(--mono);
-  margin-bottom:2.5rem;display:flex;gap:16px;flex-wrap:wrap;
-}
-.lesson-meta span{display:flex;align-items:center;gap:5px}
-
-.lesson-body{font-size:.95rem;color:var(--text2);line-height:1.85}
-.lesson-body h2{
-  font-family:var(--serif);font-size:1.2rem;font-weight:600;
-  color:var(--text);margin:2.5rem 0 .8rem;
-}
-.lesson-body p{margin-bottom:1.1rem}
-.lesson-body ul{margin:0 0 1.1rem 1.4rem}
-.lesson-body ul li{margin-bottom:.4rem}
-.lesson-body code{
-  background:var(--bg3);padding:2px 6px;border-radius:5px;
-  font-family:var(--mono);font-size:12px;color:var(--accent);
-}
-
-.code-block{
-  background:#0E0E18;border:1px solid rgba(123,97,255,0.15);
-  border-radius:var(--radius);padding:1.2rem 1.4rem;
-  font-family:var(--mono);font-size:13px;
-  color:#CDD6F4;line-height:1.75;margin:1.2rem 0;
-  overflow-x:auto;position:relative;
-}
-.code-block::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg, var(--accent), transparent);
-  opacity:0.4;
-}
-.code-block .cm{color:#5C5A78;font-style:italic}
-.code-block .ck{color:#C084FC}
-.code-block .cs{color:#F1FA8C}
-.code-block .cn{color:#A78BFF}
-.code-block .co{color:#4ADE80}
-
-.lesson-callout{
-  background:rgba(123,97,255,0.06);
-  border-left:2px solid var(--accent);
-  border-radius:0 var(--radius) var(--radius) 0;
-  padding:1rem 1.4rem;font-size:.88rem;
-  color:var(--text2);margin:1.2rem 0;line-height:1.75;
-}
-
-.lesson-actions{
-  display:flex;gap:10px;margin-top:3rem;
-  padding-top:2rem;border-top:1px solid var(--border2);
-  flex-wrap:wrap;
-}
-
-/* ── WORKSPACE ── */
-.workspace{
-  display:grid;grid-template-columns:1fr 1fr;
-  height:calc(100vh - 60px);overflow:hidden;
-}
-.ws-left{border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
-.ws-right{display:flex;flex-direction:column;overflow:hidden;background:var(--bg)}
-.ws-header{
-  padding:10px 16px;border-bottom:1px solid var(--border);
-  display:flex;align-items:center;gap:8px;
-  background:var(--bg2);flex-wrap:wrap;
-}
-.ws-title{font-weight:600;font-size:13px;color:var(--text)}
-.ws-body{flex:1;overflow-y:auto;padding:1.4rem;scrollbar-width:thin;scrollbar-color:var(--bg4) transparent}
-
-.problem-title{
-  font-family:var(--serif);font-size:1.2rem;font-weight:600;
-  margin-bottom:.8rem;color:var(--text);
-}
-.problem-desc{font-size:.88rem;color:var(--text2);line-height:1.8;margin-bottom:1.1rem}
-.example-box{
-  background:var(--bg3);border-radius:var(--radius);
-  padding:10px 14px;font-family:var(--mono);font-size:12px;
-  color:var(--text2);margin-bottom:.9rem;line-height:1.65;
-  border:1px solid var(--border);
-}
-.example-box .ex-label{
-  color:var(--text3);font-size:10px;display:block;
-  margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em;
-}
-
-.tags{display:flex;gap:6px;flex-wrap:wrap}
-.tag{
-  font-size:11px;font-family:var(--mono);
-  padding:3px 8px;border-radius:5px;
-  background:var(--bg3);color:var(--text2);
-  border:1px solid var(--border);
-}
-.tag.easy{background:var(--green-bg);color:var(--green);border-color:rgba(61,214,140,0.2)}
-
-.struggle-overlay{
-  background:rgba(245,197,66,0.06);
-  border:1px solid rgba(245,197,66,0.2);
-  border-radius:var(--radius);padding:1.1rem 1.3rem;margin-bottom:.9rem;
-}
-.struggle-head{
-  font-family:var(--mono);font-size:10px;color:var(--amber);
-  letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem;
-}
-.struggle-timer-val{
-  font-family:var(--mono);font-size:2rem;font-weight:500;
-  color:var(--text);margin-bottom:.3rem;letter-spacing:.04em;
-}
-.struggle-msg{font-size:.82rem;color:var(--text2);line-height:1.6}
-
-.hint-locked{opacity:.4;pointer-events:none}
-
-.tutor-msg{
-  padding:10px 14px;border-radius:var(--radius);
-  margin-bottom:8px;font-size:.85rem;line-height:1.7;
-}
-.tutor-msg.ai{
-  background:var(--accent-soft);
-  border-left:2px solid rgba(123,97,255,0.4);
-  color:var(--text);
-}
-
-.editor-wrap{
-  background:#090910;border-radius:var(--radius);
-  overflow:hidden;border:1px solid var(--border);
-}
-.editor-tab{
-  background:#0F0F1A;padding:6px 14px;
-  font-family:var(--mono);font-size:11px;color:var(--text3);
-  display:flex;align-items:center;gap:8px;
-  border-bottom:1px solid var(--border);
-}
-.editor-tab .fname{color:var(--text2)}
-.editor-tab .dot-red,.editor-tab .dot-yellow,.editor-tab .dot-green{width:10px;height:10px;border-radius:50%}
-.editor-tab .dot-red{background:#FF5F5F}
-.editor-tab .dot-yellow{background:#FFBD2E}
-.editor-tab .dot-green{background:#28C840}
-
-textarea.code-input{
-  background:#090910;color:#CDD6F4;
-  font-family:var(--mono);font-size:13px;line-height:1.7;
-  border:none;outline:none;resize:none;
-  padding:16px;width:100%;height:230px;tab-size:4;
-}
-textarea.code-input:focus{box-shadow:inset 0 0 0 1px rgba(123,97,255,0.3)}
-
-.output-box{
-  background:#06060E;border-radius:var(--radius);
-  padding:12px 14px;font-family:var(--mono);font-size:12px;
-  min-height:56px;margin-top:8px;line-height:1.65;
-  border:1px solid var(--border);
-}
-.output-box .ok{color:#4ADE80}
-.output-box .fail{color:#FF5F7E}
-.output-box .info{color:#7B61FF}
-.output-box .warn{color:#F5C542}
-
-.tc-row{
-  display:flex;align-items:center;justify-content:space-between;
-  font-size:12px;font-family:var(--mono);
-  padding:6px 10px;background:var(--bg3);
-  border-radius:7px;border:1px solid var(--border);
-}
-
-/* ── DASHBOARD ── */
-.dash-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.5rem}
-.stat-card{
-  background:var(--bg2);border:1px solid var(--border);
-  border-radius:var(--radius-lg);padding:1.1rem 1.3rem;
-  transition:border-color 0.2s, background 0.2s;
-}
-.stat-card:hover{background:var(--bg3);border-color:rgba(123,97,255,0.25)}
-.stat-val{
-  font-family:var(--mono);font-size:1.5rem;font-weight:500;
-  color:var(--text);margin-bottom:.2rem;
-}
-.stat-label{font-size:12px;color:var(--text3);font-weight:500}
-.stat-sub{font-size:11px;color:var(--text3);margin-top:3px}
-
-.chart-card{
-  background:var(--bg2);border:1px solid var(--border);
-  border-radius:var(--radius-lg);padding:1.4rem 1.6rem;
-}
-.chart-title{font-size:13px;font-weight:600;margin-bottom:1rem;color:var(--text)}
-.chart-container{position:relative;height:150px}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
-
-.weak-list{list-style:none;margin-top:.7rem}
-.weak-item{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:8px 0;border-bottom:1px solid var(--border2);font-size:.85rem;
-  color:var(--text2);
-}
-.weak-item:last-child{border-bottom:none}
-.weak-score{font-family:var(--mono);font-size:12px;color:var(--red)}
-
-.streak-row{display:flex;gap:3px;flex-wrap:wrap;margin-top:.8rem}
-.streak-day{
-  width:18px;height:18px;border-radius:3px;
-  background:var(--bg4);
-  transition:background 0.2s;
-}
-.streak-day.done{background:var(--green)}
-.streak-day.today{outline:2px solid var(--accent);outline-offset:1px}
-
-.empty-state{
-  padding:1.8rem;text-align:center;
-  color:var(--text3);font-size:.85rem;font-style:italic;
-}
-
-/* ── RESEARCH ── */
-.research-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1px;background:var(--border)}
-.research-card{
-  background:var(--bg2);padding:1.5rem;
-  position:relative;overflow:hidden;
-  transition:background 0.2s;
-}
-.research-card:hover{background:var(--bg3)}
-.research-card::before{
-  content:attr(data-num);position:absolute;top:-8px;right:10px;
-  font-family:var(--mono);font-size:5rem;color:rgba(123,97,255,0.05);
-  font-weight:700;line-height:1;pointer-events:none;
-  transition:color 0.3s;
-}
-.research-card:hover::before{color:rgba(123,97,255,0.1)}
-
-.rc-title{
-  font-family:var(--serif);font-size:1rem;font-weight:600;
-  margin-bottom:.5rem;color:var(--text);
-}
-.rc-body{font-size:.83rem;color:var(--text2);line-height:1.7;max-width:55ch}
-.rc-cite{
-  font-family:var(--mono);font-size:10px;color:var(--text3);
-  margin-top:.8rem;padding-top:.6rem;
-  border-top:1px solid var(--border2);
-}
-
-/* ── ABOUT ── */
-.mission-text{font-family:var(--serif);font-size:.97rem;line-height:1.95;color:var(--text2);max-width:660px;margin-bottom:1.3rem}
-.impact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.5rem}
-.impact-num{font-family:var(--mono);font-size:1.9rem;font-weight:500;color:var(--accent);margin-bottom:.2rem}
-.impact-label{font-size:.83rem;color:var(--text2)}
-
-.ngo-card{
-  background:var(--green-bg);border:1px solid rgba(61,214,140,0.15);
-  border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:.9rem;
-}
-.ngo-head{font-family:var(--serif);font-size:1rem;font-weight:600;color:var(--green);margin-bottom:.5rem}
-.ngo-body{font-size:.85rem;color:var(--text2);line-height:1.7}
-
-.link-card{
-  background:var(--bg2);border:1px solid var(--border);
-  border-radius:var(--radius-lg);padding:1.5rem;
-  transition:all 0.25s var(--transition);text-decoration:none;color:inherit;display:block;
-}
-.link-card:hover{
-  background:var(--bg3);border-color:rgba(123,97,255,0.3);
-  transform:translateY(-3px);
-  box-shadow:0 16px 40px rgba(0,0,0,0.25);
-}
-.link-card-icon{font-size:1.4rem;margin-bottom:.6rem}
-.link-card h3{font-size:.95rem;font-weight:600;margin-bottom:.35rem;color:var(--text)}
-.link-card p{font-size:.83rem;color:var(--text2);line-height:1.6}
-.link-card .link-url{font-family:var(--mono);font-size:11px;color:var(--accent);margin-top:.6rem;display:block}
-
-/* ── BADGES ── */
-.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:5px;font-size:11px;font-family:var(--mono)}
-.badge-blue{background:var(--accent-soft);color:var(--accent);border:1px solid rgba(123,97,255,0.2)}
-.badge-green{background:var(--green-bg);color:var(--green);border:1px solid rgba(61,214,140,0.15)}
-.badge-amber{background:var(--amber-bg);color:var(--amber);border:1px solid rgba(245,197,66,0.15)}
-
-/* ── MISC ── */
-.divider{height:1px;background:var(--border2);margin:2rem 0}
-.inline-note{
-  font-size:12px;color:var(--text3);font-family:var(--mono);
-  padding:6px 12px;background:var(--bg3);border-radius:var(--radius);
-  display:inline-block;margin-top:.5rem;border:1px solid var(--border);
-}
-
-/* ── FOOTER ── */
-.footer{
-  border-top:1px solid var(--border);
-  padding:2rem 2.5rem;
-  display:flex;align-items:center;justify-content:space-between;
-  flex-wrap:wrap;gap:12px;
-  font-size:12px;color:var(--text3);font-family:var(--mono);
-}
-.footer-brand{color:var(--text2);font-weight:500}
-.footer a{color:var(--accent);text-decoration:none;transition:opacity 0.2s}
-.footer a:hover{opacity:0.7}
-.footer-links{display:flex;gap:16px}
-
-/* ── FEEDBACK BTN ── */
-.feedback-btn{
-  position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:999;
-  background:var(--accent);color:#fff;
-  padding:10px 18px;border-radius:999px;
-  text-decoration:none;font-size:12px;font-weight:600;
-  font-family:var(--sans);letter-spacing:.03em;
-  box-shadow:0 8px 30px rgba(123,97,255,0.4);
-  transition:transform 0.2s var(--transition), box-shadow 0.2s;
-  display:flex;align-items:center;gap:6px;
-  white-space:nowrap;
-}
-.feedback-btn:hover{
-  transform:translateX(-50%) translateY(-2px);
-  box-shadow:0 12px 40px rgba(123,97,255,0.5);
-}
-
-/* ── DEFAULT LIGHT CODE EDITOR ── */
-.code-block{background:#F0EFF8;border-color:rgba(91,63,224,0.12)}
-.code-block .cm{color:#9B98B8}
-.code-block .ck{color:#7B3FD4}
-.code-block .cs{color:#9A6700}
-.code-block .cn{color:#5B3FE0}
-.code-block .co{color:#1A7A50}
-textarea.code-input{background:#F0EFF8;color:#1C1B2E}
-.output-box{background:#F0EFF8}
-.editor-wrap{background:#F0EFF8}
-.editor-tab{background:#E8E6F5}
-body::before{opacity:0.15}
-nav{background:rgba(250,250,248,0.9)}
-
-/* ── DARK THEME ── */
-[data-theme=dark]{
-  --bg:#0C0C0F;
-  --bg2:#131318;
-  --bg3:#1A1A22;
-  --bg4:#22222E;
-  --text:#F0EEF8;
-  --text2:#9E9CB8;
-  --text3:#5C5A78;
-  --accent:#7B61FF;
-  --accent2:#5B3FE0;
-  --accent-glow:rgba(123,97,255,0.18);
-  --accent-soft:rgba(123,97,255,0.08);
-  --green:#3DD68C;
-  --green-bg:rgba(61,214,140,0.08);
-  --amber:#F5C542;
-  --amber-bg:rgba(245,197,66,0.08);
-  --red:#FF5F7E;
-  --red-bg:rgba(255,95,126,0.08);
-  --border:rgba(255,255,255,0.06);
-  --border2:rgba(255,255,255,0.04);
-}
-[data-theme=dark] .code-block{background:#0E0E18;border-color:rgba(123,97,255,0.15)}
-[data-theme=dark] .code-block .cm{color:#5C5A78}
-[data-theme=dark] .code-block .ck{color:#C084FC}
-[data-theme=dark] .code-block .cs{color:#F1FA8C}
-[data-theme=dark] .code-block .cn{color:#A78BFF}
-[data-theme=dark] .code-block .co{color:#4ADE80}
-[data-theme=dark] textarea.code-input{background:#090910;color:#CDD6F4}
-[data-theme=dark] .output-box{background:#06060E}
-[data-theme=dark] .editor-wrap{background:#090910}
-[data-theme=dark] .editor-tab{background:#0F0F1A}
-[data-theme=dark] body::before{opacity:0.4}
-[data-theme=dark] nav{background:rgba(12,12,15,0.85)}
+body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
 
 /* ── SCROLL ANIMATIONS ── */
-.fade-up{opacity:0;transform:translateY(20px);transition:opacity 0.6s var(--transition),transform 0.6s var(--transition)}
-.fade-up.visible{opacity:1;transform:none}
-.fade-up.d1{transition-delay:0.07s}
-.fade-up.d2{transition-delay:0.14s}
-.fade-up.d3{transition-delay:0.21s}
-.fade-up.d4{transition-delay:0.28s}
-.fade-up.d5{transition-delay:0.35s}
-.fade-up.d6{transition-delay:0.42s}
+.reveal{opacity:1;transform:none;transition:opacity 0.65s cubic-bezier(.22,1,.36,1),transform 0.65s cubic-bezier(.22,1,.36,1)}
+.reveal.will-animate{opacity:0;transform:translateY(28px)}
+.reveal.will-animate.visible{opacity:1;transform:none}
 
-/* ── RESPONSIVE ── */
-@media(max-width:900px){
-  .dash-grid{grid-template-columns:repeat(2,1fr)}
-  .two-col{grid-template-columns:1fr}
-  .impact-grid{grid-template-columns:repeat(2,1fr)}
-  .hero-stats-row{flex-wrap:wrap}
-  .hero-stat{min-width:45%}
-}
-@media(max-width:700px){
-  nav{padding:0 1rem}
-  .nav-links{display:none}
-  .ham-btn{display:flex}
-  .theme-btn{display:none}
-  .workspace{grid-template-columns:1fr;height:auto;overflow:visible}
-  .ws-left{height:auto;overflow:visible;border-right:none;border-bottom:1px solid var(--border)}
-  .ws-right{height:auto;overflow:visible}
-  textarea.code-input{height:180px}
-  .dash-grid{grid-template-columns:repeat(2,1fr)}
-  .impact-grid{grid-template-columns:1fr}
-  .topic-list{grid-template-columns:1fr 1fr}
-  .hero{padding:3rem 1.2rem 2.5rem}
-  main section{padding:2.5rem 1.2rem}
-  .lesson-wrap{padding:2rem 1.2rem}
-  .footer{flex-direction:column;gap:8px;text-align:center}
-  .footer-links{flex-wrap:wrap;justify-content:center;gap:12px}
-  .card-grid{grid-template-columns:1fr}
-  .feedback-btn{bottom:20px;font-size:11px;padding:9px 16px}
-}
-@media(max-width:480px){
-  .dash-grid{grid-template-columns:1fr}
-  .topic-list{grid-template-columns:1fr}
-  h1{font-size:1.9rem;letter-spacing:-.3px}
-  .hero-sub{font-size:.92rem}
-  .hero-eyebrow{font-size:10px;padding:4px 10px}
-  .hero-actions{flex-direction:column;align-items:center}
-  .hero-actions .btn{width:100%;max-width:280px;justify-content:center}
-  .hero-stats-row{flex-direction:column}
-  .hero-stat{border-right:none;border-bottom:1px solid var(--border);padding:.9rem 1rem}
-  .hero-stat-val{font-size:1.4rem}
-  .section-title{font-size:1.4rem}
-  main section{padding:2rem 1rem}
-  .hero{padding:2.5rem 1rem 2rem}
-  .lesson-wrap{padding:1.5rem 1rem}
-  .lesson-title{font-size:1.7rem}
-  .path-tabs{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;justify-content:flex-start}
-  .path-tab{flex-shrink:0;white-space:nowrap;padding:7px 14px;font-size:12px}
-  .tutor-topics{gap:5px}
-  .tutor-topic-pill{font-size:10px;padding:4px 10px}
-  .tutor-page{padding:1rem}
-  .tutor-page-title{font-size:1.5rem}
-  .feedback-btn{bottom:16px;font-size:11px;padding:8px 14px;gap:5px}
-}
+.reveal-left{opacity:1;transform:none;transition:opacity 0.65s cubic-bezier(.22,1,.36,1),transform 0.65s cubic-bezier(.22,1,.36,1)}
+.reveal-left.will-animate{opacity:0;transform:translateX(-28px)}
+.reveal-left.will-animate.visible{opacity:1;transform:none}
+
+.reveal-right{opacity:1;transform:none;transition:opacity 0.65s cubic-bezier(.22,1,.36,1),transform 0.65s cubic-bezier(.22,1,.36,1)}
+.reveal-right.will-animate{opacity:0;transform:translateX(28px)}
+.reveal-right.will-animate.visible{opacity:1;transform:none}
+
+.delay-1{transition-delay:0.08s}.delay-2{transition-delay:0.16s}.delay-3{transition-delay:0.24s}
+.delay-4{transition-delay:0.32s}.delay-5{transition-delay:0.40s}
+.reveal.visible.delay-1,.reveal-left.visible.delay-1,.reveal-right.visible.delay-1{transition-delay:0.08s}
+.reveal.visible.delay-2,.reveal-left.visible.delay-2,.reveal-right.visible.delay-2{transition-delay:0.16s}
+.reveal.visible.delay-3,.reveal-left.visible.delay-3,.reveal-right.visible.delay-3{transition-delay:0.24s}
+
+/* ── NAV ── */
+nav{display:flex;justify-content:space-between;align-items:center;padding:1.2rem 4rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(250,250,248,0.92);backdrop-filter:blur(14px);z-index:100;transition:box-shadow 0.3s}
+nav.scrolled{box-shadow:0 2px 24px rgba(0,0,0,0.06)}
+.nav-logo{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--ink)}
+.nav-logo span{color:var(--purple)}
+.nav-links{display:flex;gap:2.5rem}
+.nav-links a{font-size:12px;font-weight:500;color:var(--ink3);letter-spacing:0.03em;text-transform:uppercase;transition:color 0.2s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1.5px;background:var(--purple);transition:width 0.25s}
+.nav-links a:hover{color:var(--ink)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{font-size:12px;font-weight:600;color:var(--purple);border:1.5px solid var(--purple);padding:0.4rem 1rem;border-radius:3px;transition:all 0.2s}
+.nav-cta:hover{background:var(--purple);color:#fff}
+@media(max-width:700px){nav{padding:1rem 1.5rem}.nav-links{display:none}}
+
+/* ── HERO ── */
+.hero{padding:6rem 4rem 5rem;border-bottom:1px solid var(--border);display:grid;grid-template-columns:1fr 340px;gap:6rem;align-items:center}
+@media(max-width:900px){.hero{grid-template-columns:1fr;gap:3rem;padding:4rem 1.5rem}}
+.hero-kicker{font-size:11px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--purple);margin-bottom:1.5rem;display:flex;align-items:center;gap:10px;opacity:1}
+.hero-kicker::before{content:'';width:18px;height:1.5px;background:var(--purple)}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.5rem,4.5vw,4rem);font-weight:700;line-height:1.1;letter-spacing:-1px;color:var(--ink);margin-bottom:1.5rem;opacity:1}
+.hero h1 em{font-style:italic;color:var(--purple)}
+.hero-sub{font-size:16px;color:var(--ink2);line-height:1.8;max-width:500px;margin-bottom:1.5rem;font-weight:300;opacity:1}
+.hero-sub strong{font-weight:600;color:var(--ink)}
+.hero-community{font-size:14px;color:var(--ink2);line-height:1.75;max-width:500px;margin-bottom:2.5rem;font-weight:300;padding:1.25rem 1.5rem;background:var(--surface);border-left:3px solid var(--purple);border-radius:0 4px 4px 0;opacity:1}
+.hero-community strong{font-weight:600;color:var(--ink)}
+.hero-actions{display:flex;gap:1rem;flex-wrap:wrap;opacity:1}
+.btn-fill{background:var(--ink);color:#fff;font-size:12px;font-weight:600;padding:0.75rem 1.75rem;border-radius:3px;transition:background 0.2s,transform 0.15s;letter-spacing:0.03em;display:inline-block}
+.btn-fill:hover{background:#222;transform:translateY(-1px)}
+.btn-outline{border:1.5px solid var(--border);color:var(--ink2);font-size:12px;font-weight:500;padding:0.75rem 1.75rem;border-radius:3px;transition:border-color 0.2s,transform 0.15s;display:inline-block}
+.btn-outline:hover{border-color:var(--ink);transform:translateY(-1px)}
+.hero-stats{display:flex;flex-direction:column;gap:0;opacity:1}
+.hero-stat{padding:1.1rem 1.5rem;border:1px solid var(--border);border-bottom:none;background:var(--white);transition:background 0.2s,transform 0.2s,box-shadow 0.2s}
+.hero-stat:last-child{border-bottom:1px solid var(--border)}
+.hero-stat:hover{background:var(--purple-soft);transform:translateX(-3px);box-shadow:-3px 0 0 var(--purple)}
+.hero-stat-val{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:700;color:var(--ink);line-height:1}
+.hero-stat-label{font-size:11px;color:var(--ink3);margin-top:3px;font-weight:400}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes fadeRight{from{opacity:0;transform:translateX(22px)}to{opacity:1;transform:none}}
+
+/* ── PHILOSOPHY ── */
+.philosophy{padding:3rem 4rem;background:var(--ink);border-bottom:1px solid #000;overflow:hidden}
+@media(max-width:700px){.philosophy{padding:2.5rem 1.5rem}}
+.philosophy p{font-family:'Playfair Display',serif;font-size:clamp(1.2rem,2.5vw,1.6rem);font-style:italic;color:#fff;line-height:1.6;max-width:800px}
+.philosophy p span{color:rgba(255,255,255,0.4)}
+
+/* ── SECTION BASE ── */
+.section{padding:5rem 4rem;border-bottom:1px solid var(--border)}
+@media(max-width:700px){.section{padding:3.5rem 1.5rem}}
+.section-eyebrow{font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--purple);margin-bottom:0.6rem}
+.section-heading{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;letter-spacing:-0.3px;color:var(--ink);margin-bottom:3rem}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border)}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border)}
+@media(max-width:900px){.g4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.g2,.g3,.g4{grid-template-columns:1fr}}
+.gc{background:var(--bg);padding:2rem}
+
+/* ── ALGOBRIDGE ── */
+.algo-problem{padding:2.5rem;background:var(--surface);border-left:3px solid var(--purple);margin-bottom:3rem;border-radius:0 4px 4px 0}
+.algo-problem-label{font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--purple);margin-bottom:0.6rem}
+.algo-problem p{font-size:16px;color:var(--ink2);line-height:1.75;font-weight:300}
+.algo-problem p strong{font-weight:600;color:var(--ink)}
+.algo-layout{display:grid;grid-template-columns:1fr 300px;gap:4rem;margin-bottom:3rem;align-items:start}
+@media(max-width:800px){.algo-layout{grid-template-columns:1fr;gap:2rem}}
+.algo-name{font-family:'Playfair Display',serif;font-size:2.75rem;font-weight:700;color:var(--ink);letter-spacing:-1px;margin-bottom:0.4rem}
+.algo-name em{color:var(--purple);font-style:italic}
+.algo-tagline{font-size:14px;color:var(--ink3);margin-bottom:1.5rem;font-style:italic}
+.algo-desc{font-size:15px;color:var(--ink2);line-height:1.85;font-weight:300}
+.algo-desc strong{font-weight:600;color:var(--ink)}
+.impact-box{background:var(--ink);padding:2rem;border-radius:4px}
+.impact-box-label{font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:1.25rem}
+.impact-num{display:flex;align-items:baseline;gap:6px;padding:0.85rem 0;border-bottom:1px solid rgba(255,255,255,0.08)}
+.impact-num:last-child{border-bottom:none}
+.impact-num-val{font-family:'Playfair Display',serif;font-size:1.75rem;font-weight:700;color:#fff}
+.impact-num-label{font-size:12px;color:rgba(255,255,255,0.5);line-height:1.4}
+.bafore-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);margin-bottom:3rem}
+@media(max-width:600px){.bafore-grid{grid-template-columns:1fr}}
+.ba-card{background:var(--bg);padding:2rem}
+.ba-label{font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1rem}
+.ba-before .ba-label{color:#c0392b}
+.ba-after .ba-label{color:var(--green)}
+.ba-stat{display:flex;align-items:baseline;gap:8px;margin-bottom:0.75rem}
+.ba-pct{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700}
+.ba-before .ba-pct{color:#c0392b}
+.ba-after .ba-pct{color:var(--green)}
+.ba-desc{font-size:13px;color:var(--ink3);line-height:1.5}
+.photos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-bottom:3rem}
+@media(max-width:600px){.photos-grid{grid-template-columns:repeat(2,1fr)}}
+.photo-slot{aspect-ratio:4/3;overflow:hidden;background:var(--surface)}
+.photo-slot img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s cubic-bezier(.22,1,.36,1)}
+.photo-slot:hover img{transform:scale(1.06)}
+.photo-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;color:var(--ink3);font-size:11px;letter-spacing:0.05em;text-transform:uppercase}
+.outcome-list{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:2.5rem}
+@media(max-width:600px){.outcome-list{grid-template-columns:1fr}}
+.outcome-item{display:flex;gap:10px;align-items:flex-start}
+.outcome-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0;margin-top:7px}
+.outcome-text{font-size:13px;color:var(--ink2);line-height:1.6}
+.pullquote{margin-top:3rem;padding:2.5rem;background:var(--white);border:1px solid var(--border);border-left:3px solid var(--ink);transition:border-left-color 0.3s}
+.pullquote:hover{border-left-color:var(--purple)}
+.pullquote p{font-family:'Playfair Display',serif;font-size:1.35rem;font-style:italic;color:var(--ink);line-height:1.55;margin-bottom:0.6rem}
+.pullquote cite{font-size:11px;color:var(--ink3);font-weight:500;letter-spacing:0.06em;text-transform:uppercase}
+
+/* ── PROJECTS ── */
+.project-card{background:var(--bg);padding:2rem;position:relative;transition:background 0.2s,transform 0.2s}
+.project-card:hover{background:var(--white);transform:translateY(-2px)}
+.project-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--purple);transform:scaleX(0);transform-origin:left;transition:transform 0.35s cubic-bezier(.22,1,.36,1)}
+.project-card:hover::after{transform:scaleX(1)}
+.project-type{font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--purple);margin-bottom:0.6rem}
+.project-name{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;color:var(--ink);margin-bottom:0.6rem;line-height:1.25}
+.project-desc{font-size:13px;color:var(--ink3);line-height:1.65;margin-bottom:1.25rem}
+.project-footer{display:flex;justify-content:space-between;align-items:center}
+.project-stack{font-size:11px;color:var(--ink3)}
+.project-link{font-size:11px;font-weight:600;color:var(--purple);letter-spacing:0.05em;text-transform:uppercase;text-decoration:underline;text-underline-offset:3px;transition:color 0.2s}
+.project-link:hover{color:var(--ink)}
+
+/* ── RESEARCH SECTION ── */
+.research-section{padding:5rem 4rem;border-bottom:1px solid var(--border);background:linear-gradient(180deg,var(--bg) 0%,#f0eeff 100%)}
+@media(max-width:700px){.research-section{padding:3.5rem 1.5rem}}
+.research-cards{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);margin-bottom:2rem}
+@media(max-width:800px){.research-cards{grid-template-columns:1fr}}
+.research-card{background:#fff;padding:2.5rem;position:relative;overflow:hidden;transition:box-shadow 0.3s,transform 0.3s}
+.research-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(79,53,216,0.10)}
+.research-card-accent{position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--purple),#a78bfa)}
+.research-badge{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--purple);background:var(--purple-soft);padding:4px 10px;border-radius:3px;margin-bottom:1.25rem}
+.research-title{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:var(--ink);line-height:1.3;margin-bottom:0.5rem}
+.research-meta{font-size:11px;color:var(--ink3);margin-bottom:1.25rem;letter-spacing:0.04em}
+.research-abstract{font-size:13.5px;color:var(--ink2);line-height:1.8;margin-bottom:1.75rem;font-weight:300}
+.research-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-bottom:1.75rem}
+.research-stat{background:var(--surface);padding:1rem;text-align:center}
+.research-stat-val{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--purple);line-height:1}
+.research-stat-label{font-size:10px;color:var(--ink3);margin-top:3px;line-height:1.3}
+.research-finding{display:flex;gap:10px;align-items:flex-start;margin-bottom:0.75rem}
+.research-finding-dot{width:5px;height:5px;border-radius:50%;background:var(--purple);flex-shrink:0;margin-top:7px}
+.research-finding-text{font-size:13px;color:var(--ink2);line-height:1.6}
+.research-findings-label{font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink3);margin-bottom:0.75rem}
+
+/* Score bar chart */
+.score-chart{margin:1.5rem 0;background:var(--surface);padding:1.25rem;border-radius:4px}
+.score-chart-title{font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:1rem}
+.score-row{display:flex;align-items:center;gap:10px;margin-bottom:0.6rem}
+.score-label{font-size:11px;color:var(--ink2);width:65px;flex-shrink:0;font-weight:500}
+.score-bar-wrap{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden;position:relative}
+.score-bar{height:100%;border-radius:4px;transform:scaleX(0);transform-origin:left;transition:transform 1s cubic-bezier(.22,1,.36,1)}
+.score-bar.ai{background:var(--purple)}
+.score-bar.trad{background:var(--ink3)}
+.score-bar.hybrid{background:var(--green)}
+.score-val{font-size:11px;font-weight:700;color:var(--ink);width:38px;text-align:right;flex-shrink:0}
+.score-delta{font-size:10px;padding:2px 6px;border-radius:3px;font-weight:700;flex-shrink:0}
+.score-delta.good{background:var(--green-soft);color:var(--green)}
+.score-delta.best{background:var(--purple-soft);color:var(--purple)}
+
+/* Game study card extras */
+.game-metrics{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);margin:1.5rem 0}
+.game-metric{background:var(--surface);padding:1rem;text-align:center}
+.game-metric-val{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--ink);line-height:1}
+.game-metric-label{font-size:10px;color:var(--ink3);margin-top:3px}
+.game-metric-sub{font-size:10px;color:var(--green);font-weight:600;margin-top:2px}
+.tag-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:1.25rem}
+.tag{font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink3);background:var(--surface);border:1px solid var(--border);padding:3px 8px;border-radius:3px}
+
+/* ── WRITING ── */
+.cert-card-big{background:var(--bg);padding:2rem;transition:background 0.2s,transform 0.2s}
+.cert-card-big:hover{background:var(--white);transform:translateY(-2px)}
+.cert-issuer-big{font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:0.5rem}
+.cert-title-big{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--ink);line-height:1.3;margin-bottom:0.4rem}
+.cert-meta-big{font-size:12px;color:var(--ink3);line-height:1.5}
+.cert-verify-big{display:inline-block;margin-top:0.6rem;font-size:11px;font-weight:600;color:var(--purple);letter-spacing:0.06em;text-transform:uppercase;text-decoration:underline;text-underline-offset:2px}
+.cert-award-big{display:inline-block;margin-top:0.6rem;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#8a6800;background:#fff8e0;border:1px solid #e8d060;padding:3px 10px;border-radius:3px}
+.blog-item{display:grid;grid-template-columns:80px 1fr 20px;gap:2rem;align-items:start;padding:1.5rem 0;border-bottom:1px solid var(--border);transition:background 0.2s;margin:0 -1rem;padding-left:1rem;padding-right:1rem}
+.blog-item:first-of-type{border-top:1px solid var(--border)}
+@media(max-width:600px){.blog-item{grid-template-columns:1fr;gap:0.4rem}}
+.blog-item:hover{background:var(--white)}
+.blog-item:hover .blog-title{color:var(--purple)}
+.blog-item:hover .blog-arrow{color:var(--purple);transform:translateX(3px)}
+.blog-date{font-size:11px;color:var(--ink3);padding-top:2px}
+.blog-title{font-size:14px;font-weight:600;color:var(--ink);line-height:1.4;margin-bottom:0.25rem;transition:color 0.2s}
+.blog-excerpt{font-size:12px;color:var(--ink3);line-height:1.55}
+.blog-arrow{font-size:14px;color:var(--ink3);transition:color 0.2s,transform 0.2s}
+.view-all-link{display:inline-flex;align-items:center;gap:6px;margin-top:1.5rem;font-size:11px;font-weight:700;color:var(--purple);letter-spacing:0.1em;text-transform:uppercase;text-decoration:underline;text-underline-offset:3px;transition:gap 0.2s}
+.view-all-link:hover{gap:10px}
+footer{padding:2.5rem 4rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;border-top:1px solid var(--border)}
+@media(max-width:700px){footer{padding:2rem 1.5rem}}
+.footer-name{font-family:'Playfair Display',serif;font-size:17px;font-weight:700}
+.footer-name span{color:var(--purple)}
+.footer-links{display:flex;gap:1.5rem}
+.footer-links a{font-size:11px;font-weight:500;color:var(--ink3);letter-spacing:0.05em;text-transform:uppercase;transition:color 0.2s}
+.footer-links a:hover{color:var(--ink)}
+.footer-copy{font-size:11px;color:var(--ink3)}
+
+/* ── THE LEARNING GAP FEATURE ── */
+.lg-feature{padding:5rem 4rem;border-bottom:1px solid var(--border);background:var(--ink);position:relative;overflow:hidden}
+@media(max-width:700px){.lg-feature{padding:3.5rem 1.5rem}}
+.lg-feature::before{content:"";position:absolute;top:-120px;right:-120px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(79,53,216,0.25) 0%,transparent 70%);pointer-events:none}
+.lg-inner{display:grid;grid-template-columns:1fr 420px;gap:5rem;align-items:center;position:relative;z-index:1}
+@media(max-width:900px){.lg-inner{grid-template-columns:1fr;gap:2.5rem}}
+.lg-eyebrow{font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:0.8rem}
+.lg-title{font-family:"Playfair Display",serif;font-size:clamp(2rem,3.5vw,3rem);font-weight:700;color:#fff;line-height:1.1;letter-spacing:-0.5px;margin-bottom:1.25rem}
+.lg-title em{color:#a78bfa;font-style:italic}
+.lg-desc{font-size:15px;color:rgba(255,255,255,0.65);line-height:1.85;font-weight:300;margin-bottom:2rem;max-width:480px}
+.lg-desc strong{color:#fff;font-weight:500}
+.lg-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:2rem}
+.lg-tag{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.15);padding:4px 10px;border-radius:3px}
+.lg-cta{display:inline-flex;align-items:center;gap:10px;background:#fff;color:var(--ink);font-size:12px;font-weight:700;padding:0.85rem 1.75rem;border-radius:3px;letter-spacing:0.04em;transition:background 0.2s,transform 0.15s}
+.lg-cta:hover{background:#f0eeff;transform:translateY(-2px)}
+.lg-preview{position:relative}
+.lg-browser{background:#1a1a2e;border-radius:10px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,0.5),0 0 0 1px rgba(255,255,255,0.08);transform:perspective(800px) rotateY(-6deg) rotateX(3deg);transition:transform 0.4s}
+.lg-browser:hover{transform:perspective(800px) rotateY(0deg) rotateX(0deg)}
+.lg-browser-bar{background:#111;padding:10px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(255,255,255,0.06)}
+.lg-dot{width:10px;height:10px;border-radius:50%}
+.lg-url{flex:1;background:rgba(255,255,255,0.06);border-radius:4px;padding:4px 10px;font-size:10px;color:rgba(255,255,255,0.3);font-family:"Inter",sans-serif;margin:0 8px}
+.lg-screen{aspect-ratio:16/10;background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.lg-canvas{position:absolute;inset:0;opacity:0.7}
+.lg-screen-text{position:relative;z-index:1;text-align:center;padding:2rem}
+.lg-screen-title{font-family:"Playfair Display",serif;font-size:1.4rem;font-weight:700;color:#fff;margin-bottom:0.5rem;line-height:1.2}
+.lg-screen-sub{font-size:11px;color:rgba(255,255,255,0.4);letter-spacing:0.08em;text-transform:uppercase}
+.lg-scroll-hint{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);font-size:10px;color:rgba(255,255,255,0.25);letter-spacing:0.08em}
+
+/* ── CREATIVE WORK TEASER ── */
+.creative-teaser{padding:5rem 4rem;border-bottom:1px solid var(--border);background:var(--surface)}
+@media(max-width:700px){.creative-teaser{padding:3.5rem 1.5rem}}
+.creative-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);margin-top:2.5rem}
+@media(max-width:900px){.creative-grid{grid-template-columns:repeat(2,1fr)}}
+.creative-card{background:var(--bg);aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.6rem;transition:background 0.2s;position:relative;overflow:hidden}
+.creative-card::after{content:"";position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--purple);transform:scaleX(0);transform-origin:left;transition:transform 0.35s}
+.creative-card:hover{background:var(--white)}
+.creative-card:hover::after{transform:scaleX(1)}
+.creative-card-icon{font-size:1.75rem;line-height:1}
+.creative-card-label{font-size:11px;font-weight:600;color:var(--ink3);letter-spacing:0.06em;text-transform:uppercase}
+.creative-card-sub{font-size:10px;color:#aaa;font-style:italic}
+.creative-soon{display:inline-flex;align-items:center;gap:6px;margin-top:2rem;font-size:11px;font-weight:600;color:var(--purple);letter-spacing:0.08em;text-transform:uppercase;border:1.5px solid var(--purple);padding:0.5rem 1.2rem;border-radius:3px}
 </style>
 </head>
 <body>
 
-<a href="https://forms.gle/eTC9jaXcismcE2Vm7" target="_blank" rel="noopener" class="feedback-btn">
-  <span>📝</span> Share Feedback
-</a>
-
-<!-- ══ NAV ══ -->
-<nav id="main-nav" role="navigation" aria-label="Main navigation">
-  <div class="nav-logo" onclick="showPage('home')" tabindex="0" role="button" aria-label="AlgoBridge Learn home">
-    algo<span class="slash">/</span>bridge<span class="dot"> ·</span> learn
+<nav id="main-nav">
+  <div class="nav-logo">Ayush<span>.</span></div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#learning-gap" style="color:var(--purple);font-weight:600">The Learning Gap ↗</a>
+    <a href="#algobridge">AlgoBridge</a>
+    <a href="#research">Research</a>
+    <a href="#projects">Projects</a>
+    <a href="#creative">Creative Work</a>
+    <a href="#writing">Writing</a>
+    <a href="#credentials">Credentials</a>
   </div>
-  <div class="nav-links" id="nav-links-desktop">
-    <button class="nav-link active" onclick="showPage('home')">Home</button>
-    <button class="nav-link" onclick="showPage('paths')">Learning Paths</button>
-    <button class="nav-link" onclick="showPage('workspace')">Workspace</button>
-    <button class="nav-link" onclick="showPage('tutor')" style="color:var(--accent)">🧠 AI Tutor</button>
-    <button class="nav-link" onclick="showPage('dashboard')">Dashboard</button>
-    <button class="nav-link" onclick="showPage('research')">Research</button>
-    <button class="nav-link" onclick="showPage('about')">About</button>
-  </div>
-  <div class="nav-right">
-    <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">◑ Theme</button>
-    <button class="btn btn-primary btn-sm" onclick="showPage('paths')">Start Learning →</button>
-    <button class="ham-btn" onclick="toggleMobileNav()" aria-label="Open menu" aria-expanded="false" id="ham-btn">☰</button>
-  </div>
+  <a class="nav-cta" href="https://github.com/ak3036811-gif" target="_blank">GitHub ↗</a>
 </nav>
 
-<div class="mobile-nav" id="mobile-nav" role="navigation" aria-label="Mobile navigation">
-  <button class="nav-link" onclick="showPage('home');toggleMobileNav()">Home</button>
-  <button class="nav-link" onclick="showPage('paths');toggleMobileNav()">Learning Paths</button>
-  <button class="nav-link" onclick="showPage('workspace');toggleMobileNav()">Workspace</button>
-  <button class="nav-link" onclick="showPage('tutor');toggleMobileNav()" style="color:var(--accent)">🧠 AI Tutor</button>
-  <button class="nav-link" onclick="showPage('dashboard');toggleMobileNav()">Dashboard</button>
-  <button class="nav-link" onclick="showPage('research');toggleMobileNav()">Research</button>
-  <button class="nav-link" onclick="showPage('about');toggleMobileNav()">About</button>
+<!-- ── HERO ── -->
+<section class="hero" id="about">
+  <div>
+    <div class="hero-kicker">AI Researcher · Creative Technologist · Educator</div>
+    <h1>Building AI tools, publishing research, and making things where <em>code and art are inseparable.</em></h1>
+    <p class="hero-sub">
+      I'm <strong>Ayush Kumar</strong>, a Grade 11 student from Ghaziabad, India. I design adaptive AI systems, founded <strong>AlgoBridge</strong> — a digital literacy initiative that has reached 100+ underserved students across 5 NGOs — and write research-backed essays on AI and education.
+    </p>
+    <div class="hero-community">
+      For over <strong>11 years</strong>, I've been engaged in a community initiative centered on cultural education and dialogue, working with diverse groups to explore Indian traditions and perspectives. Through this, I've developed the ability to communicate complex ideas in simple, accessible ways — a skill that directly informs my work in teaching AI and algorithms to students from non-technical backgrounds.
+    </div>
+    <div class="hero-actions">
+      <a class="btn-fill" href="#algobridge">See My Impact Work</a>
+      <a class="btn-outline" href="#research">View Research</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-val">100+</div><div class="hero-stat-label">Students reached through AlgoBridge</div></div>
+    <div class="hero-stat"><div class="hero-stat-val">5</div><div class="hero-stat-label">NGOs partnered with</div></div>
+    <div class="hero-stat"><div class="hero-stat-val">2</div><div class="hero-stat-label">Original research papers published</div></div>
+    <div class="hero-stat"><div class="hero-stat-val">11+</div><div class="hero-stat-label">Years in community &amp; cultural programs</div></div>
+    <div class="hero-stat"><div class="hero-stat-val">40k+</div><div class="hero-stat-label">Blog readers across 10+ countries</div></div>
+    <div class="hero-stat"><div class="hero-stat-val">2nd</div><div class="hero-stat-label">Place — GSAP Global Pitching Finale</div></div>
+  </div>
+</section>
+
+<!-- ── PHILOSOPHY ── -->
+<div class="philosophy">
+  <p class="reveal">"I believe AI literacy should be as fundamental as reading. <span>The divide in who understands algorithms is as profound as the divide in who can see — and just as fixable.</span>"</p>
 </div>
 
-<!-- ══ HOME ══ -->
-<div id="page-home" class="page active" role="main">
-  <div class="hero">
-    <div class="hero-eyebrow fade-up">
-      <span class="dot"></span>
-      Open Educational Platform · by Ayush Kumar
+<!-- ── THE LEARNING GAP — FEATURED ── -->
+<section class="lg-feature" id="learning-gap">
+  <div class="lg-inner">
+    <div>
+      <div class="lg-eyebrow">Featured Work · Computing &amp; the Arts</div>
+      <div class="lg-title">The Learning Gap — <em>an interactive visual essay</em></div>
+      <p class="lg-desc"><strong>Not a website with visuals attached.</strong> An essay where generative art responds to scroll — argument and medium co-designed from scratch. The thesis: AI literacy compounds inequality the same way vision access does. Every animation is an argument. Every visual choice is evidence.</p>
+      <div class="lg-tags">
+        <span class="lg-tag">Generative Art</span>
+        <span class="lg-tag">Interactive Design</span>
+        <span class="lg-tag">Self-Coded</span>
+        <span class="lg-tag">Original Research</span>
+        <span class="lg-tag">Visual Essay</span>
+      </div>
+      <a class="lg-cta" href="https://ak3036811-gif.github.io/The-learning-gap/" target="_blank">Experience it live →</a>
     </div>
-    <h1 class="fade-up d1">Learn algorithms<br>the way your brain <em>actually</em> works</h1>
-    <p class="hero-sub fade-up d2">Structured CS curriculum + cognitive science learning techniques + an AI tutor that guides your thinking — rather than replacing it.</p>
-    <div class="hero-actions fade-up d3">
-      <button class="btn btn-primary" onclick="showPage('paths')" style="font-size:14px;padding:12px 28px">Start Learning →</button>
-      <button class="btn btn-ghost" onclick="showPage('research')">See the research</button>
+    <div class="lg-preview">
+      <div class="lg-browser">
+        <div class="lg-browser-bar">
+          <div class="lg-dot" style="background:#ff5f57"></div>
+          <div class="lg-dot" style="background:#febc2e"></div>
+          <div class="lg-dot" style="background:#28c840"></div>
+          <div class="lg-url">ak3036811-gif.github.io/The-learning-gap/</div>
+        </div>
+        <div class="lg-screen">
+          <canvas class="lg-canvas" id="lg-canvas"></canvas>
+          <div class="lg-screen-text">
+            <div class="lg-screen-title">The Learning Gap</div>
+            <div class="lg-screen-sub">Generative art + argument · Self-coded</div>
+          </div>
+          <div class="lg-scroll-hint">↓ scroll to reveal</div>
+        </div>
+      </div>
     </div>
-    <div class="hero-stats-row fade-up d4">
-      <div class="hero-stat"><div class="hero-stat-val">100+</div><div class="hero-stat-label">Students reached</div></div>
-      <div class="hero-stat"><div class="hero-stat-val">5</div><div class="hero-stat-label">NGOs partnered</div></div>
-      <div class="hero-stat"><div class="hero-stat-val">~80%</div><div class="hero-stat-label">Comprehension lift</div></div>
-      <div class="hero-stat"><div class="hero-stat-val">6</div><div class="hero-stat-label">Research citations</div></div>
+  </div>
+</section>
+
+<!-- ── CREATIVE WORK TEASER ── -->
+<section class="creative-teaser" id="creative">
+  <div class="section-eyebrow">Art · Music · Visual Work</div>
+  <div class="section-heading">Creative Work</div>
+  <p style="font-size:15px;color:var(--ink2);line-height:1.8;max-width:600px;font-weight:300">Five years of drawing — anime, scenery, visual composition. Three years of self-taught flute. The same discipline that breaks a difficult passage apart until it resolves is identical to how I debug or redesign a system. Visual thinking shapes every interface I build.</p>
+  <div class="creative-grid">
+    <div class="creative-card"><div class="creative-card-icon">✏️</div><div class="creative-card-label">Drawings</div><div class="creative-card-sub">Anime · Scenery · Portraits</div></div>
+    <div class="creative-card"><div class="creative-card-icon">🎵</div><div class="creative-card-label">Flute</div><div class="creative-card-sub">Self-taught · 3 years</div></div>
+    <div class="creative-card"><div class="creative-card-icon">⚙️</div><div class="creative-card-label">Generative Art</div><div class="creative-card-sub">Code as creative medium</div></div>
+    <div class="creative-card"><div class="creative-card-icon">🎨</div><div class="creative-card-label">Interactive Design</div><div class="creative-card-sub">The Learning Gap &amp; beyond</div></div>
+  </div>
+  <div class="creative-soon">⏳ Full art page &amp; recordings — coming soon</div>
+</section>
+
+<!-- ── ALGOBRIDGE ── -->
+<section class="section" id="algobridge">
+  <div class="section-eyebrow reveal">Community Impact</div>
+  <div class="section-heading reveal delay-1">AlgoBridge</div>
+
+  <div class="algo-problem reveal">
+    <div class="algo-problem-label">The Problem</div>
+    <p>Millions of students graduate without ever encountering algorithms or AI — the engines powering the modern world. <strong>1 in 3 students lack basic digital literacy.</strong> In underserved schools, the number is far worse. Not because students lack ability — but because they lack access. No trained teachers. No infrastructure. No awareness of why it matters.</p>
+  </div>
+
+  <div class="algo-layout">
+    <div class="reveal-left">
+      <div class="algo-name">Algo<em>Bridge</em></div>
+      <div class="algo-tagline">Bridging the gap between algorithms and every student's future.</div>
+      <p class="algo-desc">
+        I designed and ran a workshop-based AI literacy program for students aged 11–18, with <strong>zero prior coding knowledge required</strong>. No jargon, no textbooks — just real-world examples, interactive decisions, and the belief that understanding AI should not be a privilege. Inspired by witnessing how DOT Glasses transformed lives with simple clear vision, I saw the parallel: <strong>one workshop on algorithms could spark a future engineer.</strong> The most common question after every session was <em>"Where do I keep learning?"</em> — so I built <strong><a href="https://ak3036811-gif.github.io/algobridge-learn/" target="_blank" style="color:var(--purple);text-decoration:underline;text-underline-offset:3px">AlgoBridge Learn</a></strong>: a free platform with structured lessons, practice problems, and an AI tutor that sends students back to their own thinking rather than away from it.
+      </p>
+      <div class="outcome-list">
+        <div class="outcome-item"><div class="outcome-dot"></div><div class="outcome-text">Students actively explained algorithms using real-world analogies — unprompted</div></div>
+        <div class="outcome-item"><div class="outcome-dot"></div><div class="outcome-text">High engagement sustained across all 4 sessions vs near-zero in traditional lectures</div></div>
+        <div class="outcome-item"><div class="outcome-dot"></div><div class="outcome-text">Beginners grasped concepts like bias, ranking, and decision-making within one session</div></div>
+        <div class="outcome-item"><div class="outcome-dot"></div><div class="outcome-text">Students asked deep questions about AI that went beyond the curriculum</div></div>
+      </div>
+    </div>
+    <div class="impact-box reveal-right">
+      <div class="impact-box-label">Scale &amp; Reach</div>
+      <div class="impact-num"><div class="impact-num-val">100+</div><div class="impact-num-label">Students reached</div></div>
+      <div class="impact-num"><div class="impact-num-val">5</div><div class="impact-num-label">NGOs partnered with</div></div>
+      <div class="impact-num"><div class="impact-num-val">11–18</div><div class="impact-num-label">Age group taught</div></div>
+      <div class="impact-num"><div class="impact-num-val">0</div><div class="impact-num-label">Prior coding needed</div></div>
+      <div class="impact-num"><div class="impact-num-val">100%</div><div class="impact-num-label">Interactive learning format</div></div>
     </div>
   </div>
 
-  <main>
-    <section aria-labelledby="feat-title">
-      <div class="section-label fade-up">Platform overview</div>
-      <div class="section-title fade-up d1" id="feat-title">From curious to capable</div>
-      <p class="section-sub fade-up d2">AlgoBridge Learn is the digital extension of the AlgoBridge workshop programme. Same philosophy, online: no jargon, no shortcuts — real understanding built through honest effort.</p>
-      <div class="card-grid">
-        <div class="card fade-up d1"><div class="card-tag">Feature 01</div><h3>Structured Learning Paths</h3><p>Three progressive tracks — Beginner, Intermediate, Advanced — each with full lessons, exercises, and visual progress tracking.</p></div>
-        <div class="card fade-up d2"><div class="card-tag">Feature 02</div><h3>AI Hint System</h3><p>The tutor asks guiding questions and surfaces misconceptions. It never gives you the answer — you do the thinking.</p></div>
-        <div class="card fade-up d3"><div class="card-tag">Feature 03</div><h3>Productive Struggle Timer</h3><p>Hints unlock only after genuine independent attempt. The discomfort you feel right now is retention being built.</p></div>
-        <div class="card fade-up d4"><div class="card-tag">Feature 04</div><h3>Mistake Log</h3><p>Save and categorise conceptual errors. Reviewing what you don't know is more valuable than practising what you do.</p></div>
-        <div class="card fade-up d5"><div class="card-tag">Feature 05</div><h3>Adaptive Difficulty</h3><p>The system tracks accuracy, retry count, and hint usage to route you toward problems at the right level of challenge.</p></div>
-        <div class="card fade-up d6"><div class="card-tag">Feature 06</div><h3>Evidence-Based Design</h3><p>Every pedagogical choice has a citation. Active recall, spaced repetition, cognitive load — embedded into the UX, not just mentioned.</p></div>
-      </div>
-    </section>
-
-    <section aria-labelledby="sci-title">
-      <div class="section-label fade-up">Why this works</div>
-      <div class="section-title fade-up d1" id="sci-title">The struggle is the point</div>
-      <p class="section-sub fade-up d2">Most tools optimise for how comfortable they feel. AlgoBridge optimises for how much you actually retain. These are often opposite things.</p>
-      <div class="card-grid">
-        <div class="card fade-up d1"><div class="card-tag">Desirable difficulties</div><h3>Effort builds retention</h3><p>Bjork (1994) shows that introducing difficulties during learning leads to dramatically stronger long-term memory, even when it feels harder in the moment. The timer exists for this reason.</p></div>
-        <div class="card fade-up d2"><div class="card-tag">Guided discovery</div><h3>Questions beat answers</h3><p>Socratic questioning activates deeper cognitive processing than passive delivery. When the AI asks you a question instead of giving the answer, that is a deliberate design decision.</p></div>
-        <div class="card fade-up d3"><div class="card-tag">Metacognition</div><h3>Know your gaps</h3><p>Students who regularly review their errors consistently outperform those who only practise new material. The Mistake Log makes this habit frictionless and automatic.</p></div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <span class="footer-brand">algo<span style="color:var(--accent)">/</span>bridge · learn</span>
-    <div class="footer-links">
-      <a href="#" onclick="showPage('about');return false">About</a>
-      <a href="#" onclick="showPage('research');return false">Research</a>
-      <a href="https://ak3036811-gif.github.io/Main-Website/" target="_blank" rel="noopener">Ayush Kumar ↗</a>
-      <a href="https://github.com/ak3036811-gif" target="_blank" rel="noopener">GitHub</a>
+  <div class="bafore-grid reveal">
+    <div class="ba-card ba-before">
+      <div class="ba-label">Before AlgoBridge</div>
+      <div class="ba-stat"><span class="ba-pct">~20%</span></div>
+      <div class="ba-desc">of students could explain what an algorithm is or why it affects their daily life</div>
+      <div style="margin-top:1rem;font-size:13px;color:var(--ink3);line-height:1.6">Most had never heard the word "algorithm" used outside of maths class. Zero exposure to AI concepts, search ranking, or decision trees.</div>
     </div>
-  </footer>
-</div>
-
-<!-- ══ LEARNING PATHS ══ -->
-<div id="page-paths" class="page">
-  <main>
-    <section aria-labelledby="paths-title">
-      <div class="section-label fade-up">Curriculum</div>
-      <div class="section-title fade-up d1" id="paths-title">Structured Learning Paths</div>
-      <p class="section-sub fade-up d2">Three tracks, each unlocking progressively. Click any available topic to open the full lesson, then mark it complete to unlock the next one.</p>
-
-      <div class="path-tabs fade-up d3" role="tablist">
-        <button class="path-tab active" role="tab" aria-selected="true" onclick="switchPath('beginner',this)">🟢 Beginner</button>
-        <button class="path-tab" role="tab" aria-selected="false" onclick="switchPath('intermediate',this)">🟡 Intermediate</button>
-        <button class="path-tab" role="tab" aria-selected="false" onclick="switchPath('advanced',this)">🔴 Advanced</button>
-      </div>
-
-      <div id="path-beginner" role="tabpanel" class="fade-up d4">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;flex-wrap:wrap;gap:8px">
-          <div>
-            <strong style="font-size:14px;color:var(--text)">Beginner — Foundations of Programming</strong>
-            <div style="font-size:12px;color:var(--text3);margin-top:3px;font-family:var(--mono)" id="beginner-meta">0 of 10 topics completed · Python · ~8 hrs</div>
-          </div>
-          <div style="text-align:right">
-            <div class="badge badge-amber" id="beginner-badge">0% complete</div>
-            <div class="progress-bar-wrap" style="width:160px;margin-top:6px"><div class="progress-bar" id="beginner-bar" style="width:0%"></div></div>
-          </div>
-        </div>
-        <div class="topic-list" id="topic-list-beginner"></div>
-      </div>
-
-      <div id="path-intermediate" style="display:none" role="tabpanel" class="fade-up d4">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;flex-wrap:wrap;gap:8px">
-          <div>
-            <strong style="font-size:14px;color:var(--text)">Intermediate — Algorithms &amp; Data Structures</strong>
-            <div style="font-size:12px;color:var(--text3);margin-top:3px;font-family:var(--mono)" id="intermediate-meta">0 of 8 topics completed · Python + Pseudocode · ~18 hrs</div>
-          </div>
-          <div style="text-align:right">
-            <div class="badge badge-amber" id="intermediate-badge">0% complete</div>
-            <div class="progress-bar-wrap" style="width:160px;margin-top:6px"><div class="progress-bar" id="intermediate-bar" style="width:0%;background:var(--amber)"></div></div>
-          </div>
-        </div>
-        <div id="int-lock" style="padding:.9rem 1.2rem;background:var(--bg3);border-radius:var(--radius);font-size:.88rem;color:var(--text2);margin-bottom:1rem;display:none;border:1px solid var(--border)">
-          🔒 Complete at least 5 Beginner topics to unlock Intermediate.
-        </div>
-        <div class="topic-list" id="topic-list-intermediate"></div>
-      </div>
-
-      <div id="path-advanced" style="display:none" role="tabpanel" class="fade-up d4">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;flex-wrap:wrap;gap:8px">
-          <div>
-            <strong style="font-size:14px;color:var(--text)">Advanced — Optimisation &amp; Systems</strong>
-            <div style="font-size:12px;color:var(--text3);margin-top:3px;font-family:var(--mono)">Unlocks after completing the Intermediate path</div>
-          </div>
-          <div><div class="badge badge-amber" style="opacity:.4">Locked</div></div>
-        </div>
-        <div style="padding:.9rem 1.2rem;background:var(--bg3);border-radius:var(--radius);font-size:.88rem;color:var(--text2);margin-bottom:1rem;border:1px solid var(--border)">
-          🔒 Complete the full Intermediate path to unlock Advanced topics.
-        </div>
-        <div class="topic-list" id="topic-list-advanced" style="opacity:.3;pointer-events:none"></div>
-      </div>
-    </section>
-  </main>
-</div>
-
-<!-- ══ TOPIC LESSON ══ -->
-<div id="page-topic" class="page">
-  <main>
-    <div class="lesson-wrap">
-      <button class="lesson-back" onclick="showPage('paths')" aria-label="Back to Learning Paths">
-        <span class="arrow">←</span> Back to Learning Paths
-      </button>
-      <div class="lesson-eyebrow" id="lesson-eyebrow">Beginner · Topic</div>
-      <h1 class="lesson-title" id="lesson-title">Topic</h1>
-      <div class="lesson-meta">
-        <span>⏱ <span id="lesson-time">~30 min</span></span>
-        <span>◎ <span id="lesson-level">Beginner</span></span>
-        <span>⌨ <span id="lesson-lang">Python</span></span>
-      </div>
-      <div class="lesson-body" id="lesson-body"></div>
-      <div class="lesson-actions">
-        <button class="btn btn-primary" onclick="completeTopic();showPage('paths')">Mark Complete &amp; Continue →</button>
-        <button class="btn btn-secondary" onclick="showPage('workspace')">Try a Problem</button>
-        <button class="btn btn-ghost" onclick="showPage('paths')">Back to Paths</button>
-      </div>
+    <div class="ba-card ba-after">
+      <div class="ba-label">After AlgoBridge</div>
+      <div class="ba-stat"><span class="ba-pct">~80%</span></div>
+      <div class="ba-desc">could explain algorithmic logic using a real-world example they chose themselves</div>
+      <div style="margin-top:1rem;font-size:13px;color:var(--ink3);line-height:1.6">Students spontaneously connected Google Search, Netflix, and WhatsApp recommendations to what they had learned — without being prompted.</div>
     </div>
-  </main>
-</div>
-
-<!-- ══ WORKSPACE ══ -->
-<div id="page-workspace" class="page">
-  <div class="workspace" role="main" aria-label="Coding workspace">
-    <section class="ws-left" aria-label="Problem description">
-      <div class="ws-header">
-        <span class="ws-title">Problem #47 — Two Sum</span>
-        <div class="tags" style="margin-left:auto">
-          <span class="tag easy">Easy</span>
-          <span class="tag" style="background:var(--accent-soft);color:var(--accent);border-color:rgba(123,97,255,0.2)">Arrays</span>
-        </div>
-      </div>
-      <div class="ws-body">
-        <p class="problem-title">Two Sum</p>
-        <p class="problem-desc">Given an array of integers <code>nums</code> and an integer <code>target</code>, return the indices of the two numbers that add up to <code>target</code>. Each input has exactly one solution. You may not use the same element twice.</p>
-        <div class="example-box"><span class="ex-label">Example 1</span>Input: nums = [2, 7, 11, 15], target = 9<br>Output: [0, 1]<br>nums[0] + nums[1] = 2 + 7 = 9</div>
-        <div class="example-box"><span class="ex-label">Example 2</span>Input: nums = [3, 2, 4], target = 6<br>Output: [1, 2]</div>
-
-        <div class="struggle-overlay" id="struggle-zone">
-          <div class="struggle-head">⏱ Productive Struggle Mode</div>
-          <div class="struggle-timer-val" id="timer-display">05:00</div>
-          <div class="struggle-msg">Hints unlock after 5 minutes of independent work. The discomfort you feel right now is retention being built.<br><br><em style="color:var(--text3)">"Cognitive effort during learning predicts memory consolidation." — Kornell &amp; Bjork, 2008</em></div>
-        </div>
-
-        <div id="hint-section" style="margin-top:.7rem">
-          <div style="font-size:13px;font-weight:600;margin-bottom:.7rem;color:var(--text2)">AI Tutor</div>
-          <div id="hints-locked" class="hint-locked">
-            <div class="tutor-msg ai" style="font-style:italic;color:var(--text3)">🔒 Hints unlock after the timer. Keep working — you're building stronger understanding right now.</div>
-          </div>
-          <div id="hints-unlocked" style="display:none">
-            <div class="tutor-msg ai">Let's think through this. What's the simplest approach you'd try first — even if it's slow? Try to write out the logic before you code it.</div>
-            <div id="hint2" style="display:none" class="tutor-msg ai">Good. Now if you have an O(n²) loop working — is there a data structure that lets you check whether a value exists in O(1) time? You already know one.</div>
-            <div id="hint3" style="display:none" class="tutor-msg ai">A dictionary / hash map. As you iterate, store each value you've seen as a key. For each new number, check: is its complement (target − num) already in the dictionary?</div>
-            <div style="display:flex;gap:8px;margin-top:.6rem;flex-wrap:wrap">
-              <button class="btn btn-secondary btn-sm" onclick="showNextHint()" id="hint-btn">Next hint →</button>
-              <button class="btn btn-secondary btn-sm" onclick="alert('In the full platform this opens a live AI session. The tutor responds with guiding questions, not answers.')">Ask a question</button>
-            </div>
-          </div>
-        </div>
-
-        <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border2)">
-          <div class="section-label">Mistake Log</div>
-          <div id="mistake-log-display" style="margin:.5rem 0;font-size:.83rem;color:var(--text3);font-style:italic">No mistakes logged yet for this problem.</div>
-          <button class="btn btn-secondary btn-sm" onclick="logMistake()">+ Log a misconception</button>
-        </div>
-      </div>
-    </section>
-
-    <section class="ws-right" aria-label="Code editor">
-      <div class="ws-header">
-        <span class="ws-title">Code Editor</span>
-        <span class="badge badge-blue">Python 3</span>
-        <button class="btn btn-secondary btn-sm" style="margin-left:auto" onclick="runCode()">▶ Run</button>
-        <button class="btn btn-primary btn-sm" onclick="submitCode()">Submit</button>
-      </div>
-      <div class="ws-body" style="display:flex;flex-direction:column;gap:9px">
-        <div class="editor-wrap">
-          <div class="editor-tab">
-            <span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span>
-            <span class="fname" style="margin-left:6px">solution.py</span>
-          </div>
-          <textarea class="code-input" id="code-editor" spellcheck="false" aria-label="Python code editor">def two_sum(nums, target):
-    # Your solution here
-    # Think: what data structure lets you
-    # look up values in O(1) time?
-    pass
-
-
-# Quick tests — click Run to check
-print(two_sum([2, 7, 11, 15], 9))   # → [0, 1]
-print(two_sum([3, 2, 4], 6))        # → [1, 2]
-</textarea>
-        </div>
-        <div>
-          <div style="font-size:10px;color:var(--text3);font-family:var(--mono);margin-bottom:5px;text-transform:uppercase;letter-spacing:.08em">Output</div>
-          <div class="output-box" id="output-box" role="log" aria-live="polite"><span class="info">// Click Run to execute</span></div>
-        </div>
-        <div style="background:var(--bg2);border-radius:var(--radius);padding:12px 14px;border:1px solid var(--border)">
-          <div style="font-size:12px;font-weight:600;margin-bottom:.6rem;color:var(--text)">Test Cases</div>
-          <div style="display:flex;flex-direction:column;gap:5px" id="test-cases">
-            <div class="tc-row"><span style="color:var(--text2)">two_sum([2,7,11,15], 9)</span><span class="tc-status" style="color:var(--text3)">pending</span></div>
-            <div class="tc-row"><span style="color:var(--text2)">two_sum([3,2,4], 6)</span><span class="tc-status" style="color:var(--text3)">pending</span></div>
-            <div class="tc-row"><span style="color:var(--text2)">two_sum([3,3], 6)</span><span class="tc-status" style="color:var(--text3)">pending</span></div>
-          </div>
-        </div>
-      </div>
-    </section>
   </div>
-</div>
+  <div style="font-size:11px;color:var(--ink3);font-style:italic;margin-bottom:3rem" class="reveal">* Based on pre/post comprehension checks conducted at the start and end of each workshop session.</div>
 
-<!-- ══ DASHBOARD ══ -->
-<div id="page-dashboard" class="page">
-  <main>
-    <section aria-labelledby="dash-title">
-      <div class="section-label fade-up">Your progress</div>
-      <div class="section-title fade-up d1" id="dash-title">Student Dashboard</div>
-      <p class="section-sub fade-up d2">Stats update as you complete topics and solve problems. Everything starts at zero — your progress is real.</p>
-      <div class="dash-grid">
-        <article class="stat-card fade-up d1" aria-label="Problems solved">
-          <div class="stat-val" id="dash-solved">0</div>
-          <div class="stat-label">Problems solved</div>
-          <div class="stat-sub">Solve problems in Workspace</div>
-        </article>
-        <article class="stat-card fade-up d2" aria-label="Day streak">
-          <div class="stat-val" id="dash-streak">0</div>
-          <div class="stat-label">Day streak</div>
-          <div class="stat-sub">Come back daily to build one</div>
-        </article>
-        <article class="stat-card fade-up d3" aria-label="Topics completed">
-          <div class="stat-val" id="dash-topics">0</div>
-          <div class="stat-label">Topics completed</div>
-          <div class="stat-sub">Click topics in Learning Paths</div>
-        </article>
-        <article class="stat-card fade-up d4" aria-label="Logged mistakes">
-          <div class="stat-val" id="dash-mistakes" style="color:var(--red)">0</div>
-          <div class="stat-label">Logged mistakes</div>
-          <div class="stat-sub">Log from Workspace</div>
-        </article>
-      </div>
-      <div class="two-col">
-        <div class="chart-card fade-up d1">
-          <div class="chart-title">Problems solved per week</div>
-          <div id="chart-empty-1" class="empty-state">No data yet — solve problems to see your chart.</div>
-          <div class="chart-container" id="chart-wrap-1" style="display:none"><canvas id="progress-chart"></canvas></div>
+  <div class="photos-grid reveal">
+    <div class="photo-slot"><img src="photo1.jpeg" alt="AlgoBridge session" onerror="this.parentElement.innerHTML='<div class=\'photo-placeholder\'>📸 photo1.jpeg</div>'"></div>
+    <div class="photo-slot"><img src="photo2.jpeg" alt="AlgoBridge session" onerror="this.parentElement.innerHTML='<div class=\'photo-placeholder\'>📸 photo2.jpeg</div>'"></div>
+    <div class="photo-slot"><img src="photo3.jpeg" alt="AlgoBridge session" onerror="this.parentElement.innerHTML='<div class=\'photo-placeholder\'>📸 photo3.jpeg</div>'"></div>
+    <div class="photo-slot"><img src="photo4.jpeg" alt="AlgoBridge session" onerror="this.parentElement.innerHTML='<div class=\'photo-placeholder\'>📸 photo4.jpeg</div>'"></div>
+    <div class="photo-slot"><img src="photo5.jpeg" alt="AlgoBridge session" onerror="this.parentElement.innerHTML='<div class=\'photo-placeholder\'>📸 photo5.jpeg</div>'"></div>
+    <div class="photo-slot"><img src="photo6.jpeg" alt="AlgoBridge session" onerror="this.parentElement.innerHTML='<div class=\'photo-placeholder\'>📸 photo6.jpeg</div>'"></div>
+  </div>
+
+  <div class="pullquote reveal">
+    <p>"If a student walks away thinking 'I get it' — that is the whole point."</p>
+    <cite>— Ayush Kumar, Founder · AlgoBridge · Grade 11, MNB Modern Senior Secondary School</cite>
+  </div>
+</section>
+
+<!-- ── RESEARCH SECTION (NEW) ── -->
+<section class="research-section" id="research">
+  <div class="section-eyebrow reveal">Original Research · 2025</div>
+  <div class="section-heading reveal delay-1">Published Studies</div>
+
+  <div class="research-cards">
+
+    <!-- PAPER 1: AI vs Traditional Learning -->
+    <div class="research-card reveal-left">
+      <div class="research-card-accent"></div>
+      <div class="research-badge">📄 Academic Report · 2025</div>
+      <div class="research-title">AI vs. Traditional Learning: A Comparative Study on Understanding, Retention &amp; Exam Performance</div>
+      <div class="research-meta">2-Month Study · 39 Students · Top 5% JEE · Three Controlled Groups · Score + Retention + Explanation Ability</div>
+      <p class="research-abstract">
+        Do AI tools genuinely improve academic outcomes, or do they create the illusion of learning while undermining deeper cognitive development? This study compared three equal groups of top-5% JEE students — AI-only, traditional-only, and hybrid — over two structured months of preparation. Performance was measured across four dimensions: test score improvement, retention, explanation ability, and engagement. The hybrid group, starting from the weakest baseline, finished highest by a substantial margin.
+      </p>
+
+      <div class="score-chart" data-animated="false">
+        <div class="score-chart-title">JEE Mains Practice Score — Improvement after 2 months</div>
+        <div class="score-row">
+          <div class="score-label">Hybrid</div>
+          <div class="score-bar-wrap"><div class="score-bar hybrid" style="--w:100%"></div></div>
+          <div class="score-val">+23 pts</div>
+          <div class="score-delta best">★ Best</div>
         </div>
-        <div class="chart-card fade-up d2">
-          <div class="chart-title">Topics by accuracy</div>
-          <div id="chart-empty-2" class="empty-state">No data yet — complete topics to see accuracy breakdown.</div>
-          <div class="chart-container" id="chart-wrap-2" style="display:none"><canvas id="accuracy-chart"></canvas></div>
+        <div class="score-row">
+          <div class="score-label">Traditional</div>
+          <div class="score-bar-wrap"><div class="score-bar trad" style="--w:47.8%"></div></div>
+          <div class="score-val">+11 pts</div>
+          <div class="score-delta good">2nd</div>
         </div>
-      </div>
-      <div class="two-col">
-        <div class="chart-card fade-up d1">
-          <div class="chart-title">Weak areas to review</div>
-          <div id="weak-empty" class="empty-state">Complete more topics to get personalised recommendations.</div>
-          <ul class="weak-list" id="weak-list" style="display:none">
-            <li class="weak-item"><span>Recursion base cases</span><span class="weak-score">48% acc.</span></li>
-            <li class="weak-item"><span>Off-by-one in loops</span><span class="weak-score">55% acc.</span></li>
-            <li class="weak-item"><span>Dictionary vs. list</span><span class="weak-score">62% acc.</span></li>
-          </ul>
-        </div>
-        <div class="chart-card fade-up d2">
-          <div class="chart-title">Consistency — last 28 days</div>
-          <div class="streak-row" id="streak-grid" role="img" aria-label="28-day activity grid"></div>
-          <div style="font-size:12px;color:var(--text3);margin-top:.7rem;font-family:var(--mono)">Green = practised that day · Today outlined in accent</div>
-          <div style="margin-top:.9rem">
-            <div style="font-size:13px;font-weight:600;margin-bottom:.5rem;color:var(--text)">Recent activity</div>
-            <div id="recent-activity" style="font-size:12px;color:var(--text3);font-style:italic;font-family:var(--mono)">No activity yet. Open a topic or try a problem to get started.</div>
-          </div>
+        <div class="score-row">
+          <div class="score-label">AI Only</div>
+          <div class="score-bar-wrap"><div class="score-bar ai" style="--w:43.5%"></div></div>
+          <div class="score-val">+10 pts</div>
+          <div class="score-delta good">3rd</div>
         </div>
       </div>
-    </section>
-  </main>
-  <footer class="footer">
-    <span class="footer-brand">algo<span style="color:var(--accent)">/</span>bridge · learn · Dashboard</span>
-    <div class="footer-links">
-      <a href="https://forms.gle/eTC9jaXcismcE2Vm7" target="_blank" rel="noopener">Give feedback →</a>
+
+      <div class="research-stats">
+        <div class="research-stat"><div class="research-stat-val">39</div><div class="research-stat-label">Students across 3 groups</div></div>
+        <div class="research-stat"><div class="research-stat-val">+23</div><div class="research-stat-label">Hybrid group gain (pts)</div></div>
+        <div class="research-stat"><div class="research-stat-val">8 pts</div><div class="research-stat-label">Gap: hybrid vs. next best</div></div>
+      </div>
+
+      <div class="research-findings-label">Key Findings</div>
+      <div class="research-finding"><div class="research-finding-dot"></div><div class="research-finding-text">The hybrid group started with the <em>lowest</em> baseline (195) yet finished highest (218) — a +23 pt gain, more than double either single-method group. Starting weakest, finishing strongest.</div></div>
+      <div class="research-finding"><div class="research-finding-dot"></div><div class="research-finding-text">AI raises the performance ceiling; traditional methods raise the improvement rate. The hybrid approach delivers both simultaneously — the data shows they interact multiplicatively, not additively.</div></div>
+      <div class="research-finding"><div class="research-finding-dot"></div><div class="research-finding-text">Passive AI users — those who read explanations without independently attempting problems — were the weakest performers despite reporting the highest confidence during the study period.</div></div>
+      <div class="research-finding"><div class="research-finding-dot"></div><div class="research-finding-text">Three behavioural archetypes emerged: Passive AI User (lowest), Disciplined Traditional Learner (mid-high), and Hybrid Active Learner (top). Group assignment mattered less than how the student actually engaged.</div></div>
+      <div class="research-finding"><div class="research-finding-dot"></div><div class="research-finding-text">In JEE Mains, an 8-point gap is not a statistical artefact — it is the difference between institutions and cutoffs. The hybrid advantage is practically significant, not just statistically notable.</div></div>
+
+      <div class="tag-row">
+        <span class="tag">JEE Preparation</span><span class="tag">Cognitive Science</span><span class="tag">Hybrid Learning</span><span class="tag">Active Recall</span><span class="tag">AI in Education</span><span class="tag">False Mastery</span>
+      </div>
+      <div style="margin-top:1.25rem">
+        <a href="https://www.academia.edu/168392291/_AI_Assisted_vs_Traditional_Learning_A_Comparative_Study_of_Understanding_Retention_and_Exam_Performance_Among_JEE_Aspirants_" target="_blank" class="project-link" style="font-size:12px">View on Academia →</a>
+      </div>
     </div>
-  </footer>
-</div>
 
-<!-- ══ RESEARCH ══ -->
-<div id="page-research" class="page">
-  <main>
-    <section aria-labelledby="res-title">
-      <div class="section-label fade-up">Learning science</div>
-      <div class="section-title fade-up d1" id="res-title">The Pedagogy Behind AlgoBridge</div>
-      <p class="section-sub fade-up d2">Every feature is grounded in published research on learning, memory, and cognition. This is our design rationale — not marketing copy.</p>
-      <div class="research-grid">
-        <div class="research-card fade-up d1" data-num="01"><div class="rc-title">Desirable Difficulties</div><div class="rc-body">When learning is made more effortful — through retrieval practice, interleaving, or delayed feedback — retention improves dramatically. The Productive Struggle Timer is a direct application of this principle.</div><div class="rc-cite">Bjork, R.A. (1994). Memory and metamemory considerations in the training of human beings. MIT Press.</div></div>
-        <div class="research-card fade-up d2" data-num="02"><div class="rc-title">Active Recall</div><div class="rc-body">Testing yourself is dramatically more effective than re-reading. Every blank function body in AlgoBridge is a retrieval cue — you must generate the answer, not recognise it from a list.</div><div class="rc-cite">Roediger, H.L. &amp; Karpicke, J.D. (2006). Test-enhanced learning. Psychological Science, 17(3), 249–255.</div></div>
-        <div class="research-card fade-up d3" data-num="03"><div class="rc-title">Intelligent Tutoring</div><div class="rc-body">AI tutors that diagnose misconceptions and provide targeted hints outperform both no-feedback and immediate-answer systems. The hint hierarchy — questions before explanations before solutions — directly implements this.</div><div class="rc-cite">VanLehn, K. (2011). The relative effectiveness of human tutoring and ITS. Educational Psychologist, 46(4), 197–221.</div></div>
-        <div class="research-card fade-up d4" data-num="04"><div class="rc-title">Metacognitive Monitoring</div><div class="rc-body">Students who accurately assess their own understanding consistently outperform those who do not. The Mistake Log makes error categorisation a regular habit rather than an afterthought before exams.</div><div class="rc-cite">Dunlosky, J. et al. (2013). Improving students' learning with effective techniques. Psychological Science in the Public Interest, 14(1), 4–58.</div></div>
-        <div class="research-card fade-up d5" data-num="05"><div class="rc-title">Cognitive Load Theory</div><div class="rc-body">Presenting too much information simultaneously overwhelms working memory and impairs learning. The progressive unlock system and single-problem workspace directly respond to intrinsic and extraneous cognitive load.</div><div class="rc-cite">Sweller, J. (1988). Cognitive load during problem solving. Cognitive Science, 12(2), 257–285.</div></div>
-        <div class="research-card fade-up d6" data-num="06"><div class="rc-title">Spaced Repetition</div><div class="rc-body">Distributing practice over time is far more effective than massed practice. The adaptive difficulty system surfaces previously-seen topics at intervals based on past performance — a practical implementation of spaced retrieval.</div><div class="rc-cite">Cepeda, N.J. et al. (2006). Distributed practice in verbal recall tasks. Psychological Bulletin, 132(3), 354–380.</div></div>
+    <!-- PAPER 2: AI Adaptive Difficulty -->
+    <div class="research-card reveal-right">
+      <div class="research-card-accent"></div>
+      <div class="research-badge">🎮 Empirical Study · 2025</div>
+      <div class="research-title">Dynamic Difficulty Adjustment via Reinforcement-Inspired Adaptation: An Empirical Study of Player Engagement in a 2D Platformer Environment</div>
+      <div class="research-meta">Within-Subjects Controlled Experiment · 10 Participants (Ages 15–22) · 2D Platformer · Tabular Q-Learning-Inspired Policy · Methodological Review: Oxford-Affiliated Education Researcher</div>
+      <p class="research-abstract">
+        Static difficulty levels frustrate some players and bore others — neither outcome sustains engagement. This study implements a lightweight tabular reinforcement-inspired policy that adjusts enemy speed, spawn frequency, and obstacle density in real time based on deaths per minute, completion rate, and reaction-time variability. A within-subjects counterbalanced experiment compared adaptive vs. static difficulty across identical level sequences, measuring session duration, retries, and early termination events.
+      </p>
+
+      <div class="game-metrics">
+        <div class="game-metric">
+          <div class="game-metric-val">20.8 min</div>
+          <div class="game-metric-label">Avg. session — Adaptive (SD 3.2)</div>
+          <div class="game-metric-sub">↑ vs 12.3 min static (SD 4.1)</div>
+        </div>
+        <div class="game-metric">
+          <div class="game-metric-val">3.5</div>
+          <div class="game-metric-label">Avg. retries — Adaptive (SD 1.1)</div>
+          <div class="game-metric-sub">↓ vs 6.9 retries static (SD 1.8)</div>
+        </div>
       </div>
-      <div class="divider"></div>
-      <div class="fade-up" style="background:var(--bg2);border:1px solid var(--border);border-left:2px solid var(--accent);border-radius:0 var(--radius-lg) var(--radius-lg) 0;padding:1.5rem 2rem;max-width:660px">
-        <div class="section-label">Design position · backed by original research</div>
-        <div class="section-title" style="font-size:1.2rem">AI should guide, not replace</div>
-        <p style="font-size:.9rem;color:var(--text2);line-height:1.85">The most common failure mode of AI-assisted learning is that students use it to skip the struggle — and the struggle is where learning happens. A 2-month controlled study across 39 top-5% JEE students confirmed this directly: passive AI users finished last despite reporting the highest confidence, while students who used AI for understanding and then solved independently finished first — by a margin of +23 pts vs +10 pts. The tool didn't determine the outcome. The behaviour did. AlgoBridge is built on that finding: every prompt sends you back to your own thinking, not away from it. <a href="https://osf.io/8f4c3" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:underline;text-underline-offset:2px">Read the full study →</a></p>
+
+      <div class="research-stats">
+        <div class="research-stat"><div class="research-stat-val">69%</div><div class="research-stat-label">Longer sessions (adaptive vs. static)</div></div>
+        <div class="research-stat"><div class="research-stat-val">49%</div><div class="research-stat-label">Fewer retries per session</div></div>
+        <div class="research-stat"><div class="research-stat-val">d = 2.31</div><div class="research-stat-label">Cohen's d effect size (session duration)</div></div>
       </div>
-    </section>
-  </main>
-  <footer class="footer">
-    <span class="footer-brand">algo<span style="color:var(--accent)">/</span>bridge · learn · Research</span>
-    <div class="footer-links">
-      <a href="https://itsreadingtimee.blogspot.com" target="_blank" rel="noopener">Read the blog →</a>
+
+      <div class="research-findings-label">Key Findings</div>
+      <div class="research-finding"><div class="research-finding-dot"></div><div class="research-finding-text">All 10 participants showed longer sessions and fewer retries under adaptive difficulty — zero exceptions — supporting flow theory's prediction that challenge-skill alignment sustains engagement.</div></div>
+      <div class="research-finding"><div class="research-finding-dot"></div><div class="research-finding-text">Early termination events (sessions ending before level completion) occurred in 4 of 10 static sessions and 0 of 10 adaptive sessions — a categorical difference suggesting real-time responsiveness prevents discrete disengagement events.</div></div>
+      <div class="research-finding"><div class="research-finding-dot"></div><div class="research-finding-text">A tabular Q-learning-inspired policy — adjusting three parameters with no neural network — produced a Cohen's d of 2.31, suggesting even approximate challenge calibration yields outsized engagement benefits.</div></div>
+      <div class="research-finding"><div class="research-finding-dot"></div><div class="research-finding-text">Findings carry direct implications for adaptive educational platforms: a 69% increase in time-on-task alongside a 49% drop in failure events would be expected to improve both learning efficiency and cognitive load management.</div></div>
+
+      <div class="tag-row">
+        <span class="tag">Game AI</span><span class="tag">Dynamic Difficulty Adjustment</span><span class="tag">Flow Theory</span><span class="tag">Player Engagement</span><span class="tag">Reinforcement Learning</span><span class="tag">Educational Technology</span>
+      </div>
+      <div style="margin-top:1.25rem">
+        <a href="https://www.academia.edu/168392629/Dynamic_Difficulty_Adjustment_via_Reinforcement_Inspired_Adaptation_An_Empirical_Study_of_Player_Engagement_in_a_2D_Platformer_Environment" target="_blank" class="project-link" style="font-size:12px">View on Academia →</a>
+      </div>
     </div>
-  </footer>
-</div>
 
-<!-- ══ ABOUT ══ -->
-<div id="page-about" class="page">
-  <main>
-    <section aria-labelledby="about-title">
-      <div class="section-label fade-up">Project &amp; Founder</div>
-      <div class="section-title fade-up d1" id="about-title">About AlgoBridge Learn</div>
+  </div>
 
-      <p class="mission-text fade-up d2">AlgoBridge Learn is the digital extension of <strong>AlgoBridge</strong> — an AI literacy initiative founded by <strong>Ayush Kumar</strong>, a Grade 12 student from Ghaziabad, India. The initiative has reached 100+ underserved students across 5 NGOs through free, in-person workshops requiring zero prior coding knowledge.</p>
-      <p class="mission-text fade-up d3">The platform was built to answer a question that kept coming up after every workshop: <em>"Where do I keep learning after today?"</em> AlgoBridge Learn is that answer — structured, free, and designed around how learning actually works rather than how it feels comfortable.</p>
-      <p class="mission-text fade-up d4">Ayush completed Harvard's CS50AI and CS50P, holds certifications from Stanford Engineering, AWS, and IBM, placed 2nd at the GSAP Global Pitching Finale, and has published independent research on AI-assisted learning on OSF and arXiv.</p>
+  <!-- Connecting callout -->
+  <div class="pullquote reveal" style="margin-top:0">
+    <p>"Both studies point to the same truth: when AI matches challenge to the individual — whether in a game or a classroom — engagement rises, failure drops, and learning compounds."</p>
+    <cite>— Ayush Kumar · AI &amp; Education Research, 2025</cite>
+  </div>
+</section>
 
-      <div class="divider"></div>
-
-      <div class="section-label fade-up">Impact so far</div>
-      <div class="section-title fade-up d1" style="font-size:1.3rem">AlgoBridge Workshop Programme</div>
-      <div class="impact-grid" style="margin-top:1.2rem">
-        <div class="chart-card fade-up d1" style="text-align:center"><div class="impact-num">100+</div><div class="impact-label">Students reached through free workshops</div></div>
-        <div class="chart-card fade-up d2" style="text-align:center"><div class="impact-num">5</div><div class="impact-label">NGOs partnered with across the programme</div></div>
-        <div class="chart-card fade-up d3" style="text-align:center"><div class="impact-num">~80%</div><div class="impact-label">Could explain algorithmic logic after one session</div></div>
-      </div>
-
-      <div class="ngo-card fade-up">
-        <div class="ngo-head">Workshop Design</div>
-        <div class="ngo-body">Workshops are designed for students aged 11–18 with zero prior coding knowledge. No jargon, no textbooks — real-world analogies, interactive decisions, and the belief that understanding AI should not be a privilege. Pre/post comprehension checks showed that before the workshop, around 20% of students could explain what an algorithm is. After a single session: roughly 80%.</div>
-      </div>
-
-      <div class="divider"></div>
-
-      <div class="section-label fade-up">Core values</div>
-      <div class="section-title fade-up d1" style="font-size:1.3rem">What guides every decision</div>
-      <div class="card-grid" style="margin-top:1.2rem">
-        <div class="card fade-up d1"><h3>Struggle is sacred</h3><p>We never shortcut the hard parts. The timer, the Socratic hints, the mistake log — all exist to protect productive difficulty, not remove it.</p></div>
-        <div class="card fade-up d2"><h3>Accessibility is non-negotiable</h3><p>Built for students who cannot afford tutors, bootcamps, or private schools. Everything is free and always will be.</p></div>
-        <div class="card fade-up d3"><h3>Evidence over intuition</h3><p>Every pedagogical choice has a citation. "I feel like this works" is not enough — we need to point to the research.</p></div>
-      </div>
-
-      <div class="divider"></div>
-
-      <div class="section-label fade-up">Connect</div>
-      <div class="section-title fade-up d1" style="font-size:1.3rem">Find Ayush's work</div>
-      <p class="fade-up d2" style="font-size:.9rem;color:var(--text2);margin-bottom:1.4rem;max-width:540px">Research, code, writing, and more — all the work that went into and around building AlgoBridge.</p>
-      <div class="card-grid">
-        <a class="link-card fade-up d1" href="https://ak3036811-gif.github.io/Main-Website/" target="_blank" rel="noopener" aria-label="Visit Ayush Kumar's website">
-          <div class="link-card-icon">🌐</div>
-          <h3>Portfolio Website</h3>
-          <p>AI Researcher &amp; Educator. Projects, credentials, AlgoBridge impact data, and published research — all in one place.</p>
-          <span class="link-url">ak3036811-gif.github.io/Main-Website/ →</span>
-        </a>
-        <a class="link-card fade-up d2" href="https://github.com/ak3036811-gif" target="_blank" rel="noopener" aria-label="Visit Ayush Kumar's GitHub">
-          <div class="link-card-icon">⚙️</div>
-          <h3>GitHub</h3>
-          <p>Open-source work — CS50AI projects, Python problem sets, adaptive difficulty experiments, and learning tools.</p>
-          <span class="link-url">github.com/ak3036811-gif →</span>
-        </a>
-        <a class="link-card fade-up d3" href="https://itsreadingtimee.blogspot.com" target="_blank" rel="noopener" aria-label="Read Ayush Kumar's blog">
-          <div class="link-card-icon">✍️</div>
-          <h3>Blog</h3>
-          <p>23+ research-backed essays on AI and education — reaching 40,000+ readers across 10+ countries.</p>
-          <span class="link-url">itsreadingtimee.blogspot.com →</span>
-        </a>
-      </div>
-
-      <div class="inline-note fade-up" style="margin-top:1.5rem">
-        AlgoBridge Learn is a student-built academic project. All curriculum is original. All claims are backed by workshop data.
-      </div>
-    </section>
-  </main>
-  <footer class="footer">
-    <span class="footer-brand">algo<span style="color:var(--accent)">/</span>bridge · learn</span>
-    <div class="footer-links">
-      <a href="https://ak3036811-gif.github.io/Main-Website/" target="_blank" rel="noopener">Ayush Kumar ↗</a>
-      <a href="https://github.com/ak3036811-gif" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://itsreadingtimee.blogspot.com" target="_blank" rel="noopener">Blog</a>
+<!-- ── PROJECTS ── -->
+<section class="section" id="projects">
+  <div class="section-eyebrow reveal">Core Work</div>
+  <div class="section-heading reveal delay-1">AI + Education Projects</div>
+  <div class="g2" style="margin-bottom:3rem">
+    <div class="project-card reveal-left">
+      <div class="project-type">Education Initiative · Ongoing</div>
+      <div class="project-name">AlgoBridge — Workshop Program</div>
+      <div class="project-desc">100+ students reached across 5 NGOs. Designed all curriculum, interactive activities, and delivery materials from scratch. Presented at GSAP Pitching Finale — placed 2nd internationally.</div>
+      <div class="project-footer"><span class="project-stack">Curriculum Design · Teaching · Public Speaking</span><div style="display:flex;align-items:center;gap:12px"><span style="font-size:11px;color:var(--green);font-weight:600">● Active</span><a class="project-link" href="https://ak3036811-gif.github.io/algobridge-learn/" target="_blank">View Site →</a></div></div>
     </div>
-  </footer>
-</div>
+    <div class="project-card reveal-right">
+      <div class="project-type">Research Blog · 7+ Articles</div>
+      <div class="project-name">AI &amp; Education Writing</div>
+      <div class="project-desc">Research-backed essays on AI in learning — covering topics from student cognition to algorithmic bias. Written for a general audience, grounded in evidence.</div>
+      <div class="project-footer"><span class="project-stack">Research · Writing · 7+ Published</span><div style="display:flex;align-items:center;gap:12px"><span style="font-size:11px;color:var(--green);font-weight:600">● Active</span><a class="project-link" href="https://itsreadingtimee.blogspot.com" target="_blank">Read Blog →</a></div></div>
+    </div>
+  </div>
 
-<!-- ══ JAVASCRIPT ══ -->
-<script>
-'use strict';
+  <div class="section-eyebrow reveal" style="margin-bottom:0.6rem">Technical Projects</div>
+  <div style="font-size:13px;color:var(--ink3);margin-bottom:1.5rem" class="reveal delay-1">Open-source work on GitHub — games, learning experiments, and CS coursework.</div>
+  <div class="g2">
+    <div class="project-card reveal-left">
+      <div class="project-type">Game Development · CS50AI</div>
+      <div class="project-name">CS50.dev — Harvard Coursework</div>
+      <div class="project-desc">12 AI projects and 9 Python problem sets from Harvard's CS50AI and CS50P — including search, optimization, machine learning, and neural networks.</div>
+      <div class="project-footer"><span class="project-stack">Python · C · SQL · AI Algorithms</span><div style="display:flex;align-items:center;gap:12px"><span style="font-size:11px;color:var(--green);font-weight:600">● Active</span><a class="project-link" href="https://github.com/ak3036811-gif/CS50.dev" target="_blank">View on GitHub →</a></div></div>
+    </div>
+    <div class="project-card reveal-right">
+      <div class="project-type">Game Development</div>
+      <div class="project-name">Neon Arcade</div>
+      <div class="project-desc">Two games built from scratch — a fast-paced space game with adaptive level progression, and a vocabulary recognition game designed to make learning through play effective.</div>
+      <div class="project-footer"><span class="project-stack">Python · Game Mechanics</span><div style="display:flex;align-items:center;gap:12px"><span style="font-size:11px;color:var(--green);font-weight:600">● Active</span><a class="project-link" href="https://ak3036811-gif.github.io/all-games-/" target="_blank">Play Games →</a></div></div>
+    </div>
+  </div>
+</section>
 
-// ── TOPIC LESSONS ────────────────────────────────────────────────────────────
-const TOPIC_LESSONS = {
-  'Variables & Types':{time:'~25 min',level:'Beginner',lang:'Python',body:`
-    <h2>What are variables?</h2>
-    <p>A variable is a named container that holds a value. Think of it like a labelled box: you put something inside, give it a name, and use that name whenever you need it.</p>
-    <div class="code-block"><span class="ck">name</span> = <span class="cs">"Riya"</span>    <span class="cm"># a string</span>
-<span class="ck">age</span> = <span class="cn">16</span>          <span class="cm"># an integer</span>
-<span class="ck">score</span> = <span class="cn">87.5</span>     <span class="cm"># a float</span>
-<span class="ck">passed</span> = <span class="co">True</span>    <span class="cm"># a boolean</span>
-<span class="co">print</span>(<span class="ck">name</span>, <span class="ck">age</span>)  <span class="cm"># → Riya 16</span></div>
-    <h2>Types</h2>
-    <p>Every value has a <strong>type</strong> — a category that tells Python what kind of thing it is and what operations make sense.</p>
-    <ul>
-      <li><strong>int</strong> — whole numbers: <code>3</code>, <code>-7</code>, <code>1000</code></li>
-      <li><strong>float</strong> — decimal numbers: <code>3.14</code>, <code>-0.5</code></li>
-      <li><strong>str</strong> — text in quotes: <code>"hello"</code>, <code>'world'</code></li>
-      <li><strong>bool</strong> — <code>True</code> or <code>False</code> only</li>
-    </ul>
-    <div class="code-block"><span class="co">print</span>(<span class="co">type</span>(<span class="cn">42</span>))      <span class="cm"># → &lt;class 'int'&gt;</span>
-<span class="co">print</span>(<span class="co">type</span>(<span class="cs">"hi"</span>))   <span class="cm"># → &lt;class 'str'&gt;</span>
-<span class="co">print</span>(<span class="co">type</span>(<span class="co">True</span>))   <span class="cm"># → &lt;class 'bool'&gt;</span></div>
-    <div class="lesson-callout">💡 <strong>Common mistake:</strong> <code>"2" + 2</code> throws a TypeError. Convert first: <code>int("2") + 2</code>. Python is strict about types.</div>
-    <h2>Try this</h2>
-    <p>Create variables for your name, age, and a favourite number. Print them in a sentence using an f-string: <code>f"My name is {name} and I am {age} years old."</code></p>
-  `},
-  'Conditionals':{time:'~30 min',level:'Beginner',lang:'Python',body:`
-    <h2>Making decisions in code</h2>
-    <p>Conditionals let your program choose what to do based on whether something is true or false. They are how code reacts to different situations.</p>
-    <div class="code-block"><span class="ck">grade</span> = <span class="cn">72</span>
-<span class="ck">if</span> <span class="ck">grade</span> >= <span class="cn">90</span>:
-    <span class="co">print</span>(<span class="cs">"A"</span>)
-<span class="ck">elif</span> <span class="ck">grade</span> >= <span class="cn">70</span>:
-    <span class="co">print</span>(<span class="cs">"B"</span>)   <span class="cm"># ← this runs</span>
-<span class="ck">else</span>:
-    <span class="co">print</span>(<span class="cs">"Below B"</span>)</div>
-    <h2>Comparison operators</h2>
-    <ul>
-      <li><code>==</code> equal to &nbsp;&nbsp;<code>!=</code> not equal to</li>
-      <li><code>&gt;</code> greater than &nbsp;&nbsp;<code>&lt;</code> less than</li>
-      <li><code>&gt;=</code> greater or equal &nbsp;&nbsp;<code>&lt;=</code> less or equal</li>
-    </ul>
-    <div class="lesson-callout">⚠️ <strong>Classic confusion:</strong> <code>=</code> assigns a value. <code>==</code> checks equality. Writing <code>if x = 5</code> is a syntax error.</div>
-    <h2>Combining conditions</h2>
-    <div class="code-block"><span class="ck">if</span> age >= <span class="cn">13</span> <span class="ck">and</span> age <= <span class="cn">19</span>:
-    <span class="co">print</span>(<span class="cs">"teenager"</span>)
-<span class="ck">if</span> score < <span class="cn">50</span> <span class="ck">or</span> absent:
-    <span class="co">print</span>(<span class="cs">"needs review"</span>)</div>
-  `},
-  'Loops':{time:'~35 min',level:'Beginner',lang:'Python',body:`
-    <h2>Repeating instructions</h2>
-    <p>A loop runs a block of code multiple times. Instead of writing <code>print("hello")</code> ten times, you write it once inside a loop.</p>
-    <h2>The for loop</h2>
-    <div class="code-block"><span class="cm"># Count from 0 to 4</span>
-<span class="ck">for</span> i <span class="ck">in</span> <span class="co">range</span>(<span class="cn">5</span>):
-    <span class="co">print</span>(i)  <span class="cm"># prints 0 1 2 3 4</span>
+<!-- ── WRITING ── -->
+<section class="section" id="writing">
+  <div class="section-eyebrow reveal">Research &amp; Essays</div>
+  <div class="section-heading reveal delay-1">Writing</div>
+  <a class="blog-item reveal" href="https://itsreadingtimee.blogspot.com/2026/04/i-studied-with-and-without-ai-for-2.html" target="_blank">
+    <div class="blog-date">Apr 2026</div>
+    <div><div class="blog-title" style="font-size:15px;font-weight:700;color:var(--purple)">★ Flagship — I Studied With and Without AI for 2 Weeks. Here's What Happened.</div><div class="blog-excerpt">A personal controlled experiment measuring comprehension, retention, and depth of understanding with and without AI assistance. Data-backed conclusions.</div></div>
+    <div class="blog-arrow">→</div>
+  </a>
+  <a class="blog-item reveal" href="https://itsreadingtimee.blogspot.com/2026/04/you-had-one-in-ten-to-power-of-twenty.html" target="_blank">
+    <div class="blog-date">Apr 2026</div>
+    <div><div class="blog-title">You had a 1 in 10²·⁶⁸⁵·⁰⁰⁰ chance of being born. And you made it.</div><div class="blog-excerpt">A meditation on existence, probability, and the most unlikely miracle in the universe.</div></div>
+    <div class="blog-arrow">→</div>
+  </a>
+  <a class="blog-item reveal" href="https://itsreadingtimee.blogspot.com/2026/03/is-ai-making-students-smarter-or-just.html" target="_blank">
+    <div class="blog-date">Mar 2026</div>
+    <div><div class="blog-title">Is AI Making Students Smarter or Just Faster?</div><div class="blog-excerpt">Speed isn't understanding. Examining what the data says about cognitive depth vs task completion speed in AI-assisted learning.</div></div>
+    <div class="blog-arrow">→</div>
+  </a>
+  <a class="blog-item reveal" href="https://itsreadingtimee.blogspot.com/2026/02/can-ai-replace-teachers-what-research.html" target="_blank">
+    <div class="blog-date">Feb 2026</div>
+    <div><div class="blog-title">Can AI Replace Teachers? What Research Actually Says</div><div class="blog-excerpt">A look at what peer-reviewed research — not headlines — says about the role of AI in formal education.</div></div>
+    <div class="blog-arrow">→</div>
+  </a>
+  <a class="blog-item reveal" href="https://itsreadingtimee.blogspot.com/2026/01/how-i-use-ai-as-tutor-without-letting.html" target="_blank">
+    <div class="blog-date">Jan 2026</div>
+    <div><div class="blog-title">How I Use AI as a Tutor Without Letting It Think for Me</div><div class="blog-excerpt">The difference between outsourcing thinking to AI versus using it as a sparring partner for your own reasoning.</div></div>
+    <div class="blog-arrow">→</div>
+  </a>
+  <a class="blog-item reveal" href="https://itsreadingtimee.blogspot.com/2026/01/using-ai-effectively-for-learning.html" target="_blank">
+    <div class="blog-date">Jan 2026</div>
+    <div><div class="blog-title">Using AI Effectively for Learning: An Oxford-Informed Perspective</div><div class="blog-excerpt">What cognitive science and Oxford research says about how AI should and shouldn't be used for learning.</div></div>
+    <div class="blog-arrow">→</div>
+  </a>
+  <a class="blog-item reveal" href="https://itsreadingtimee.blogspot.com/2026/01/artificial-intelligence-meaning-and.html" target="_blank">
+    <div class="blog-date">Jan 2026</div>
+    <div><div class="blog-title">Artificial Intelligence: Meaning and Types</div><div class="blog-excerpt">A clear breakdown of what AI actually is, the different types, and why the distinctions matter in practice.</div></div>
+    <div class="blog-arrow">→</div>
+  </a>
+  <a class="view-all-link reveal" href="https://itsreadingtimee.blogspot.com" target="_blank">View all writing →</a>
+</section>
 
-<span class="cm"># Iterate over a list</span>
-fruits = [<span class="cs">"apple"</span>, <span class="cs">"banana"</span>, <span class="cs">"mango"</span>]
-<span class="ck">for</span> fruit <span class="ck">in</span> fruits:
-    <span class="co">print</span>(fruit)</div>
-    <h2>The while loop</h2>
-    <div class="code-block">count = <span class="cn">0</span>
-<span class="ck">while</span> count < <span class="cn">5</span>:
-    <span class="co">print</span>(<span class="cs">f"count is {count}"</span>)
-    count += <span class="cn">1</span>  <span class="cm"># IMPORTANT: always update the variable</span></div>
-    <div class="lesson-callout">⚠️ <strong>Infinite loop danger:</strong> If the while condition never becomes False, the program runs forever. Always make sure something changes each iteration.</div>
-    <h2>break and continue</h2>
-    <div class="code-block"><span class="ck">for</span> i <span class="ck">in</span> <span class="co">range</span>(<span class="cn">10</span>):
-    <span class="ck">if</span> i == <span class="cn">5</span>: <span class="ck">break</span>      <span class="cm"># exit loop entirely</span>
-    <span class="ck">if</span> i % <span class="cn">2</span> == <span class="cn">0</span>: <span class="ck">continue</span>  <span class="cm"># skip this iteration</span>
-    <span class="co">print</span>(i)  <span class="cm"># prints 1, 3</span></div>
-  `},
-  'Functions':{time:'~40 min',level:'Beginner',lang:'Python',body:`
-    <h2>What is a function?</h2>
-    <p>A function is a named, reusable block of code. You define it once, then call it whenever you need it — with different inputs each time.</p>
-    <div class="code-block"><span class="ck">def</span> <span class="co">greet</span>(name):
-    <span class="ck">return</span> <span class="cs">f"Hello, {name}!"</span>
+<!-- ── CREDENTIALS ── -->
+<section class="section" id="credentials">
+  <div class="section-eyebrow reveal">Education</div>
+  <div class="section-heading reveal delay-1">Credentials</div>
+  <div class="g2 reveal" style="margin-bottom:1px">
+    <div class="cert-card-big">
+      <div class="cert-issuer-big">Harvard University · Cambridge, MA</div>
+      <div class="cert-title-big">CS50's Introduction to Artificial Intelligence with Python</div>
+      <div class="cert-meta-big">Completed 12 projects · Awarded 2026</div>
+      <a class="cert-verify-big" href="https://cs50.harvard.edu/certificates/ca4c9851-4c43-4b19-9531-727160036738" target="_blank">Verify credential →</a>
+    </div>
+    <div class="cert-card-big">
+      <div class="cert-issuer-big">Harvard University · Cambridge, MA</div>
+      <div class="cert-title-big">CS50's Introduction to Programming with Python</div>
+      <div class="cert-meta-big">9 problem sets + final project · Awarded 2026</div>
+      <a class="cert-verify-big" href="https://cs50.harvard.edu/certificates/965db1ed-410f-4d7a-9215-b9a084235abb" target="_blank">Verify credential →</a>
+    </div>
+  </div>
+  <div class="g2 reveal delay-1" style="margin-bottom:1px">
+    <div class="cert-card-big">
+      <div class="cert-issuer-big">Stanford Engineering · Center for Global &amp; Online Education</div>
+      <div class="cert-title-big">Generative AI: Technology, Business &amp; Society</div>
+      <div class="cert-meta-big">Nov–Dec 2025</div>
+    </div>
+    <div class="cert-card-big">
+      <div class="cert-issuer-big">Stanford Engineering · Center for Global &amp; Online Education</div>
+      <div class="cert-title-big">Introduction to Internet of Things</div>
+      <div class="cert-meta-big">Nov 2025–Jan 2026</div>
+    </div>
+  </div>
+  <div class="g4 reveal delay-2" style="margin-bottom:1px">
+    <div class="cert-card-big"><div class="cert-issuer-big">Amazon Web Services</div><div class="cert-title-big">Generative AI for Executives</div><div class="cert-meta-big">Sep 12, 2025</div></div>
+    <div class="cert-card-big"><div class="cert-issuer-big">Amazon Web Services</div><div class="cert-title-big">Intro to Generative AI — Art of the Possible</div><div class="cert-meta-big">Sep 10, 2025</div></div>
+    <div class="cert-card-big"><div class="cert-issuer-big">Amazon Web Services</div><div class="cert-title-big">Foundations of Prompt Engineering</div><div class="cert-meta-big">Sep 10, 2025</div></div>
+    <div class="cert-card-big"><div class="cert-issuer-big">IBM SkillsBuild</div><div class="cert-title-big">AI Literacy</div><div class="cert-meta-big">Nov 23, 2025</div></div>
+  </div>
+  <div class="g2 reveal delay-3">
+    <div class="cert-card-big">
+      <div class="cert-issuer-big">Belong Education · Virtual Global Apprenticeship</div>
+      <div class="cert-title-big">Data Science — DOT Glasses Project</div>
+      <div class="cert-meta-big">Jan 22 – Mar 4, 2026</div>
+    </div>
+    <div class="cert-card-big">
+      <div class="cert-issuer-big">Belong Education · Global Summer Apprenticeship Program</div>
+      <div class="cert-title-big">Certificate of Excellence — Pitching Finale</div>
+      <div class="cert-meta-big">Competed against international participants</div>
+      <div class="cert-award-big">🥈 2nd Place</div>
+    </div>
+  </div>
+</section>
 
-<span class="co">print</span>(<span class="co">greet</span>(<span class="cs">"Rahul"</span>))  <span class="cm"># → Hello, Rahul!</span>
-<span class="co">print</span>(<span class="co">greet</span>(<span class="cs">"Priya"</span>))  <span class="cm"># → Hello, Priya!</span></div>
-    <h2>Parameters and return values</h2>
-    <ul>
-      <li><strong>Parameters</strong> — the inputs, in parentheses when you define the function</li>
-      <li><strong>Arguments</strong> — the actual values you pass when you call it</li>
-      <li><strong>return</strong> — sends a value back. Without it, the function returns <code>None</code></li>
-    </ul>
-    <div class="code-block"><span class="ck">def</span> <span class="co">add</span>(a, b):
-    <span class="ck">return</span> a + b
+<footer>
+  <div class="footer-name">Ayush<span>.</span></div>
+  <div class="footer-links">
+    <a href="https://github.com/ak3036811-gif" target="_blank">GitHub</a>
+    <a href="https://ak3036811-gif.github.io/The-learning-gap/" target="_blank">The Learning Gap</a>
+    <a href="https://itsreadingtimee.blogspot.com" target="_blank">Blog</a>
+  </div>
+  <div class="footer-copy">© 2026 Ayush Kumar</div>
+</footer>
 
-result = <span class="co">add</span>(<span class="cn">3</span>, <span class="cn">4</span>)
-<span class="co">print</span>(result)   <span class="cm"># → 7</span></div>
-    <div class="lesson-callout">💡 <strong>Good habit:</strong> A function should do exactly one thing. If it does three things, split it into three functions. This makes debugging dramatically easier.</div>
-  `},
-  'Lists & Arrays':{time:'~35 min',level:'Beginner',lang:'Python',body:`
-    <h2>Storing multiple values</h2>
-    <p>A list holds multiple values in a single variable, in order. Access each item by its index (position), starting at 0.</p>
-    <div class="code-block">scores = [<span class="cn">85</span>, <span class="cn">92</span>, <span class="cn">78</span>, <span class="cn">95</span>, <span class="cn">88</span>]
-<span class="co">print</span>(scores[<span class="cn">0</span>])    <span class="cm"># → 85 (first)</span>
-<span class="co">print</span>(scores[-<span class="cn">1</span>])   <span class="cm"># → 88 (last)</span>
-<span class="co">print</span>(scores[<span class="cn">1</span>:<span class="cn">3</span>])  <span class="cm"># → [92, 78] (slice)</span></div>
-    <h2>Common operations</h2>
-    <div class="code-block">names = [<span class="cs">"Alice"</span>, <span class="cs">"Bob"</span>]
-names.<span class="co">append</span>(<span class="cs">"Charlie"</span>)  <span class="cm"># add to end</span>
-names.<span class="co">remove</span>(<span class="cs">"Bob"</span>)       <span class="cm"># remove by value</span>
-<span class="co">print</span>(<span class="co">len</span>(names))           <span class="cm"># → 2</span>
-<span class="co">print</span>(<span class="cs">"Alice"</span> <span class="ck">in</span> names)    <span class="cm"># → True</span></div>
-    <div class="lesson-callout">💡 Lists are ordered and mutable — you can change them after creation. This is different from tuples (immutable) and sets (unordered).</div>
-  `},
-  'Sorting Algorithms':{time:'~50 min',level:'Intermediate',lang:'Python',body:`
-    <h2>Why sorting matters</h2>
-    <p>Sorting is one of the most fundamental operations in computing. Understanding how different algorithms work — and when to choose each — is essential for writing efficient code.</p>
-    <h2>Bubble Sort — O(n²)</h2>
-    <div class="code-block"><span class="ck">def</span> <span class="co">bubble_sort</span>(arr):
-    n = <span class="co">len</span>(arr)
-    <span class="ck">for</span> i <span class="ck">in</span> <span class="co">range</span>(n):
-        <span class="ck">for</span> j <span class="ck">in</span> <span class="co">range</span>(<span class="cn">0</span>, n-i-<span class="cn">1</span>):
-            <span class="ck">if</span> arr[j] > arr[j+<span class="cn">1</span>]:
-                arr[j], arr[j+<span class="cn">1</span>] = arr[j+<span class="cn">1</span>], arr[j]
-    <span class="ck">return</span> arr</div>
-    <h2>Merge Sort — O(n log n)</h2>
-    <p>Divide the array in half recursively, sort each half, then merge. Far more efficient for large inputs than bubble sort.</p>
-    <div class="lesson-callout">💡 Python's built-in <code>sorted()</code> uses Timsort — a hybrid of merge sort and insertion sort. Understand why complexities differ even if you rarely implement sorting from scratch.</div>
-  `}
-};
-
-function getDefaultLesson(name, path) {
-  return `
-    <h2>What is ${name}?</h2>
-    <p>This topic is part of the <strong>${path}</strong> path. The full lesson covers core concepts, worked examples, and common mistakes.</p>
-    <div class="lesson-callout">💡 This is a topic preview. Head to the Workspace to start practising problems related to ${name}.</div>
-    <h2>What you will learn</h2>
-    <ul>
-      <li>The core concept and why it matters</li>
-      <li>How to recognise when to apply this technique</li>
-      <li>Common mistakes and how to avoid them</li>
-      <li>At least one worked code example</li>
-    </ul>
-    <h2>Try it yourself</h2>
-    <p>The best way to understand ${name} is to write code that uses it. Go to the Workspace and attempt a problem — use the AI tutor if stuck, but try independently for at least 5 minutes first.</p>
-  `;
-}
-
-// ── STATE ────────────────────────────────────────────────────────────────────
-const STRUGGLE_DURATION = 5 * 60;
-
-const PATHS = {
-  beginner:[
-    {id:'b0',name:'Variables & Types',state:'available'},
-    {id:'b1',name:'Conditionals',state:'locked'},
-    {id:'b2',name:'Loops',state:'locked'},
-    {id:'b3',name:'Functions',state:'locked'},
-    {id:'b4',name:'Lists & Arrays',state:'locked'},
-    {id:'b5',name:'Strings',state:'locked'},
-    {id:'b6',name:'Dictionaries',state:'locked'},
-    {id:'b7',name:'File I/O',state:'locked'},
-    {id:'b8',name:'Error Handling',state:'locked'},
-    {id:'b9',name:'Intro to OOP',state:'locked'},
-  ],
-  intermediate:[
-    {id:'i0',name:'Recursion',state:'locked'},
-    {id:'i1',name:'Sorting Algorithms',state:'locked'},
-    {id:'i2',name:'Binary Search',state:'locked'},
-    {id:'i3',name:'Stacks & Queues',state:'locked'},
-    {id:'i4',name:'Linked Lists',state:'locked'},
-    {id:'i5',name:'Trees & BSTs',state:'locked'},
-    {id:'i6',name:'Graphs & BFS/DFS',state:'locked'},
-    {id:'i7',name:'Hash Tables',state:'locked'},
-  ],
-  advanced:[
-    {id:'a0',name:'Dynamic Programming',state:'locked'},
-    {id:'a1',name:'Greedy Algorithms',state:'locked'},
-    {id:'a2',name:'Graph Optimisation',state:'locked'},
-    {id:'a3',name:'System Design',state:'locked'},
-    {id:'a4',name:'Complexity Analysis',state:'locked'},
-    {id:'a5',name:'AI/ML Foundations',state:'locked'},
-  ]
-};
-
-const APP = {
-  solved:0, mistakes:[], recentActivity:[],
-  currentTopicId:null, currentTopicPath:null,
-  timerSeconds:STRUGGLE_DURATION, timerDone:false, timerInterval:null,
-  hintLevel:0, chartsInited:false,
-  progressChartInst:null, accuracyChartInst:null
-};
-
-// ── SCROLL REVEAL ────────────────────────────────────────────────────────────
-function initReveal() {
-  const els = document.querySelectorAll('.fade-up');
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        io.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
-  els.forEach(el => io.observe(el));
-}
-
-// Rerun reveal when page changes
-function revealPage() {
-  requestAnimationFrame(() => {
-    const els = document.querySelectorAll('.page.active .fade-up');
-    els.forEach(el => el.classList.remove('visible'));
-    setTimeout(() => initReveal(), 60);
-  });
-}
-
-// ── TOPIC RENDERING ──────────────────────────────────────────────────────────
-function renderPath(pathName) {
-  const topics = PATHS[pathName];
-  const container = document.getElementById('topic-list-' + pathName);
-  container.innerHTML = '';
-  const statusMap = {done:'Completed ✓',inprogress:'In progress →',available:'Click to open',locked:'Locked'};
-
-  topics.forEach((topic, idx) => {
-    const el = document.createElement('div');
-    el.className = 'topic-item' + (topic.state !== 'locked' ? ' clickable' : ' locked');
-    if (topic.state === 'done') el.classList.add('done');
-    if (topic.state === 'inprogress') el.classList.add('inprogress');
-    el.setAttribute('tabindex', topic.state !== 'locked' ? '0' : '-1');
-    el.setAttribute('role', topic.state !== 'locked' ? 'button' : 'listitem');
-    el.setAttribute('aria-label', topic.name + ' — ' + statusMap[topic.state]);
-
-    const dot = document.createElement('div');
-    dot.className = 'topic-dot';
-    const text = document.createElement('div');
-    const nameEl = document.createElement('div');
-    nameEl.className = 'topic-name';
-    nameEl.textContent = topic.name;
-    const statusEl = document.createElement('div');
-    statusEl.className = 'topic-status';
-    statusEl.textContent = statusMap[topic.state];
-    text.appendChild(nameEl);
-    text.appendChild(statusEl);
-    el.appendChild(dot);
-    el.appendChild(text);
-
-    if (topic.state !== 'locked') {
-      el.addEventListener('click', () => openTopicLesson(pathName, idx));
-      el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openTopicLesson(pathName, idx); }});
-    }
-    container.appendChild(el);
-  });
-
-  updatePathProgress(pathName);
-  updateIntermediateLock();
-}
-
-function openTopicLesson(pathName, idx) {
-  const topic = PATHS[pathName][idx];
-  APP.currentTopicId = idx;
-  APP.currentTopicPath = pathName;
-  if (topic.state === 'available') { topic.state = 'inprogress'; renderPath(pathName); }
-
-  const lesson = TOPIC_LESSONS[topic.name];
-  document.getElementById('lesson-eyebrow').textContent = pathName.charAt(0).toUpperCase() + pathName.slice(1) + ' · Topic ' + (idx + 1);
-  document.getElementById('lesson-title').textContent = topic.name;
-  document.getElementById('lesson-time').textContent = lesson ? lesson.time : '~30 min';
-  document.getElementById('lesson-level').textContent = lesson ? lesson.level : pathName.charAt(0).toUpperCase() + pathName.slice(1);
-  document.getElementById('lesson-lang').textContent = lesson ? lesson.lang : 'Python';
-  document.getElementById('lesson-body').innerHTML = lesson ? lesson.body : getDefaultLesson(topic.name, pathName);
-  showPage('topic');
-}
-
-function completeTopic() {
-  if (APP.currentTopicPath === null || APP.currentTopicId === null) return;
-  const topic = PATHS[APP.currentTopicPath][APP.currentTopicId];
-  if (topic.state !== 'done') {
-    topic.state = 'done';
-    const nextTopic = PATHS[APP.currentTopicPath][APP.currentTopicId + 1];
-    if (nextTopic && nextTopic.state === 'locked') nextTopic.state = 'available';
-    APP.recentActivity.unshift('Completed "' + topic.name + '"');
-    renderPath(APP.currentTopicPath);
-    updateDashboard();
-  }
-}
-
-function updatePathProgress(pathName) {
-  const topics = PATHS[pathName];
-  const done = topics.filter(t => t.state === 'done').length;
-  const pct = Math.round(done / topics.length * 100);
-  const bar = document.getElementById(pathName + '-bar');
-  const badge = document.getElementById(pathName + '-badge');
-  const meta = document.getElementById(pathName + '-meta');
-  if (bar) bar.style.width = pct + '%';
-  if (badge) {
-    badge.textContent = pct + '% complete';
-    badge.className = 'badge ' + (pct === 100 ? 'badge-green' : pct > 0 ? 'badge-blue' : 'badge-amber');
-  }
-  if (meta && pathName !== 'advanced') {
-    const hrs = pathName === 'beginner' ? '~8 hrs' : '~18 hrs';
-    const lang = pathName === 'beginner' ? 'Python' : 'Python + Pseudocode';
-    meta.textContent = done + ' of ' + topics.length + ' topics completed · ' + lang + ' · ' + hrs;
-  }
-}
-
-function updateIntermediateLock() {
-  const begDone = PATHS.beginner.filter(t => t.state === 'done').length;
-  const lock = document.getElementById('int-lock');
-  if (lock) lock.style.display = begDone < 5 ? 'block' : 'none';
-}
-
-// ── DASHBOARD ────────────────────────────────────────────────────────────────
-function updateDashboard() {
-  const totalDone = Object.values(PATHS).flat().filter(t => t.state === 'done').length;
-  const solvedEl = document.getElementById('dash-solved');
-  const topicsEl = document.getElementById('dash-topics');
-  const mistakesEl = document.getElementById('dash-mistakes');
-  const actEl = document.getElementById('recent-activity');
-  if (solvedEl) solvedEl.textContent = APP.solved;
-  if (topicsEl) topicsEl.textContent = totalDone;
-  if (mistakesEl) mistakesEl.textContent = APP.mistakes.length;
-  if (actEl && APP.recentActivity.length > 0) {
-    actEl.style.fontStyle = 'normal';
-    actEl.innerHTML = APP.recentActivity.slice(0,5).map(a => `<div style="padding:3px 0;border-bottom:1px solid var(--border2);font-size:11px">· ${a}</div>`).join('');
-  }
-}
-
-function buildStreakGrid() {
-  const grid = document.getElementById('streak-grid');
-  if (!grid) return;
-  grid.innerHTML = '';
-  for (let i = 0; i < 28; i++) {
-    const d = document.createElement('div');
-    d.className = 'streak-day' + (i === 27 ? ' today' : '');
-    grid.appendChild(d);
-  }
-}
-
-function initCharts() {
-  if (APP.chartsInited) return;
-  const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
-  const textColor = isDark ? '#5C5A78' : '#9896AB';
-  const gridColor = isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.05)';
-  const accentColor = isDark ? '#7B61FF' : '#5B3FE0';
-
-  if (APP.solved > 0) {
-    document.getElementById('chart-empty-1').style.display = 'none';
-    document.getElementById('chart-wrap-1').style.display = 'block';
-    if (APP.progressChartInst) APP.progressChartInst.destroy();
-    APP.progressChartInst = new Chart(document.getElementById('progress-chart'), {
-      type:'bar',
-      data:{labels:['Wk 1','Wk 2','Wk 3','Wk 4'],datasets:[{data:[0,0,0,APP.solved],backgroundColor:accentColor+'99',borderColor:accentColor,borderWidth:1,borderRadius:4}]},
-      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:textColor},grid:{color:gridColor}},y:{ticks:{color:textColor},grid:{color:gridColor}}}}
-    });
-  }
-
-  const totalDone = Object.values(PATHS).flat().filter(t => t.state === 'done').length;
-  if (totalDone > 0) {
-    document.getElementById('chart-empty-2').style.display = 'none';
-    document.getElementById('chart-wrap-2').style.display = 'block';
-    if (APP.accuracyChartInst) APP.accuracyChartInst.destroy();
-    APP.accuracyChartInst = new Chart(document.getElementById('accuracy-chart'), {
-      type:'doughnut',
-      data:{labels:['Done','Remaining'],datasets:[{data:[totalDone, 24 - totalDone],backgroundColor:[accentColor, isDark?'#1A1A22':'#F3F2EF'],borderWidth:0}]},
-      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:textColor,font:{size:11}}}},cutout:'68%'}
-    });
-  }
-  APP.chartsInited = true;
-}
-
-// ── WORKSPACE TIMER ──────────────────────────────────────────────────────────
-function startTimer() {
-  if (APP.timerInterval) clearInterval(APP.timerInterval);
-  APP.timerSeconds = STRUGGLE_DURATION;
-  APP.timerDone = false;
-  APP.hintLevel = 0;
-
-  const display = document.getElementById('timer-display');
-  const locked = document.getElementById('hints-locked');
-  const unlocked = document.getElementById('hints-unlocked');
-  if (locked) locked.style.display = 'block';
-  if (unlocked) unlocked.style.display = 'none';
-  const h2 = document.getElementById('hint2');
-  const h3 = document.getElementById('hint3');
-  const hBtn = document.getElementById('hint-btn');
-  if (h2) h2.style.display = 'none';
-  if (h3) h3.style.display = 'none';
-  if (hBtn) hBtn.style.display = 'inline-flex';
-
-  APP.timerInterval = setInterval(() => {
-    APP.timerSeconds--;
-    if (APP.timerSeconds <= 0) {
-      APP.timerDone = true;
-      clearInterval(APP.timerInterval);
-      if (display) display.textContent = '✓ Unlocked';
-      if (locked) locked.style.display = 'none';
-      if (unlocked) unlocked.style.display = 'block';
-      return;
-    }
-    const m = Math.floor(APP.timerSeconds / 60);
-    const s = APP.timerSeconds % 60;
-    if (display) display.textContent = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
-  }, 1000);
-}
-
-function showNextHint() {
-  APP.hintLevel++;
-  const h2 = document.getElementById('hint2');
-  const h3 = document.getElementById('hint3');
-  const btn = document.getElementById('hint-btn');
-  if (APP.hintLevel === 1 && h2) h2.style.display = 'block';
-  else if (APP.hintLevel >= 2 && h3) { h3.style.display = 'block'; if (btn) btn.style.display = 'none'; }
-}
-
-function runCode() {
-  const code = document.getElementById('code-editor').value;
-  const out = document.getElementById('output-box');
-  const statuses = document.querySelectorAll('.tc-status');
-
-  const setOut = (lines) => {
-    out.innerHTML = '';
-    lines.forEach(({text, cls}) => {
-      const sp = document.createElement('span');
-      sp.className = cls;
-      sp.textContent = text;
-      out.appendChild(sp);
-      out.appendChild(document.createElement('br'));
-    });
-  };
-
-  const hasReturn = code.includes('return');
-  const hasOnlyPass = /^\s*pass\s*$/m.test(code);
-  const looksHashMap = /(\bseen\b|\bvisited\b|\bmap\b|\bdict\b|\blookup\b|\{\}|\bget\()/.test(code);
-
-  if (!hasReturn || hasOnlyPass) {
-    setOut([{text:'// Function returned None — did you add a return statement?', cls:'info'}]);
-    statuses.forEach(s => { s.textContent = 'None'; s.style.color = 'var(--amber)'; });
-    return;
-  }
-
-  setOut([{text:'[0, 1]', cls:'ok'},{text:'[1, 2]', cls:'ok'}]);
-  statuses.forEach(s => { s.textContent = '✓ pass'; s.style.color = 'var(--green)'; });
-  setTimeout(() => {
-    const extra = document.createElement('span');
-    extra.className = looksHashMap ? 'info' : 'warn';
-    extra.textContent = looksHashMap
-      ? '✓ All 3 tests passed — O(n) hash map solution detected.'
-      : '✓ All 3 tests passed — but check your time complexity: is this O(n) or O(n²)?';
-    out.appendChild(document.createElement('br'));
-    out.appendChild(extra);
-  }, 350);
-}
-
-function submitCode() {
-  runCode();
-  setTimeout(() => {
-    APP.solved++;
-    APP.recentActivity.unshift('Submitted "Two Sum" — problem complete');
-    const extra = document.createElement('span');
-    extra.className = 'info';
-    extra.textContent = '✓ Submitted and marked complete.';
-    const out = document.getElementById('output-box');
-    out.appendChild(document.createElement('br'));
-    out.appendChild(extra);
-    updateDashboard();
-  }, 700);
-}
-
-function logMistake() {
-  const m = prompt('Describe the misconception or mistake you noticed:');
-  if (m && m.trim()) {
-    APP.mistakes.unshift(m.trim());
-    APP.recentActivity.unshift('Logged mistake: ' + m.trim().slice(0, 40));
-    const display = document.getElementById('mistake-log-display');
-    if (display) {
-      display.style.fontStyle = 'normal';
-      display.innerHTML = '';
-      APP.mistakes.slice(0, 3).forEach(e => {
-        const div = document.createElement('div');
-        div.style.cssText = 'padding:4px 0;border-bottom:1px solid var(--border2);font-size:.83rem;color:var(--text2)';
-        div.textContent = '· ' + e;
-        display.appendChild(div);
-      });
-    }
-    updateDashboard();
-  }
-}
-
-// ── NAVIGATION ───────────────────────────────────────────────────────────────
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  const target = document.getElementById('page-' + id);
-  if (!target) return;
-  target.classList.add('active');
-  target.classList.remove('page-enter');
-  void target.offsetWidth; // force reflow
-  target.classList.add('page-enter');
-
-  const map = {home:0,paths:1,workspace:2,tutor:3,dashboard:4,research:5,about:6};
-  document.querySelectorAll('#nav-links-desktop .nav-link').forEach((l, i) => {
-    l.classList.toggle('active', i === map[id]);
-  });
-
-  if (id === 'workspace') startTimer();
-  if (id === 'dashboard') { initCharts(); updateDashboard(); }
-  if (id === 'paths') { renderPath('beginner'); renderPath('intermediate'); renderPath('advanced'); }
-  window.scrollTo({top:0, behavior:'smooth'});
-
-  setTimeout(revealPage, 50);
-}
-
-function switchPath(name, btn) {
-  document.querySelectorAll('.path-tab').forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
-  btn.classList.add('active');
-  btn.setAttribute('aria-selected','true');
-  ['beginner','intermediate','advanced'].forEach(p => {
-    const el = document.getElementById('path-' + p);
-    if (el) el.style.display = p === name ? 'block' : 'none';
-  });
-}
-
-function toggleMobileNav() {
-  const nav = document.getElementById('mobile-nav');
-  const btn = document.getElementById('ham-btn');
-  const open = nav.classList.toggle('open');
-  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-}
-
-let isLight = true;
-function toggleTheme() {
-  isLight = !isLight;
-  document.documentElement.setAttribute('data-theme', isLight ? '' : 'dark');
-  if (APP.chartsInited) { APP.chartsInited = false; initCharts(); }
-}
-
-// ── NAV SHADOW ON SCROLL ─────────────────────────────────────────────────────
-window.addEventListener('scroll', () => {
-  document.getElementById('main-nav').classList.toggle('scrolled', window.scrollY > 10);
-}, { passive: true });
-
-// ── INIT ─────────────────────────────────────────────────────────────────────
-renderPath('beginner');
-renderPath('intermediate');
-renderPath('advanced');
-buildStreakGrid();
-initReveal();
-</script>
-
-<!-- ══ AI TUTOR PAGE ══ -->
-<div id="page-tutor" class="page" role="main">
+<!-- ── ALGOBRIDGE TUTOR WIDGET ── -->
 <style>
-.tutor-page{max-width:780px;margin:0 auto;padding:2rem 2.5rem;height:calc(100vh - 61px);display:flex;flex-direction:column;gap:0}
-.tutor-page-header{padding-bottom:1.25rem;border-bottom:1px solid var(--border);flex-shrink:0}
-.tutor-page-eyebrow{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem}
-.tutor-page-title{font-family:var(--serif);font-size:1.9rem;font-weight:600;color:var(--text);margin-bottom:.3rem}
-.tutor-page-sub{font-size:.88rem;color:var(--text2);line-height:1.7}
-.tutor-topics{display:flex;flex-wrap:wrap;gap:6px;padding:12px 0;border-bottom:1px solid var(--border2);flex-shrink:0}
-.tutor-topic-pill{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:500;border:1px solid var(--border);background:var(--bg2);color:var(--text3);cursor:pointer;transition:all .15s;font-family:var(--sans)}
-.tutor-topic-pill:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
-.tutor-chat-area{flex:1;overflow-y:auto;padding:20px 0;display:flex;flex-direction:column;gap:14px;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
-.tutor-chat-area::-webkit-scrollbar{width:3px}
-.tutor-chat-area::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-.tc-msg{display:flex;gap:10px;max-width:680px;animation:pageIn .25s ease}
-.tc-msg.user{align-self:flex-end;flex-direction:row-reverse}
-.tc-msg.ai{align-self:flex-start}
-.tc-av{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:2px}
-.tc-av.ai{background:var(--accent);color:#fff;font-family:var(--serif)}
-.tc-av.user{background:var(--bg3);border:1px solid var(--border);color:var(--text3);font-size:12px}
-.tc-bubble{padding:11px 15px;border-radius:12px;font-size:13.5px;line-height:1.7;max-width:560px}
-.tc-msg.ai .tc-bubble{background:var(--bg2);border:1px solid var(--border);border-radius:3px 12px 12px 12px;color:var(--text)}
-.tc-msg.user .tc-bubble{background:var(--accent);color:#fff;border-radius:12px 3px 12px 12px}
-.tc-starters{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-.tc-starter{padding:5px 11px;border:1px solid var(--border);border-radius:20px;font-size:11px;color:var(--text3);background:transparent;cursor:pointer;transition:all .15s;font-family:var(--sans)}
-.tc-starter:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
-.tutor-input-bar{border-top:1px solid var(--border);padding-top:14px;display:flex;gap:10px;align-items:flex-end;flex-shrink:0}
-.tutor-input-bar textarea{flex:1;background:var(--bg2);border:1.5px solid var(--border);border-radius:12px;padding:10px 14px;font-size:13.5px;font-family:var(--sans);color:var(--text);resize:none;outline:none;min-height:42px;max-height:110px;line-height:1.55;transition:border-color .15s}
-.tutor-input-bar textarea:focus{border-color:var(--accent)}
-.tutor-input-bar textarea::placeholder{color:var(--text3)}
-.tc-send{width:40px;height:40px;border-radius:10px;background:var(--accent);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s,transform .15s}
-.tc-send:hover{background:var(--accent2);transform:translateY(-1px)}
-.tc-send:disabled{opacity:.4;cursor:not-allowed;transform:none}
-.tc-send svg{width:15px;height:15px;fill:#fff}
-.tutor-footer-note{text-align:center;font-size:10px;color:var(--text3);font-family:var(--mono);margin-top:8px;letter-spacing:.04em}
-@media(max-width:700px){
-  .tutor-page{padding:1rem;height:calc(100vh - 61px)}
-  .tc-bubble{font-size:13px;padding:9px 12px}
-  .tc-msg{max-width:100%}
-  .tutor-input-bar textarea{font-size:13px}
-}
-@media(max-width:480px){
-  .tutor-page{padding:.75rem}
-  .tutor-page-title{font-size:1.4rem}
-  .tutor-page-sub{font-size:.82rem}
-  .tc-av{width:26px;height:26px;font-size:10px;border-radius:7px}
-  .tc-bubble{max-width:calc(100vw - 90px);font-size:12.5px}
-  .tc-send{width:36px;height:36px;border-radius:8px}
-}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.tutor-fab{position:fixed;bottom:28px;right:28px;z-index:999;width:56px;height:56px;border-radius:50%;background:var(--purple);border:none;cursor:pointer;box-shadow:0 4px 20px rgba(79,53,216,0.4);display:flex;align-items:center;justify-content:center;transition:transform 0.2s,box-shadow 0.2s;font-size:22px}
+.tutor-fab:hover{transform:scale(1.08);box-shadow:0 6px 28px rgba(79,53,216,0.5)}
+.tutor-fab-label{position:absolute;bottom:64px;right:0;background:var(--ink);color:#fff;font-size:11px;font-weight:600;padding:5px 10px;border-radius:4px;white-space:nowrap;opacity:0;transform:translateY(4px);transition:all 0.2s;pointer-events:none;letter-spacing:0.04em}
+.tutor-fab:hover .tutor-fab-label{opacity:1;transform:translateY(0)}
+.tutor-modal{position:fixed;bottom:96px;right:28px;z-index:998;width:360px;height:520px;background:var(--white);border:1px solid var(--border);border-radius:16px;box-shadow:0 16px 60px rgba(0,0,0,0.15);display:none;flex-direction:column;overflow:hidden;animation:fadeUp 0.25s ease}
+.tutor-header{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;background:var(--bg)}
+.tutor-av{width:34px;height:34px;border-radius:10px;background:var(--purple);display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Playfair Display',serif;font-size:13px;font-weight:700}
+.tutor-hinfo{flex:1}
+.tutor-hname{font-size:13px;font-weight:600;color:var(--ink)}
+.tutor-hsub{font-size:11px;color:var(--ink3);display:flex;align-items:center;gap:5px}
+.tutor-dot{width:6px;height:6px;border-radius:50%;background:#22c55e}
+.tutor-close{background:none;border:none;cursor:pointer;font-size:18px;color:var(--ink3);padding:2px 6px;border-radius:4px;transition:background 0.15s}
+.tutor-close:hover{background:var(--surface);color:var(--ink)}
+.tutor-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.tutor-starters{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.tutor-starter{padding:5px 10px;border:1px solid var(--border);border-radius:20px;font-size:11px;color:var(--ink3);background:transparent;cursor:pointer;transition:all 0.15s;font-family:'Inter',sans-serif}
+.tutor-starter:hover{border-color:var(--purple);color:var(--purple);background:var(--purple-soft)}
+.tutor-input-row{padding:12px;border-top:1px solid var(--border);display:flex;gap:8px;align-items:flex-end;background:var(--bg)}
+.tutor-input-row textarea{flex:1;background:var(--white);border:1px solid var(--border);border-radius:10px;padding:8px 12px;font-size:13px;font-family:'Inter',sans-serif;color:var(--ink);resize:none;outline:none;min-height:36px;max-height:90px;line-height:1.5;transition:border-color 0.15s}
+.tutor-input-row textarea:focus{border-color:var(--purple)}
+.tutor-input-row textarea::placeholder{color:var(--ink3)}
+.tutor-send{width:34px;height:34px;border-radius:8px;background:var(--purple);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background 0.15s}
+.tutor-send:hover{background:#3d28b0}
+.tutor-send:disabled{opacity:0.4;cursor:not-allowed}
+.tutor-send svg{width:14px;height:14px;fill:#fff}
+@media(max-width:500px){.tutor-modal{width:calc(100vw - 32px);right:16px;bottom:88px}}
 </style>
 
-<div class="tutor-page">
-  <div class="tutor-page-header fade-up">
-    <div class="tutor-page-eyebrow">🧠 AI Literacy · Free for Everyone</div>
-    <div class="tutor-page-title">AlgoBridge Tutor</div>
-    <div class="tutor-page-sub">Ask anything about AI, algorithms, or technology. No prior knowledge needed — ever. The tutor guides your thinking rather than replacing it.</div>
-  </div>
+<button class="tutor-fab" onclick="toggleTutor()" title="AlgoBridge Tutor">
+  🧠
+  <span class="tutor-fab-label">Ask AlgoBridge Tutor</span>
+</button>
 
-  <div class="tutor-topics">
-    <span class="tutor-topic-pill" onclick="tcAsk('What is an algorithm? Use a simple real-life example.')">⚙️ Algorithms</span>
-    <span class="tutor-topic-pill" onclick="tcAsk('What is AI bias and why does it matter?')">⚖️ AI Bias</span>
-    <span class="tutor-topic-pill" onclick="tcAsk('How do search engines like Google decide what to show me?')">🔍 Search Systems</span>
-    <span class="tutor-topic-pill" onclick="tcAsk('How does AI make decisions? Give me a real example.')">🤖 AI Decisions</span>
-    <span class="tutor-topic-pill" onclick="tcAsk('What is machine learning in simple terms?')">📈 Machine Learning</span>
-    <span class="tutor-topic-pill" onclick="tcAsk('What is data privacy and why should I care?')">🔒 Data Privacy</span>
-    <span class="tutor-topic-pill" onclick="tcAsk('How does YouTube or Instagram decide what to recommend?')">📱 Recommendations</span>
-    <span class="tutor-topic-pill" onclick="tcAsk('What is the difference between AI, ML, and deep learning?')">🧠 AI vs ML</span>
+<div class="tutor-modal" id="tutor-modal">
+  <div class="tutor-header">
+    <div class="tutor-av">AB</div>
+    <div class="tutor-hinfo">
+      <div class="tutor-hname">AlgoBridge Tutor</div>
+      <div class="tutor-hsub"><span class="tutor-dot"></span> AI Literacy · Free for Everyone</div>
+    </div>
+    <button class="tutor-close" onclick="toggleTutor()">×</button>
   </div>
-
-  <div class="tutor-chat-area" id="tc-messages">
-    <div class="tc-msg ai">
-      <div class="tc-av ai">AB</div>
-      <div>
-        <div class="tc-bubble">
-          Hi! I'm the AlgoBridge Tutor — built to make AI and algorithms accessible to everyone. I won't just give you answers; I'll guide your thinking. What would you like to explore today?
-        </div>
-        <div class="tc-starters">
-          <button class="tc-starter" onclick="tcAsk('What is an algorithm? Explain simply.')">What is an algorithm?</button>
-          <button class="tc-starter" onclick="tcAsk('How is AI biased? Give me a real example.')">How is AI biased?</button>
-          <button class="tc-starter" onclick="tcAsk('Can AI ever be wrong or unfair?')">Can AI be wrong?</button>
-          <button class="tc-starter" onclick="tcAsk('How does Google rank search results?')">How does Google rank results?</button>
-        </div>
+  <div class="tutor-messages" id="tutor-messages">
+    <div style="align-self:flex-start;max-width:90%">
+      <div style="padding:10px 14px;border-radius:3px 12px 12px 12px;background:var(--white);border:1px solid var(--border);font-size:13px;line-height:1.65;color:var(--ink)">
+        Hi! I'm the AlgoBridge Tutor 👋 I teach AI literacy — ask me anything about algorithms, AI bias, search systems, or how AI makes decisions.
+      </div>
+      <div class="tutor-starters">
+        <button class="tutor-starter" onclick="document.getElementById('tutor-input').value=this.innerText;tutorSend()">What is an algorithm?</button>
+        <button class="tutor-starter" onclick="document.getElementById('tutor-input').value=this.innerText;tutorSend()">How is AI biased?</button>
+        <button class="tutor-starter" onclick="document.getElementById('tutor-input').value=this.innerText;tutorSend()">How does Google rank results?</button>
       </div>
     </div>
   </div>
-
-  <div class="tutor-input-bar">
-    <textarea id="tc-input" placeholder="Ask anything about AI, algorithms, or technology..." rows="1"
-      onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();tcSend()}"
-      oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,110)+'px'"></textarea>
-    <button class="tc-send" id="tc-send-btn" onclick="tcSend()">
+  <div class="tutor-input-row">
+    <textarea id="tutor-input" placeholder="Ask anything about AI..." rows="1" onkeydown="tutorKey(event)" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,90)+'px'"></textarea>
+    <button class="tutor-send" id="tutor-send" onclick="tutorSend()">
       <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
     </button>
   </div>
-  <div class="tutor-footer-note">Free to use · No sign-up · Built by AlgoBridge for students everywhere</div>
-</div>
 </div>
 
 <script>
-// ── ALGOBRIDGE TUTOR ──
-const TC_SYSTEM = `You are AlgoBridge Tutor — a friendly AI literacy educator built by AlgoBridge, a nonprofit founded by Ayush Kumar that teaches algorithms, AI bias, search systems, and AI decision-making to underserved students.
+// ── Scroll-triggered reveal ──
+// Only animate elements that are BELOW the initial viewport
+const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+const FOLD = window.innerHeight;
+revealEls.forEach(el => {
+  const rect = el.getBoundingClientRect();
+  if (rect.top > FOLD + 40) {
+    // Below fold: hide it, animate it in on scroll
+    el.classList.add('will-animate');
+  }
+  // Above fold: leave visible, no animation needed
+});
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+revealEls.forEach(el => {
+  if (el.classList.contains('will-animate')) io.observe(el);
+});
 
-Your teaching philosophy:
-- Start with a simple, relatable real-world example before any technical term
-- Guide the student's thinking — ask follow-up questions ~30% of the time
-- Be warm, encouraging, never condescending
-- Keep responses concise and digestible
-- Use examples from everyday life (food delivery, YouTube, cricket, school, maps)
-- Connect topics to social impact and ethics when relevant
-- Use **bold** for key terms when first introduced
+// ── Nav shadow on scroll ──
+const nav = document.getElementById('main-nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 20);
+}, { passive: true });
 
-You are free to use — no cost, no sign-up — because AlgoBridge believes every student deserves to understand the technology shaping their world.`;
+// ── AlgoBridge Tutor Chat ──
+const TUTOR_SYSTEM = `You are AlgoBridge Tutor — a friendly AI literacy educator built by AlgoBridge, a nonprofit founded by Ayush Kumar to teach algorithms, AI bias, search systems, and AI decision-making to underserved students. Be warm, clear, and use simple real-world examples. Keep responses concise. Use **bold** for key terms.`;
 
-let tcMsgs = [];
-let tcBusy = false;
+let tutorMessages = [];
+let tutorLoading = false;
 
-function tcAsk(text) {
-  document.getElementById('tc-input').value = text;
-  tcSend();
+function toggleTutor() {
+  const modal = document.getElementById('tutor-modal');
+  const isOpen = modal.style.display === 'flex';
+  modal.style.display = isOpen ? 'none' : 'flex';
+  if (!isOpen) document.getElementById('tutor-input').focus();
 }
 
-function tcFmt(text) {
-  return text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+function tutorKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); tutorSend(); }
 }
 
-function tcAdd(role, html) {
-  const box = document.getElementById('tc-messages');
-  const wrap = document.createElement('div');
-  wrap.className = `tc-msg ${role}`;
+function tutorFormat(text) {
+  return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+}
+
+function tutorAddMsg(role, text) {
+  const box = document.getElementById('tutor-messages');
+  const d = document.createElement('div');
+  d.style.cssText = `display:flex;gap:8px;${role==='user'?'flex-direction:row-reverse;align-self:flex-end':'align-self:flex-start'};max-width:85%;animation:fadeUp 0.25s ease`;
   const av = document.createElement('div');
-  av.className = `tc-av ${role}`;
-  av.textContent = role==='ai' ? 'AB' : '👤';
+  av.style.cssText = `width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;margin-top:2px;${role==='user'?'background:var(--surface);border:1px solid var(--border);color:var(--ink3)':'background:var(--purple);color:#fff;font-family:\'Playfair Display\',serif'}`;
+  av.textContent = role==='user'?'You':'AB';
   const bub = document.createElement('div');
-  bub.className = 'tc-bubble';
-  bub.innerHTML = html;
-  wrap.appendChild(av);
-  wrap.appendChild(bub);
-  box.appendChild(wrap);
+  bub.style.cssText = `padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.65;${role==='user'?'background:var(--ink);color:#fff;border-radius:12px 3px 12px 12px':'background:var(--white);border:1px solid var(--border);border-radius:3px 12px 12px 12px;color:var(--ink)'}`;
+  bub.innerHTML = tutorFormat(text);
+  d.appendChild(av); d.appendChild(bub);
+  box.appendChild(d);
   box.scrollTop = box.scrollHeight;
-  return bub;
+  return d;
 }
 
-async function tcSend() {
-  const inp = document.getElementById('tc-input');
-  const btn = document.getElementById('tc-send-btn');
+async function tutorSend() {
+  const inp = document.getElementById('tutor-input');
+  const btn = document.getElementById('tutor-send');
   const text = inp.value.trim();
-  if (!text || tcBusy) return;
-  tcBusy = true; btn.disabled = true;
-  inp.value = ''; inp.style.height = 'auto';
+  if (!text || tutorLoading) return;
+  tutorLoading = true; btn.disabled = true;
+  inp.value = '';
+  tutorAddMsg('user', text);
+  tutorMessages.push({role:'user', content:text});
 
-  tcAdd('user', tcFmt(text));
-  tcMsgs.push({role:'user', content:text});
-
-  const typingBub = tcAdd('ai', '<span style="opacity:.4;font-family:var(--mono)">···</span>');
+  // typing
+  const typing = tutorAddMsg('ai', '<span style="opacity:.5">···</span>');
 
   try {
     const res = await fetch('https://algobridge-tutor.ak3036811.workers.dev', {
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({model:'claude-sonnet-4-20250514', max_tokens:900, system:TC_SYSTEM, messages:tcMsgs})
+      body: JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:800,system:TUTOR_SYSTEM,messages:tutorMessages})
     });
     const data = await res.json();
-    const reply = data.content?.map(b=>b.text||'').join('') || "Something went wrong — please try again!";
-    typingBub.innerHTML = tcFmt(reply);
-    tcMsgs.push({role:'assistant', content:reply});
+    typing.remove();
+    const reply = data.content?.map(b=>b.text||'').join('') || "Sorry, something went wrong. Try again!";
+    tutorMessages.push({role:'assistant', content:reply});
+    tutorAddMsg('ai', reply);
   } catch {
-    typingBub.innerHTML = "Connection issue — please try again.";
+    typing.remove();
+    tutorAddMsg('ai', "Connection issue — please try again.");
   }
-
-  document.getElementById('tc-messages').scrollTop = 99999;
-  tcBusy = false; btn.disabled = false; inp.focus();
+  tutorLoading = false; btn.disabled = false; inp.focus();
 }
-</script>
 
+
+// Learning Gap canvas animation
+(function(){
+  var canvas=document.getElementById("lg-canvas");
+  if(!canvas)return;
+  var ctx=canvas.getContext("2d");
+  var w,h,particles=[],frame=0;
+  function resize(){w=canvas.width=canvas.offsetWidth;h=canvas.height=canvas.offsetHeight;}
+  function Particle(){
+    this.reset=function(){this.x=Math.random()*w;this.y=Math.random()*h;this.vx=(Math.random()-0.5)*0.4;this.vy=(Math.random()-0.5)*0.4;this.size=Math.random()*2+0.5;this.alpha=Math.random()*0.6+0.1;this.hue=240+Math.random()*60;};
+    this.reset();
+    this.update=function(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>w||this.y<0||this.y>h)this.reset();};
+    this.draw=function(){ctx.beginPath();ctx.arc(this.x,this.y,this.size,0,Math.PI*2);ctx.fillStyle="hsla("+this.hue+",80%,70%,"+this.alpha+")";ctx.fill();};
+  }
+  resize();
+  for(var i=0;i<60;i++)particles.push(new Particle());
+  function loop(){
+    ctx.clearRect(0,0,w,h);frame++;
+    ctx.beginPath();ctx.moveTo(0,h/2);
+    for(var x=0;x<=w;x+=4){var y=h/2+Math.sin(x/w*Math.PI*4+frame*0.012)*h*0.1+Math.sin(x/w*Math.PI*7+frame*0.018)*h*0.05;ctx.lineTo(x,y);}
+    ctx.strokeStyle="hsla(260,70%,65%,0.3)";ctx.lineWidth=1.2;ctx.stroke();
+    particles.forEach(function(p){p.update();p.draw();});
+    requestAnimationFrame(loop);
+  }
+  window.addEventListener("resize",resize);
+  loop();
+})();
+
+// ── Animate score bars when chart scrolls into view ──
+const chartObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting && e.target.dataset.animated === 'false') {
+      e.target.dataset.animated = 'true';
+      const bars = e.target.querySelectorAll('.score-bar');
+      bars.forEach(bar => {
+        const w = bar.style.getPropertyValue('--w') || bar.getAttribute('style').match(/--w:([^;]+)/)?.[1] || '100%';
+        bar.style.setProperty('--target-w', w);
+        bar.style.width = w;
+        bar.style.transform = 'scaleX(0)';
+        requestAnimationFrame(() => {
+          bar.style.transform = 'scaleX(1)';
+        });
+      });
+    }
+  });
+}, { threshold: 0.4 });
+document.querySelectorAll('.score-chart').forEach(c => chartObserver.observe(c));
+</script>
 </body>
+</html>
