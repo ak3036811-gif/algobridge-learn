@@ -1908,10 +1908,8 @@ async function tcSend() {
 
 <script>
 (function() {
-  // CountAPI namespace — unique to your site
-  const NAMESPACE = 'algobridge-learn';
-  const KEY = 'pageviews';
-  const BASE = 'https://api.countapi.xyz';
+  const NAMESPACE = 'ak3036811-algobridge';
+  const KEY = 'visits';
 
   function animateCount(el, from, to, duration) {
     const start = performance.now();
@@ -1919,7 +1917,6 @@ async function tcSend() {
     function step(now) {
       const elapsed = now - start;
       const progress = Math.min(elapsed / duration, 1);
-      // Ease out expo
       const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
       const current = Math.round(from + diff * ease);
       el.textContent = current.toLocaleString();
@@ -1931,25 +1928,24 @@ async function tcSend() {
   function showBadge(count) {
     const badge = document.getElementById('visit-badge');
     const countEl = document.getElementById('visit-count');
-    // Animate number from ~90% of count upward
     const startFrom = Math.max(0, count - Math.ceil(count * 0.08));
     badge.style.opacity = '1';
     badge.style.transform = 'translateY(0)';
     animateCount(countEl, startFrom, count, 1800);
   }
 
-  // Hit the counter (increments on each visit) then show
-  fetch(`${BASE}/hit/${NAMESPACE}/${KEY}`)
+  // Using counterapi.dev — free and working
+  fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${KEY}/up`)
     .then(r => r.json())
     .then(data => {
-      showBadge(data.value || 1);
+      const count = data.count || data.value || 1;
+      showBadge(count);
     })
     .catch(() => {
-      // Fallback: just show badge with a dash if API fails
       const badge = document.getElementById('visit-badge');
       badge.style.opacity = '1';
       badge.style.transform = 'translateY(0)';
-      document.getElementById('visit-count').textContent = '—';
+      document.getElementById('visit-count').textContent = '?';
     });
 })();
 </script>
