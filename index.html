@@ -1478,6 +1478,11 @@ function completeTopic() {
     const nextTopic = PATHS[APP.currentTopicPath][APP.currentTopicId + 1];
     if (nextTopic && nextTopic.state === 'locked') nextTopic.state = 'available';
     APP.recentActivity.unshift('Completed "' + topic.name + '"');
+    // Increment completed lessons counter
+    const doneCount = parseInt(localStorage.getItem('ab_lessons_done') || '0') + 1;
+    localStorage.setItem('ab_lessons_done', doneCount);
+    const doneEl = document.getElementById('completed-count');
+    if (doneEl) doneEl.textContent = doneCount;
     renderPath(APP.currentTopicPath);
     updateDashboard();
     updateIntermediateLock();
@@ -1987,6 +1992,37 @@ async function tcSend() {
   </span>
 </div>
 
+<!-- Completed lessons badge -->
+<div id="completed-badge" style="
+  background:#fff;
+  border:1.5px solid rgba(91,63,224,0.18);
+  border-radius:999px;
+  padding:10px 18px 10px 14px;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  box-shadow:0 4px 24px rgba(91,63,224,0.13), 0 1px 4px rgba(0,0,0,0.07);
+  font-family:'Syne',sans-serif;
+  cursor:default;
+  user-select:none;
+">
+  <span style="
+    width:28px;height:28px;
+    background:linear-gradient(135deg,#5B3FE0,#7B6AFF);
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  ">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+    </svg>
+  </span>
+  <span style="display:flex;flex-direction:column;line-height:1.2;">
+    <span id="completed-count" style="font-size:15px;font-weight:700;color:#5B3FE0;letter-spacing:-0.3px;">0</span>
+    <span style="font-size:10px;font-weight:500;color:#9896AB;text-transform:uppercase;letter-spacing:0.5px;">lessons done</span>
+  </span>
+</div>
+
 <!-- Session timer badge -->
 <div id="session-badge" style="
   background:#fff;
@@ -2054,6 +2090,11 @@ async function tcSend() {
     const s = elapsed % 60;
     timerEl.textContent = m + ':' + String(s).padStart(2, '0');
   }, 1000);
+
+  // ── COMPLETED LESSONS COUNT ──
+  const savedDone = parseInt(localStorage.getItem('ab_lessons_done') || '0');
+  const doneEl = document.getElementById('completed-count');
+  if (doneEl) doneEl.textContent = savedDone;
 
   // ── VISITOR COUNT (existing) ──
   const SITE = 'ak3036811-gif.github.io%2Falgobridge-learn';
