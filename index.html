@@ -823,7 +823,7 @@ nav{background:rgba(250,250,248,0.9)}
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;flex-wrap:wrap;gap:8px">
           <div>
             <strong style="font-size:14px;color:var(--text)">Beginner — Foundations of Programming</strong>
-            <div style="font-size:12px;color:var(--text3);margin-top:3px;font-family:var(--mono)" id="beginner-meta">0 of 10 topics completed · Python · ~8 hrs</div>
+            <div style="font-size:12px;color:var(--text3);margin-top:3px;font-family:var(--mono)" id="beginner-meta">0 of 14 topics completed · Python · ~12 hrs</div>
           </div>
           <div style="text-align:right">
             <div class="badge badge-amber" id="beginner-badge">0% complete</div>
@@ -837,7 +837,7 @@ nav{background:rgba(250,250,248,0.9)}
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;flex-wrap:wrap;gap:8px">
           <div>
             <strong style="font-size:14px;color:var(--text)">Intermediate — Algorithms &amp; Data Structures</strong>
-            <div style="font-size:12px;color:var(--text3);margin-top:3px;font-family:var(--mono)" id="intermediate-meta">0 of 8 topics completed · Python + Pseudocode · ~18 hrs</div>
+            <div style="font-size:12px;color:var(--text3);margin-top:3px;font-family:var(--mono)" id="intermediate-meta">0 of 15 topics completed · Python + Pseudocode · ~22 hrs</div>
           </div>
           <div style="text-align:right">
             <div class="badge badge-amber" id="intermediate-badge">0% complete</div>
@@ -1317,27 +1317,45 @@ const PATHS = {
     {id:'b4',name:'Lists & Arrays',state:'locked'},
     {id:'b5',name:'Strings',state:'locked'},
     {id:'b6',name:'Dictionaries',state:'locked'},
-    {id:'b7',name:'File I/O',state:'locked'},
-    {id:'b8',name:'Error Handling',state:'locked'},
-    {id:'b9',name:'Intro to OOP',state:'locked'},
+    {id:'b7',name:'Sets & Tuples',state:'locked'},
+    {id:'b8',name:'List Comprehensions',state:'locked'},
+    {id:'b9',name:'File I/O',state:'locked'},
+    {id:'b10',name:'Error Handling',state:'locked'},
+    {id:'b11',name:'Modules & Imports',state:'locked'},
+    {id:'b12',name:'Intro to OOP',state:'locked'},
+    {id:'b13',name:'Basic Recursion Intro',state:'locked'},
   ],
   intermediate:[
-    {id:'i0',name:'Recursion',state:'locked'},
+    {id:'i0',name:'Recursion Deep Dive',state:'locked'},
     {id:'i1',name:'Sorting Algorithms',state:'locked'},
-    {id:'i2',name:'Binary Search',state:'locked'},
-    {id:'i3',name:'Stacks & Queues',state:'locked'},
-    {id:'i4',name:'Linked Lists',state:'locked'},
-    {id:'i5',name:'Trees & BSTs',state:'locked'},
-    {id:'i6',name:'Graphs & BFS/DFS',state:'locked'},
-    {id:'i7',name:'Hash Tables',state:'locked'},
+    {id:'i2',name:'Merge Sort & Quick Sort',state:'locked'},
+    {id:'i3',name:'Binary Search',state:'locked'},
+    {id:'i4',name:'Two Pointers Technique',state:'locked'},
+    {id:'i5',name:'Sliding Window',state:'locked'},
+    {id:'i6',name:'Stacks & Queues',state:'locked'},
+    {id:'i7',name:'Linked Lists',state:'locked'},
+    {id:'i8',name:'Trees & BSTs',state:'locked'},
+    {id:'i9',name:'Heaps & Priority Queues',state:'locked'},
+    {id:'i10',name:'Graphs & BFS/DFS',state:'locked'},
+    {id:'i11',name:'Hash Tables',state:'locked'},
+    {id:'i12',name:'Tries (Prefix Trees)',state:'locked'},
+    {id:'i13',name:'Backtracking',state:'locked'},
+    {id:'i14',name:'Bit Manipulation',state:'locked'},
   ],
   advanced:[
     {id:'a0',name:'Dynamic Programming',state:'locked'},
-    {id:'a1',name:'Greedy Algorithms',state:'locked'},
-    {id:'a2',name:'Graph Optimisation',state:'locked'},
-    {id:'a3',name:'System Design',state:'locked'},
-    {id:'a4',name:'Complexity Analysis',state:'locked'},
-    {id:'a5',name:'AI/ML Foundations',state:'locked'},
+    {id:'a1',name:'Divide & Conquer',state:'locked'},
+    {id:'a2',name:'Greedy Algorithms',state:'locked'},
+    {id:'a3',name:'Graph Optimisation',state:'locked'},
+    {id:'a4',name:'Shortest Path Algorithms',state:'locked'},
+    {id:'a5',name:'Topological Sort',state:'locked'},
+    {id:'a6',name:'Union Find',state:'locked'},
+    {id:'a7',name:'Segment Trees',state:'locked'},
+    {id:'a8',name:'Complexity Analysis',state:'locked'},
+    {id:'a9',name:'NP-Completeness',state:'locked'},
+    {id:'a10',name:'System Design',state:'locked'},
+    {id:'a11',name:'Memory Management',state:'locked'},
+    {id:'a12',name:'AI/ML Foundations',state:'locked'},
   ]
 };
 
@@ -1399,6 +1417,12 @@ function renderPath(pathName) {
     statusEl.textContent = statusMap[topic.state];
     text.appendChild(nameEl);
     text.appendChild(statusEl);
+    const viewCount = document.createElement('div');
+    viewCount.className = 'topic-views';
+    viewCount.id = 'views-' + topic.id;
+    viewCount.style.cssText = 'font-size:10px;color:var(--text3);font-family:var(--mono);margin-top:4px;display:flex;align-items:center;gap:3px;';
+    viewCount.innerHTML = '<span style="opacity:0.5">👁</span> <span class="vcount">—</span>';
+    text.appendChild(viewCount);
     el.appendChild(dot);
     el.appendChild(text);
 
@@ -1426,6 +1450,19 @@ function openTopicLesson(pathName, idx) {
   document.getElementById('lesson-level').textContent = lesson ? lesson.level : pathName.charAt(0).toUpperCase() + pathName.slice(1);
   document.getElementById('lesson-lang').textContent = lesson ? lesson.lang : 'Python';
   document.getElementById('lesson-body').innerHTML = lesson ? lesson.body : getDefaultLesson(topic.name, pathName);
+
+  // Increment and display per-topic view counter
+  const SITE = 'ak3036811-gif.github.io%2Falgobridge-learn';
+  const topicKey = 'topic-' + topic.id;
+  fetch(`https://hits.seeyoufarm.com/api/count/incr/badge.json?url=https%3A%2F%2F${SITE}%2F${topicKey}`)
+    .then(r => r.json())
+    .then(data => {
+      const count = data.total_count || 1;
+      const el = document.getElementById('views-' + topic.id);
+      if (el) el.querySelector('.vcount').textContent = count;
+    })
+    .catch(() => {});
+
   showPage('topic');
 }
 
@@ -1455,7 +1492,7 @@ function updatePathProgress(pathName) {
     badge.className = 'badge ' + (pct === 100 ? 'badge-green' : pct > 0 ? 'badge-blue' : 'badge-amber');
   }
   if (meta && pathName !== 'advanced') {
-    const hrs = pathName === 'beginner' ? '~8 hrs' : '~18 hrs';
+    const hrs = pathName === 'beginner' ? '~12 hrs' : '~22 hrs';
     const lang = pathName === 'beginner' ? 'Python' : 'Python + Pseudocode';
     meta.textContent = done + ' of ' + topics.length + ' topics completed · ' + lang + ' · ' + hrs;
   }
@@ -1867,7 +1904,7 @@ async function tcSend() {
 <!-- ── VISIT COUNTER BADGE ── -->
 <div id="visit-badge" style="
   position:fixed;
-  bottom:80px;
+  bottom:24px;
   right:24px;
   z-index:9999;
   background:#fff;
