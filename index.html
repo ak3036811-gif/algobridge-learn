@@ -858,7 +858,7 @@ nav{background:rgba(250,250,248,0.9)}
           </div>
           <div><div class="badge badge-amber" style="opacity:.4">Locked</div></div>
         </div>
-        <div style="padding:.9rem 1.2rem;background:var(--bg3);border-radius:var(--radius);font-size:.88rem;color:var(--text2);margin-bottom:1rem;border:1px solid var(--border)">
+        <div id="adv-lock" style="padding:.9rem 1.2rem;background:var(--bg3);border-radius:var(--radius);font-size:.88rem;color:var(--text2);margin-bottom:1rem;border:1px solid var(--border)">
           🔒 Complete the full Intermediate path to unlock Advanced topics.
         </div>
         <div class="topic-list" id="topic-list-advanced" style="opacity:.3;pointer-events:none"></div>
@@ -1476,6 +1476,8 @@ function completeTopic() {
     APP.recentActivity.unshift('Completed "' + topic.name + '"');
     renderPath(APP.currentTopicPath);
     updateDashboard();
+    updateIntermediateLock();
+    updateAdvancedLock();
   }
 }
 
@@ -1510,6 +1512,27 @@ function updateIntermediateLock() {
       firstInt.state = 'available';
       renderPath('intermediate');
     }
+  }
+}
+
+
+function updateAdvancedLock() {
+  var intTopics = PATHS.intermediate;
+  var intDone = intTopics.filter(function(t){return t.state==='done';}).length;
+  var allDone = intDone === intTopics.length;
+  var lock = document.getElementById('adv-lock');
+  var list = document.getElementById('topic-list-advanced');
+  var badge = document.querySelector('#path-advanced .badge');
+  if (allDone) {
+    if (lock) lock.style.display = 'none';
+    if (list) { list.style.opacity = '1'; list.style.pointerEvents = 'auto'; }
+    if (badge) { badge.textContent = '0% complete'; badge.className = 'badge badge-blue'; }
+    var first = PATHS.advanced[0];
+    if (first && first.state === 'locked') { first.state = 'available'; renderPath('advanced'); }
+  } else {
+    if (lock) lock.style.display = 'block';
+    if (list) { list.style.opacity = '.3'; list.style.pointerEvents = 'none'; }
+    if (badge) { badge.textContent = 'Locked'; badge.className = 'badge badge-amber'; }
   }
 }
 
@@ -1746,6 +1769,8 @@ window.addEventListener('scroll', () => {
 renderPath('beginner');
 renderPath('intermediate');
 renderPath('advanced');
+updateIntermediateLock();
+updateAdvancedLock();
 buildStreakGrid();
 initReveal();
 </script>
