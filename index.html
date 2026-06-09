@@ -1422,8 +1422,8 @@ function renderPath(pathName) {
     const viewCount = document.createElement('div');
     viewCount.className = 'topic-views';
     viewCount.id = 'views-' + topic.id;
-    viewCount.style.cssText = 'font-size:10px;color:var(--text3);font-family:var(--mono);margin-top:4px;display:flex;align-items:center;gap:3px;';
-    viewCount.innerHTML = '<span style="opacity:0.5">👁</span> <span class="vcount">—</span>';
+    viewCount.style.cssText = 'font-size:10px;font-family:var(--mono);margin-top:5px;display:inline-flex;align-items:center;gap:4px;background:var(--accent-soft);border:1px solid rgba(91,63,224,0.15);border-radius:999px;padding:2px 7px;width:fit-content;color:var(--accent);';
+    viewCount.innerHTML = '<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> <span class="vcount" style="font-weight:600;">—</span> <span style="opacity:0.6;font-size:9px;">opens</span>';
     text.appendChild(viewCount);
     el.appendChild(dot);
     el.appendChild(text);
@@ -1985,37 +1985,6 @@ async function tcSend() {
   </span>
 </div>
 
-<!-- Avg time badge -->
-<div id="avg-time-badge" style="
-  background:#fff;
-  border:1.5px solid rgba(91,63,224,0.18);
-  border-radius:999px;
-  padding:10px 18px 10px 14px;
-  display:flex;
-  align-items:center;
-  gap:9px;
-  box-shadow:0 4px 24px rgba(91,63,224,0.13), 0 1px 4px rgba(0,0,0,0.07);
-  font-family:'Syne',sans-serif;
-  cursor:default;
-  user-select:none;
-">
-  <span style="
-    width:28px;height:28px;
-    background:linear-gradient(135deg,#5B3FE0,#7B6AFF);
-    border-radius:50%;
-    display:flex;align-items:center;justify-content:center;
-    flex-shrink:0;
-  ">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-    </svg>
-  </span>
-  <span style="display:flex;flex-direction:column;line-height:1.2;">
-    <span id="avg-time-val" style="font-size:15px;font-weight:700;color:#5B3FE0;letter-spacing:-0.3px;">—</span>
-    <span style="font-size:10px;font-weight:500;color:#9896AB;text-transform:uppercase;letter-spacing:0.5px;">avg time</span>
-  </span>
-</div>
-
 <!-- Session timer badge -->
 <div id="session-badge" style="
   background:#fff;
@@ -2073,47 +2042,6 @@ async function tcSend() {
     cluster.style.transform = 'translateY(0)';
     animateCount(countEl, startFrom, count, 1800);
   }
-
-  // ── AVG TIME tracking via localStorage ──
-  // On each visit: record session duration, store array of durations
-  const SESSION_KEY = 'ab_sessions';
-  const sessionStart = Date.now();
-
-  function formatTime(seconds) {
-    if (seconds < 60) return seconds + 's';
-    const m = Math.floor(seconds / 60);
-    const s = seconds % 60;
-    return s > 0 ? m + 'm ' + s + 's' : m + 'm';
-  }
-
-  function updateAvgDisplay() {
-    const raw = localStorage.getItem(SESSION_KEY);
-    const sessions = raw ? JSON.parse(raw) : [];
-    if (sessions.length === 0) {
-      document.getElementById('avg-time-val').textContent = '—';
-      return;
-    }
-    const avg = Math.round(sessions.reduce((a,b) => a+b, 0) / sessions.length);
-    document.getElementById('avg-time-val').textContent = formatTime(avg);
-  }
-
-  // Save session duration when user leaves
-  function saveSession() {
-    const duration = Math.round((Date.now() - sessionStart) / 1000);
-    if (duration < 5) return; // ignore bounces under 5s
-    const raw = localStorage.getItem(SESSION_KEY);
-    const sessions = raw ? JSON.parse(raw) : [];
-    sessions.push(duration);
-    // Keep last 200 sessions max
-    if (sessions.length > 200) sessions.shift();
-    localStorage.setItem(SESSION_KEY, JSON.stringify(sessions));
-  }
-
-  window.addEventListener('beforeunload', saveSession);
-  window.addEventListener('pagehide', saveSession);
-
-  // Update avg display on load
-  updateAvgDisplay();
 
   // ── LIVE SESSION TIMER ──
   const timerEl = document.getElementById('session-timer');
