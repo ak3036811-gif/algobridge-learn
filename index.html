@@ -1451,17 +1451,22 @@ function openTopicLesson(pathName, idx) {
   document.getElementById('lesson-lang').textContent = lesson ? lesson.lang : 'Python';
   document.getElementById('lesson-body').innerHTML = lesson ? lesson.body : getDefaultLesson(topic.name, pathName);
 
-  // Increment and display per-topic view counter
-  const SITE = 'ak3036811-gif.github.io%2Falgobridge-learn';
-  const topicKey = 'topic-' + topic.id;
-  fetch(`https://hits.seeyoufarm.com/api/count/incr/badge.json?url=https%3A%2F%2F${SITE}%2F${topicKey}`)
+  // Increment and display per-topic view counter using CountAPI (free, no signup needed)
+  const topicKey = 'algobridge-' + topic.id;
+  fetch('https://api.countapi.xyz/hit/algobridge-learn.ak3036811/' + topicKey)
     .then(r => r.json())
     .then(data => {
-      const count = data.total_count || 1;
+      const count = data.value || 1;
       const el = document.getElementById('views-' + topic.id);
-      if (el) el.querySelector('.vcount').textContent = count;
+      if (el) el.querySelector('.vcount').textContent = count.toLocaleString();
     })
-    .catch(() => {});
+    .catch(() => {
+      const lsKey = 'topic_views_' + topic.id;
+      const local = parseInt(localStorage.getItem(lsKey) || '0') + 1;
+      localStorage.setItem(lsKey, local);
+      const el = document.getElementById('views-' + topic.id);
+      if (el) el.querySelector('.vcount').textContent = local;
+    });
 
   showPage('topic');
 }
@@ -1970,21 +1975,14 @@ async function tcSend() {
 
   // Use hits.seeyoufarm.com — embed as hidden img to trigger count,
   // then read the total from their JSON API
-  const SITE = 'ak3036811-gif.github.io%2Falgobridge-learn';
-
-  // Trigger the hit via hidden image
-  const img = new Image();
-  img.src = `https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2F${SITE}&nocache=${Date.now()}`;
-
-  // Fetch the count as JSON
-  fetch(`https://hits.seeyoufarm.com/api/count/incr/badge.json?url=https%3A%2F%2F${SITE}`)
+  // Use CountAPI to track total site visitors
+  fetch('https://api.countapi.xyz/hit/algobridge-learn.ak3036811/pageviews')
     .then(r => r.json())
     .then(data => {
-      const count = data.total_count || data.today_count || 1;
+      const count = data.value || 1;
       showBadge(count);
     })
     .catch(() => {
-      // Last resort: localStorage to at least show something local
       const local = parseInt(localStorage.getItem('ab_visits') || '0') + 1;
       localStorage.setItem('ab_visits', local);
       showBadge(local);
