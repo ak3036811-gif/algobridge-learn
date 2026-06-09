@@ -1451,14 +1451,17 @@ function openTopicLesson(pathName, idx) {
   document.getElementById('lesson-lang').textContent = lesson ? lesson.lang : 'Python';
   document.getElementById('lesson-body').innerHTML = lesson ? lesson.body : getDefaultLesson(topic.name, pathName);
 
-  // Increment and display per-topic view counter using localStorage
-  (function() {
-    const lsKey = 'topic_views_' + topic.id;
-    const count = parseInt(localStorage.getItem(lsKey) || '0') + 1;
-    localStorage.setItem(lsKey, count);
-    const el = document.getElementById('views-' + topic.id);
-    if (el) el.querySelector('.vcount').textContent = count.toLocaleString();
-  })();
+  // Increment and display per-topic view counter
+  const SITE = 'ak3036811-gif.github.io%2Falgobridge-learn';
+  const topicKey = 'topic-' + topic.id;
+  fetch(`https://hits.seeyoufarm.com/api/count/incr/badge.json?url=https%3A%2F%2F${SITE}%2F${topicKey}`)
+    .then(r => r.json())
+    .then(data => {
+      const count = data.total_count || 1;
+      const el = document.getElementById('views-' + topic.id);
+      if (el) el.querySelector('.vcount').textContent = count;
+    })
+    .catch(() => {});
 
   showPage('topic');
 }
@@ -1499,6 +1502,15 @@ function updateIntermediateLock() {
   const begDone = PATHS.beginner.filter(t => t.state === 'done').length;
   const lock = document.getElementById('int-lock');
   if (lock) lock.style.display = begDone < 5 ? 'block' : 'none';
+
+  // Unlock the first intermediate topic once 5 beginner topics are done
+  if (begDone >= 5) {
+    const firstInt = PATHS.intermediate[0];
+    if (firstInt && firstInt.state === 'locked') {
+      firstInt.state = 'available';
+      renderPath('intermediate');
+    }
+  }
 }
 
 // ── DASHBOARD ────────────────────────────────────────────────────────────────
@@ -1965,12 +1977,27 @@ async function tcSend() {
     animateCount(countEl, startFrom, count, 1800);
   }
 
-  // Visitor count using localStorage
+  // Use hits.seeyoufarm.com — embed as hidden img to trigger count,
   // then read the total from their JSON API
-  // Visitor count using localStorage — increments every visit
-  const local = parseInt(localStorage.getItem('ab_visits') || '0') + 1;
-  localStorage.setItem('ab_visits', local);
-  showBadge(local);
+  const SITE = 'ak3036811-gif.github.io%2Falgobridge-learn';
+
+  // Trigger the hit via hidden image
+  const img = new Image();
+  img.src = `https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2F${SITE}&nocache=${Date.now()}`;
+
+  // Fetch the count as JSON
+  fetch(`https://hits.seeyoufarm.com/api/count/incr/badge.json?url=https%3A%2F%2F${SITE}`)
+    .then(r => r.json())
+    .then(data => {
+      const count = data.total_count || data.today_count || 1;
+      showBadge(count);
+    })
+    .catch(() => {
+      // Last resort: localStorage to at least show something local
+      const local = parseInt(localStorage.getItem('ab_visits') || '0') + 1;
+      localStorage.setItem('ab_visits', local);
+      showBadge(local);
+    });
 })();
 </script>
 
