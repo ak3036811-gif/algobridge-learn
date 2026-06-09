@@ -1433,6 +1433,13 @@ function renderPath(pathName) {
       el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openTopicLesson(pathName, idx); }});
     }
     container.appendChild(el);
+
+    // Load saved open count from localStorage
+    const saved = localStorage.getItem('ab_opens_' + topic.id);
+    if (saved && parseInt(saved) > 0) {
+      const vcEl = document.getElementById('views-' + topic.id);
+      if (vcEl) vcEl.querySelector('.vcount').textContent = saved;
+    }
   });
 
   updatePathProgress(pathName);
@@ -1453,17 +1460,12 @@ function openTopicLesson(pathName, idx) {
   document.getElementById('lesson-lang').textContent = lesson ? lesson.lang : 'Python';
   document.getElementById('lesson-body').innerHTML = lesson ? lesson.body : getDefaultLesson(topic.name, pathName);
 
-  // Increment and display per-topic view counter
-  const SITE = 'ak3036811-gif.github.io%2Falgobridge-learn';
-  const topicKey = 'topic-' + topic.id;
-  fetch(`https://hits.seeyoufarm.com/api/count/incr/badge.json?url=https%3A%2F%2F${SITE}%2F${topicKey}`)
-    .then(r => r.json())
-    .then(data => {
-      const count = data.total_count || 1;
-      const el = document.getElementById('views-' + topic.id);
-      if (el) el.querySelector('.vcount').textContent = count;
-    })
-    .catch(() => {});
+  // Increment and display per-topic open counter (localStorage)
+  const topicKey = 'ab_opens_' + topic.id;
+  const currentCount = parseInt(localStorage.getItem(topicKey) || '0') + 1;
+  localStorage.setItem(topicKey, currentCount);
+  const el = document.getElementById('views-' + topic.id);
+  if (el) el.querySelector('.vcount').textContent = currentCount;
 
   showPage('topic');
 }
