@@ -94,6 +94,44 @@ nav.scrolled{box-shadow:0 4px 40px rgba(0,0,0,0.4)}
 .ham-btn{display:none;background:none;border:1px solid var(--border);padding:5px 10px;border-radius:8px;cursor:pointer;color:var(--text2);font-size:16px;line-height:1;transition:0.2s}
 .ham-btn:hover{border-color:var(--text3)}
 
+/* ── LANGUAGE SWITCHER ── */
+.lang-dropdown{position:relative}
+.lang-btn{
+  background:none;border:1px solid var(--border);
+  padding:5px 12px;border-radius:8px;font-size:12px;
+  cursor:pointer;color:var(--text3);transition:all 0.2s;
+  font-family:var(--sans);white-space:nowrap;
+  display:flex;align-items:center;gap:5px;
+}
+.lang-btn:hover{border-color:var(--text3);color:var(--text)}
+.lang-menu{
+  position:absolute;top:calc(100% + 8px);right:0;
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:10px;padding:6px;display:flex;flex-direction:column;gap:1px;
+  min-width:160px;z-index:300;box-shadow:0 12px 32px rgba(0,0,0,0.18);
+  opacity:0;visibility:hidden;transform:translateY(-6px);
+  transition:opacity 0.15s, transform 0.15s, visibility 0.15s;
+}
+.lang-menu.open{opacity:1;visibility:visible;transform:translateY(0)}
+.lang-option{
+  background:none;border:none;padding:8px 10px;text-align:left;
+  font-size:13px;font-family:var(--sans);color:var(--text2);
+  cursor:pointer;border-radius:6px;display:flex;align-items:center;
+  justify-content:space-between;gap:8px;width:100%;transition:0.15s;
+}
+.lang-option:hover{background:var(--accent-soft);color:var(--text)}
+.lang-option.active{color:var(--accent);font-weight:600;background:var(--accent-soft)}
+.lang-option .lang-native{color:var(--text3);font-size:11px}
+.lang-option:hover .lang-native{color:var(--text2)}
+.lang-option.active .lang-native{color:var(--accent)}
+
+/* hide Google Translate's default chrome */
+.goog-te-banner-frame,.goog-te-gadget-icon,.goog-tooltip,.goog-tooltip:hover{display:none!important}
+.goog-text-highlight{background:none!important;box-shadow:none!important}
+body{top:0!important;position:static!important}
+#google_translate_element{display:none!important}
+.skiptranslate iframe{display:none!important}
+
 .mobile-nav{
   display:none;position:fixed;top:60px;left:0;right:0;
   background:rgba(12,12,15,0.97);backdrop-filter:blur(20px);
@@ -776,6 +814,21 @@ nav{background:rgba(250,250,248,0.9)}
     <button class="nav-link" onclick="showPage('about')">About</button>
   </div>
   <div class="nav-right">
+    <div class="lang-dropdown">
+      <button class="lang-btn" onclick="toggleLangMenu(event)" aria-label="Change language" aria-haspopup="true" aria-expanded="false" id="lang-btn">
+        <span>🌐</span><span id="lang-current">EN</span>
+      </button>
+      <div class="lang-menu" id="lang-menu" role="menu">
+        <button class="lang-option" role="menuitem" onclick="setLanguage('en')" data-lang="en"><span>English</span><span class="lang-native">EN</span></button>
+        <button class="lang-option" role="menuitem" onclick="setLanguage('hi')" data-lang="hi"><span>हिन्दी</span><span class="lang-native">HI</span></button>
+        <button class="lang-option" role="menuitem" onclick="setLanguage('de')" data-lang="de"><span>Deutsch</span><span class="lang-native">DE</span></button>
+        <button class="lang-option" role="menuitem" onclick="setLanguage('fr')" data-lang="fr"><span>Français</span><span class="lang-native">FR</span></button>
+        <button class="lang-option" role="menuitem" onclick="setLanguage('es')" data-lang="es"><span>Español</span><span class="lang-native">ES</span></button>
+        <button class="lang-option" role="menuitem" onclick="setLanguage('zh-CN')" data-lang="zh-CN"><span>中文</span><span class="lang-native">ZH</span></button>
+        <button class="lang-option" role="menuitem" onclick="setLanguage('ja')" data-lang="ja"><span>日本語</span><span class="lang-native">JA</span></button>
+        <button class="lang-option" role="menuitem" onclick="setLanguage('ar')" data-lang="ar"><span>العربية</span><span class="lang-native">AR</span></button>
+      </div>
+    </div>
     <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">◑ Theme</button>
     <button class="btn btn-primary btn-sm" onclick="showPage('paths')">Start Learning →</button>
     <button class="ham-btn" onclick="toggleMobileNav()" aria-label="Open menu" aria-expanded="false" id="ham-btn">☰</button>
@@ -2157,6 +2210,82 @@ function toggleTheme() {
   setTimeout(buildScreenshots, 40);
 }
 
+// ── LANGUAGE SWITCHER ───────────────────────────────────────────────────────
+const LANG_NAMES = { en:'EN', hi:'HI', de:'DE', fr:'FR', es:'ES', 'zh-CN':'ZH', ja:'JA', ar:'AR' };
+let currentLang = localStorage.getItem('ab_lang') || 'en';
+
+function toggleLangMenu(e) {
+  e.stopPropagation();
+  const menu = document.getElementById('lang-menu');
+  const btn = document.getElementById('lang-btn');
+  const open = menu.classList.toggle('open');
+  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+
+document.addEventListener('click', (e) => {
+  const dropdown = document.querySelector('.lang-dropdown');
+  if (dropdown && !dropdown.contains(e.target)) {
+    document.getElementById('lang-menu').classList.remove('open');
+    document.getElementById('lang-btn').setAttribute('aria-expanded', 'false');
+  }
+});
+
+function applyLanguage(code, attemptsLeft) {
+  if (typeof attemptsLeft === 'undefined') attemptsLeft = 40; // ~10s of retries
+  const combo = document.querySelector('select.goog-te-combo');
+  if (!combo) {
+    if (attemptsLeft <= 0) {
+      console.warn('Google Translate widget did not load in time.');
+      return;
+    }
+    setTimeout(() => applyLanguage(code, attemptsLeft - 1), 250);
+    return;
+  }
+  if (combo.value !== code) {
+    combo.value = code;
+    combo.dispatchEvent(new Event('change'));
+  }
+}
+
+function setLanguage(code) {
+  currentLang = code;
+  localStorage.setItem('ab_lang', code);
+  updateLangUI();
+  document.getElementById('lang-menu').classList.remove('open');
+
+  if (code === 'en') {
+    // revert to original: set combo to English (its native default)
+    const combo = document.querySelector('select.goog-te-combo');
+    if (combo && combo.value !== 'en') {
+      combo.value = 'en';
+      combo.dispatchEvent(new Event('change'));
+    }
+    return;
+  }
+  applyLanguage(code);
+}
+
+function updateLangUI() {
+  document.getElementById('lang-current').textContent = LANG_NAMES[currentLang] || 'EN';
+  document.querySelectorAll('.lang-option').forEach(el => {
+    el.classList.toggle('active', el.dataset.lang === currentLang);
+  });
+}
+updateLangUI();
+
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    includedLanguages: 'en,hi,de,fr,es,zh-CN,ja,ar',
+    autoDisplay: false
+  }, 'google_translate_element');
+
+  // restore previously chosen language once the widget is ready
+  if (currentLang && currentLang !== 'en') {
+    applyLanguage(currentLang);
+  }
+}
+
 // ── NAV SHADOW ON SCROLL ─────────────────────────────────────────────────────
 window.addEventListener('scroll', () => {
   document.getElementById('main-nav').classList.toggle('scrolled', window.scrollY > 10);
@@ -2720,5 +2849,7 @@ async function tcSend() {
     });
 })();
 </script>
+<div id="google_translate_element"></div>
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 </body>
