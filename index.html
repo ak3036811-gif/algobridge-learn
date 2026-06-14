@@ -2831,21 +2831,31 @@ async function tcSend() {
   const doneEl = document.getElementById('completed-count');
   if (doneEl) doneEl.textContent = savedDone;
 
-  // ── VISITOR COUNT (existing) ──
+  // ── VISITOR COUNT ──
+  // Only use fetch (removed duplicate img ping that was double-counting visits)
   const SITE = 'ak3036811-gif.github.io%2Falgobridge-learn';
-  const img = new Image();
-  img.src = `https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2F${SITE}&nocache=${Date.now()}`;
 
-  fetch(`https://hits.seeyoufarm.com/api/count/incr/badge.json?url=https%3A%2F%2F${SITE}`)
-    .then(r => r.json())
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 5000); // 5s timeout
+
+  fetch(`https://hits.seeyoufarm.com/api/count/incr/badge.json?url=https%3A%2F%2F${SITE}`, {
+    signal: controller.signal
+  })
+    .then(r => {
+      clearTimeout(timeout);
+      if (!r.ok) throw new Error('bad response');
+      return r.json();
+    })
     .then(data => {
       const count = data.total_count || data.today_count || 1;
+      // Cache the last known real count so fallback stays close to truth
+      localStorage.setItem('ab_visits_cache', count);
       showBadge(count);
     })
     .catch(() => {
-      const local = parseInt(localStorage.getItem('ab_visits') || '0') + 1;
-      localStorage.setItem('ab_visits', local);
-      showBadge(local);
+      // Use cached real count + 1 as fallback (much better than starting from 0)
+      const cached = parseInt(localStorage.getItem('ab_visits_cache') || '0');
+      showBadge(cached || 1);
     });
 })();
 </script>
