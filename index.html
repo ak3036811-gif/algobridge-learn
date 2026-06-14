@@ -1684,11 +1684,18 @@ function completeTopic() {
     const nextTopic = PATHS[APP.currentTopicPath][APP.currentTopicId + 1];
     if (nextTopic && nextTopic.state === 'locked') nextTopic.state = 'available';
     APP.recentActivity.unshift('Completed "' + topic.name + '"');
-    // Increment completed lessons counter
-    const doneCount = parseInt(localStorage.getItem('ab_lessons_done') || '0') + 1;
-    localStorage.setItem('ab_lessons_done', doneCount);
-    const doneEl = document.getElementById('completed-count');
-    if (doneEl) doneEl.textContent = doneCount;
+    // Increment global lessons counter via worker
+    fetch('https://algobridge-counter.ak3036811.workers.dev/lesson')
+      .then(r => r.json())
+      .then(data => {
+        const doneEl = document.getElementById('completed-count');
+        if (doneEl) doneEl.textContent = data.lessons;
+      })
+      .catch(() => {
+        // fallback: just increment locally on failure
+        const doneEl = document.getElementById('completed-count');
+        if (doneEl) doneEl.textContent = parseInt(doneEl.textContent || '0') + 1;
+      });
     renderPath(APP.currentTopicPath);
     updateDashboard();
     updateIntermediateLock();
@@ -2827,33 +2834,31 @@ async function tcSend() {
   }, 1000);
 
   // ── COMPLETED LESSONS COUNT ──
-  const savedDone = parseInt(localStorage.getItem('ab_lessons_done') || '0');
-  const doneEl = document.getElementById('completed-count');
-  if (doneEl) doneEl.textContent = savedDone;
+  // Loaded from worker alongside visitor count (see /hit response below)
 
   // ── VISITOR COUNT ──
-  // Only use fetch (removed duplicate img ping that was double-counting visits)
-  const SITE = 'ak3036811-gif.github.io%2Falgobridge-learn';
+  // Self-hosted Cloudflare Worker counter — deploy counter-worker.js to your workers.dev
+  // Then update the URL below to match your deployed worker
+  const COUNTER_URL = 'https://algobridge-counter.ak3036811.workers.dev/hit';
 
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 5000); // 5s timeout
+  const timeout = setTimeout(() => controller.abort(), 5000);
 
-  fetch(`https://hits.seeyoufarm.com/api/count/incr/badge.json?url=https%3A%2F%2F${SITE}`, {
-    signal: controller.signal
-  })
+  fetch(COUNTER_URL, { signal: controller.signal })
     .then(r => {
       clearTimeout(timeout);
       if (!r.ok) throw new Error('bad response');
       return r.json();
     })
     .then(data => {
-      const count = data.total_count || data.today_count || 1;
-      // Cache the last known real count so fallback stays close to truth
+      const count = data.count || 1;
       localStorage.setItem('ab_visits_cache', count);
       showBadge(count);
+      // Also update global lessons count from same response
+      const doneEl = document.getElementById('completed-count');
+      if (doneEl && data.lessons !== undefined) doneEl.textContent = data.lessons;
     })
     .catch(() => {
-      // Use cached real count + 1 as fallback (much better than starting from 0)
       const cached = parseInt(localStorage.getItem('ab_visits_cache') || '0');
       showBadge(cached || 1);
     });
