@@ -36,8 +36,8 @@
     const ref = doc(db, 'counters', counterId);
     return runTransaction(db, async (t) => {
       const snap = await t.get(ref);
-      const current = snap.exists() ? (snap.data().value || 0) : 0;
-      const next = current + by;
+      const current = snap.exists() ? Math.floor(snap.data().value || 0) : 0;
+      const next = Math.floor(current + by);
       t.update(ref, { value: next });
       return next;
     });
@@ -2879,9 +2879,13 @@ async function tcSend() {
   function showBadge(count) {
     const cluster = document.getElementById('stats-cluster');
     const countEl = document.getElementById('visit-count');
-    const startFrom = Math.max(0, count - Math.ceil(count * 0.08));
     cluster.style.opacity = '1';
     cluster.style.transform = 'translateY(0)';
+    if (typeof count !== 'number' || isNaN(count)) {
+      if (countEl) countEl.textContent = '—';
+      return;
+    }
+    const startFrom = Math.max(0, count - Math.ceil(count * 0.08));
     animateCount(countEl, startFrom, count, 1800);
   }
 
@@ -2907,7 +2911,8 @@ async function tcSend() {
         sessionStorage.setItem('ab_visit_counted', '1');
         showBadge(count);
       })
-      .catch(() => {
+      .catch(err => {
+        console.error('Visitor counter failed:', err);
         showBadge('—');
       });
 
@@ -2915,7 +2920,8 @@ async function tcSend() {
       .then(count => {
         if (doneEl) doneEl.textContent = count;
       })
-      .catch(() => {
+      .catch(err => {
+        console.error('Lessons counter failed:', err);
         if (doneEl) doneEl.textContent = '—';
       });
   }
