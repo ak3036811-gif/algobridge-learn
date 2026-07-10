@@ -3895,6 +3895,38 @@ async function tcSend() {
   transition:opacity 0.5s cubic-bezier(0.22,1,0.36,1), transform 0.5s cubic-bezier(0.22,1,0.36,1);
 ">
 
+<!-- Visitor count badge -->
+<div id="visit-badge" style="
+  background:#fff;
+  border:1.5px solid rgba(91,63,224,0.18);
+  border-radius:999px;
+  padding:10px 18px 10px 14px;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  box-shadow:0 4px 24px rgba(91,63,224,0.13), 0 1px 4px rgba(0,0,0,0.07);
+  font-family:'Syne',sans-serif;
+  cursor:default;
+  user-select:none;
+">
+  <span style="
+    width:28px;height:28px;
+    background:linear-gradient(135deg,#5B3FE0,#7B6AFF);
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  ">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+      <circle cx="12" cy="12" r="3"/>
+    </svg>
+  </span>
+  <span style="display:flex;flex-direction:column;line-height:1.2;">
+    <span id="visit-count" style="font-size:15px;font-weight:700;color:#5B3FE0;letter-spacing:-0.3px;">—</span>
+    <span style="font-size:10px;font-weight:500;color:#9896AB;text-transform:uppercase;letter-spacing:0.5px;">visitors</span>
+  </span>
+</div>
+
 <!-- Completed lessons badge -->
 <div id="completed-badge" style="
   background:#fff;
@@ -3975,6 +4007,17 @@ async function tcSend() {
     requestAnimationFrame(step);
   }
 
+  function showBadge(count) {
+    const countEl = document.getElementById('visit-count');
+    if (!countEl) return;
+    if (typeof count !== 'number' || isNaN(count)) {
+      countEl.textContent = '—';
+      return;
+    }
+    const startFrom = Math.max(0, count - Math.ceil(count * 0.08));
+    animateCount(countEl, startFrom, count, 1800);
+  }
+
   // ── LIVE SESSION TIMER ──
   const timerEl = document.getElementById('session-timer');
   let elapsed = 0;
@@ -3985,7 +4028,7 @@ async function tcSend() {
     timerEl.textContent = m + ':' + String(s).padStart(2, '0');
   }, 1000);
 
-  // ── GLOBAL COUNTER (Firebase Firestore) ──
+  // ── GLOBAL COUNTERS (Firebase Firestore) ──
   const doneEl = document.getElementById('completed-count');
   const cluster = document.getElementById('stats-cluster');
 
@@ -3994,6 +4037,19 @@ async function tcSend() {
       cluster.style.opacity = '1';
       cluster.style.transform = 'translateY(0)';
     }
+
+    // Only increment the visitor counter once per browser tab session
+    // (so refreshing the page repeatedly doesn't inflate the count)
+    const alreadyCountedThisSession = sessionStorage.getItem('ab_visit_counted');
+    incrementFirestoreCounter('visitors', alreadyCountedThisSession ? 0 : 1)
+      .then(count => {
+        sessionStorage.setItem('ab_visit_counted', '1');
+        showBadge(count);
+      })
+      .catch(err => {
+        console.error('Visitor counter failed:', err);
+        showBadge(NaN);
+      });
 
     readFirestoreCounter('lessons')
       .then(count => {
