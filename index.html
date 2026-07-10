@@ -1444,7 +1444,17 @@ const TOPIC_LESSONS = {
     <div class="lesson-callout">💡 <strong>Common mistake:</strong> <code>"2" + 2</code> throws a TypeError. Convert first: <code>int("2") + 2</code>. Python is strict about types.</div>
     <h2>Try this</h2>
     <p>Create variables for your name, age, and a favourite number. Print them in a sentence using an f-string: <code>f"My name is {name} and I am {age} years old."</code></p>
-  `},
+  
+    <h2>Reassignment and dynamic typing</h2>
+    <p>Python variables aren't locked to a type. The same name can point to an int, then later a string — the variable itself has no type, only the value it currently holds does.</p>
+    <div class="code-block">x = <span class="cn">5</span>        <span class="cm"># x is an int</span>
+x = <span class="cs">"five"</span>  <span class="cm"># now x is a str — totally legal</span></div>
+    <h2>Type conversion</h2>
+    <div class="code-block"><span class="co">print</span>(<span class="co">int</span>(<span class="cs">"42"</span>) + <span class="cn">8</span>)     <span class="cm"># → 50</span>
+<span class="co">print</span>(<span class="co">str</span>(<span class="cn">42</span>) + <span class="cs">"!"</span>)     <span class="cm"># → "42!"</span>
+<span class="co">print</span>(<span class="co">float</span>(<span class="cs">"3.14"</span>))   <span class="cm"># → 3.14</span></div>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Ask the user for two numbers with <code>input()</code> (which always returns a string), convert them to floats, and print their sum.</div>
+`},
   'Conditionals':{time:'~30 min',level:'Beginner',lang:'Python',body:`
     <h2>Making decisions in code</h2>
     <p>Conditionals let your program choose what to do based on whether something is true or false. They are how code reacts to different situations.</p>
@@ -1467,7 +1477,20 @@ const TOPIC_LESSONS = {
     <span class="co">print</span>(<span class="cs">"teenager"</span>)
 <span class="ck">if</span> score < <span class="cn">50</span> <span class="ck">or</span> absent:
     <span class="co">print</span>(<span class="cs">"needs review"</span>)</div>
-  `},
+  
+    <h2>Nested conditionals</h2>
+    <p>An if statement can contain another if statement inside it — useful when a decision depends on more than one independent check.</p>
+    <div class="code-block"><span class="ck">if</span> logged_in:
+    <span class="ck">if</span> is_admin:
+        <span class="co">print</span>(<span class="cs">"Welcome, admin"</span>)
+    <span class="ck">else</span>:
+        <span class="co">print</span>(<span class="cs">"Welcome, user"</span>)
+<span class="ck">else</span>:
+    <span class="co">print</span>(<span class="cs">"Please log in"</span>)</div>
+    <h2>Ternary (one-line) conditionals</h2>
+    <div class="code-block">status = <span class="cs">"pass"</span> <span class="ck">if</span> score >= <span class="cn">40</span> <span class="ck">else</span> <span class="cs">"fail"</span></div>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Write a function that takes a triangle's three side lengths and prints whether it's equilateral, isosceles, or scalene.</div>
+`},
   'Loops':{time:'~35 min',level:'Beginner',lang:'Python',body:`
     <h2>Repeating instructions</h2>
     <p>A loop runs a block of code multiple times. Instead of writing <code>print("hello")</code> ten times, you write it once inside a loop.</p>
@@ -1491,7 +1514,19 @@ fruits = [<span class="cs">"apple"</span>, <span class="cs">"banana"</span>, <sp
     <span class="ck">if</span> i == <span class="cn">5</span>: <span class="ck">break</span>      <span class="cm"># exit loop entirely</span>
     <span class="ck">if</span> i % <span class="cn">2</span> == <span class="cn">0</span>: <span class="ck">continue</span>  <span class="cm"># skip this iteration</span>
     <span class="co">print</span>(i)  <span class="cm"># prints 1, 3</span></div>
-  `},
+  
+    <h2>Nested loops</h2>
+    <p>A loop inside another loop runs the inner loop fully for every single pass of the outer loop — useful for grids, tables, and comparing every pair of items.</p>
+    <div class="code-block"><span class="ck">for</span> row <span class="ck">in</span> <span class="co">range</span>(<span class="cn">3</span>):
+    <span class="ck">for</span> col <span class="ck">in</span> <span class="co">range</span>(<span class="cn">3</span>):
+        <span class="co">print</span>(<span class="cs">f"({row},{col})"</span>, end=<span class="cs">" "</span>)
+    <span class="co">print</span>()  <span class="cm"># newline after each row</span></div>
+    <h2>Looping with enumerate</h2>
+    <p><code>enumerate()</code> gives you both the index and the value while looping, so you don't need a separate counter variable.</p>
+    <div class="code-block"><span class="ck">for</span> i, fruit <span class="ck">in</span> <span class="co">enumerate</span>(fruits):
+    <span class="co">print</span>(i, fruit)  <span class="cm"># 0 apple, 1 banana, ...</span></div>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Print a multiplication table for numbers 1 to 5 using a nested loop.</div>
+`},
   'Functions':{time:'~40 min',level:'Beginner',lang:'Python',body:`
     <h2>What is a function?</h2>
     <p>A function is a named, reusable block of code. You define it once, then call it whenever you need it — with different inputs each time.</p>
@@ -1512,7 +1547,18 @@ fruits = [<span class="cs">"apple"</span>, <span class="cs">"banana"</span>, <sp
 result = <span class="co">add</span>(<span class="cn">3</span>, <span class="cn">4</span>)
 <span class="co">print</span>(result)   <span class="cm"># → 7</span></div>
     <div class="lesson-callout">💡 <strong>Good habit:</strong> A function should do exactly one thing. If it does three things, split it into three functions. This makes debugging dramatically easier.</div>
-  `},
+  
+    <h2>Default and keyword arguments</h2>
+    <p>Parameters can have default values, so callers only need to supply what's different from the norm. Keyword arguments let you pass values by name, in any order.</p>
+    <div class="code-block"><span class="ck">def</span> <span class="co">greet</span>(name, greeting=<span class="cs">"Hello"</span>):
+    <span class="ck">return</span> <span class="cs">f"{greeting}, {name}!"</span>
+
+<span class="co">print</span>(<span class="co">greet</span>(<span class="cs">"Zara"</span>))                     <span class="cm"># → Hello, Zara!</span>
+<span class="co">print</span>(<span class="co">greet</span>(name=<span class="cs">"Zara"</span>, greeting=<span class="cs">"Hi"</span>))  <span class="cm"># → Hi, Zara!</span></div>
+    <h2>Scope</h2>
+    <p>A variable created inside a function is local — it doesn't exist outside it. This keeps functions self-contained and prevents them from accidentally clashing with variables elsewhere in your program.</p>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Write <code>is_prime(n)</code> that returns True or False, then use it inside a loop to print all primes under 50.</div>
+`},
   'Lists & Arrays':{time:'~35 min',level:'Beginner',lang:'Python',body:`
     <h2>Storing multiple values</h2>
     <p>A list holds multiple values in a single variable, in order. Access each item by its index (position), starting at 0.</p>
@@ -1527,7 +1573,17 @@ names.<span class="co">remove</span>(<span class="cs">"Bob"</span>)       <span 
 <span class="co">print</span>(<span class="co">len</span>(names))           <span class="cm"># → 2</span>
 <span class="co">print</span>(<span class="cs">"Alice"</span> <span class="ck">in</span> names)    <span class="cm"># → True</span></div>
     <div class="lesson-callout">💡 Lists are ordered and mutable — you can change them after creation. This is different from tuples (immutable) and sets (unordered).</div>
-  `},
+  
+    <h2>Nested lists (2D arrays)</h2>
+    <p>A list can hold other lists — this is how you represent grids, matrices, or tables of data.</p>
+    <div class="code-block">grid = [[<span class="cn">1</span>, <span class="cn">2</span>], [<span class="cn">3</span>, <span class="cn">4</span>]]
+<span class="co">print</span>(grid[<span class="cn">1</span>][<span class="cn">0</span>])   <span class="cm"># → 3 (row 1, col 0)</span></div>
+    <h2>Sorting a list</h2>
+    <div class="code-block">nums = [<span class="cn">5</span>, <span class="cn">1</span>, <span class="cn">4</span>, <span class="cn">2</span>]
+<span class="co">print</span>(<span class="co">sorted</span>(nums))       <span class="cm"># → [1, 2, 4, 5], original unchanged</span>
+nums.<span class="co">sort</span>()               <span class="cm"># sorts nums itself, in place</span></div>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Given a list of exam scores, write code that returns the second-highest score without sorting the whole list twice.</div>
+`},
   'Sorting Algorithms':{time:'~50 min',level:'Intermediate',lang:'Python',body:`
     <h2>Why sorting matters</h2>
     <p>Sorting is one of the most fundamental operations in computing. Understanding how different algorithms work — and when to choose each — is essential for writing efficient code.</p>
@@ -1542,7 +1598,21 @@ names.<span class="co">remove</span>(<span class="cs">"Bob"</span>)       <span 
     <h2>Merge Sort — O(n log n)</h2>
     <p>Divide the array in half recursively, sort each half, then merge. Far more efficient for large inputs than bubble sort.</p>
     <div class="lesson-callout">💡 Python's built-in <code>sorted()</code> uses Timsort — a hybrid of merge sort and insertion sort. Understand why complexities differ even if you rarely implement sorting from scratch.</div>
-  `},
+  
+    <h2>Insertion Sort — O(n²), but fast on nearly-sorted data</h2>
+    <div class="code-block"><span class="ck">def</span> <span class="co">insertion_sort</span>(arr):
+    <span class="ck">for</span> i <span class="ck">in</span> <span class="co">range</span>(<span class="cn">1</span>, <span class="co">len</span>(arr)):
+        key = arr[i]
+        j = i - <span class="cn">1</span>
+        <span class="ck">while</span> j >= <span class="cn">0</span> <span class="ck">and</span> arr[j] > key:
+            arr[j+<span class="cn">1</span>] = arr[j]
+            j -= <span class="cn">1</span>
+        arr[j+<span class="cn">1</span>] = key
+    <span class="ck">return</span> arr</div>
+    <h2>Choosing the right sort</h2>
+    <p>Bubble and insertion sort are simple but O(n²) — fine for small or nearly-sorted lists. Merge sort guarantees O(n log n) at the cost of extra memory. Quick sort is usually fastest in practice despite a worse theoretical worst case.</p>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Trace bubble sort by hand on <code>[5, 2, 8, 1]</code>, writing out the array after every swap.</div>
+`},
   'Strings':{time:'~30 min',level:'Beginner',lang:'Python',body:`
     <h2>Text as data</h2>
     <p>A string is a sequence of characters. Like lists, strings are indexed and sliceable — but unlike lists, they are <strong>immutable</strong>: you can't change a character in place, only build a new string.</p>
@@ -1561,7 +1631,17 @@ names.<span class="co">remove</span>(<span class="cs">"Bob"</span>)       <span 
     <div class="code-block">words = <span class="cs">"a,b,c"</span>.<span class="co">split</span>(<span class="cs">","</span>)   <span class="cm"># → ['a', 'b', 'c']</span>
 <span class="co">print</span>(<span class="cs">"-"</span>.<span class="co">join</span>(words))       <span class="cm"># → a-b-c</span></div>
     <div class="lesson-callout">⚠️ <strong>Common mistake:</strong> <code>s[0] = "H"</code> raises a TypeError — strings can't be modified in place. Use <code>s = "H" + s[1:]</code> instead.</div>
-  `},
+  
+    <h2>f-strings — formatting made easy</h2>
+    <p>f-strings let you embed expressions directly inside a string, evaluated at runtime — the modern way to build formatted text in Python.</p>
+    <div class="code-block">name, score = <span class="cs">"Kabir"</span>, <span class="cn">87.456</span>
+<span class="co">print</span>(<span class="cs">f"{name} scored {score:.1f}%"</span>)  <span class="cm"># → Kabir scored 87.5%</span></div>
+    <h2>Checking string content</h2>
+    <div class="code-block"><span class="co">print</span>(<span class="cs">"hello"</span>.<span class="co">startswith</span>(<span class="cs">"he"</span>))  <span class="cm"># → True</span>
+<span class="co">print</span>(<span class="cs">"123"</span>.<span class="co">isdigit</span>())        <span class="cm"># → True</span>
+<span class="co">print</span>(<span class="cs">"Hi"</span> <span class="ck">in</span> <span class="cs">"Hi there"</span>)     <span class="cm"># → True</span></div>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Write a function that checks whether a string is a palindrome, ignoring case and spaces.</div>
+`},
   'Dictionaries':{time:'~30 min',level:'Beginner',lang:'Python',body:`
     <h2>Key–value storage</h2>
     <p>A dictionary maps keys to values, like a real-world lookup table. Instead of finding items by position (like a list), you find them by name.</p>
@@ -1576,7 +1656,20 @@ student[<span class="cs">"school"</span>] = <span class="cs">"DPS"</span>    <sp
 <span class="ck">if</span> <span class="cs">"grade"</span> <span class="ck">in</span> student:      <span class="cm"># safe check</span>
     <span class="co">print</span>(<span class="cs">"has grade"</span>)</div>
     <div class="lesson-callout">💡 Use <code>.get(key, default)</code> instead of <code>student[key]</code> when a key might not exist — it avoids a KeyError and returns a fallback value.</div>
-  `},
+  
+    <h2>Dictionary comprehensions</h2>
+    <p>Just like list comprehensions, you can build a dict in one line — handy for transforming data quickly.</p>
+    <div class="code-block">nums = [<span class="cn">1</span>, <span class="cn">2</span>, <span class="cn">3</span>]
+squares = {n: n*n <span class="ck">for</span> n <span class="ck">in</span> nums}
+<span class="co">print</span>(squares)   <span class="cm"># → {1: 1, 2: 4, 3: 9}</span></div>
+    <h2>Nested dictionaries</h2>
+    <div class="code-block">users = {
+    <span class="cs">"u1"</span>: {<span class="cs">"name"</span>: <span class="cs">"Ravi"</span>, <span class="cs">"age"</span>: <span class="cn">21</span>},
+    <span class="cs">"u2"</span>: {<span class="cs">"name"</span>: <span class="cs">"Mira"</span>, <span class="cs">"age"</span>: <span class="cn">19</span>}
+}
+<span class="co">print</span>(users[<span class="cs">"u1"</span>][<span class="cs">"name"</span>])  <span class="cm"># → Ravi</span></div>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Given a list of words, build a dictionary that maps each word to its length using a dict comprehension.</div>
+`},
   'Sets & Tuples':{time:'~25 min',level:'Beginner',lang:'Python',body:`
     <h2>Sets — unique, unordered</h2>
     <p>A set stores unique values with no guaranteed order. It's ideal for removing duplicates and for fast membership checks.</p>
@@ -1591,7 +1684,21 @@ a = {<span class="cn">1</span>, <span class="cn">2</span>}; b = {<span class="cn
 x, y = point   <span class="cm"># unpacking</span>
 <span class="co">print</span>(x, y)  <span class="cm"># → 3 4</span></div>
     <div class="lesson-callout">💡 Tuples are hashable (usable as dict keys), lists are not. That's often the deciding factor between them.</div>
-  `},
+  
+    <h2>More set operations</h2>
+    <div class="code-block">a = {<span class="cn">1</span>, <span class="cn">2</span>, <span class="cn">3</span>}
+b = {<span class="cn">2</span>, <span class="cn">3</span>, <span class="cn">4</span>}
+<span class="co">print</span>(a - b)          <span class="cm"># difference → {1}</span>
+<span class="co">print</span>(a ^ b)          <span class="cm"># symmetric difference → {1, 4}</span>
+<span class="co">print</span>(a.<span class="co">issubset</span>({<span class="cn">1</span>,<span class="cn">2</span>,<span class="cn">3</span>,<span class="cn">4</span>}))  <span class="cm"># → True</span></div>
+    <h2>Named tuples</h2>
+    <p>For readability, <code>collections.namedtuple</code> lets you access tuple fields by name instead of position.</p>
+    <div class="code-block"><span class="ck">from</span> collections <span class="ck">import</span> namedtuple
+Point = namedtuple(<span class="cs">"Point"</span>, [<span class="cs">"x"</span>, <span class="cs">"y"</span>])
+p = Point(<span class="cn">3</span>, <span class="cn">4</span>)
+<span class="co">print</span>(p.x, p.y)   <span class="cm"># → 3 4</span></div>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Given two lists of student names, use sets to find students who appear in both.</div>
+`},
   'List Comprehensions':{time:'~25 min',level:'Beginner',lang:'Python',body:`
     <h2>Building lists in one line</h2>
     <p>A list comprehension creates a new list by transforming and/or filtering an existing sequence — replacing a multi-line loop with a single expression.</p>
@@ -1607,7 +1714,17 @@ squares = [n * n <span class="ck">for</span> n <span class="ck">in</span> <span 
     <div class="code-block">evens = [n <span class="ck">for</span> n <span class="ck">in</span> <span class="co">range</span>(<span class="cn">10</span>) <span class="ck">if</span> n % <span class="cn">2</span> == <span class="cn">0</span>]
 <span class="co">print</span>(evens)  <span class="cm"># → [0, 2, 4, 6, 8]</span></div>
     <div class="lesson-callout">⚠️ Readability matters more than cleverness. If a comprehension needs more than one <code>if</code> or nested loop to explain out loud, write it as a regular loop instead.</div>
-  `},
+  
+    <h2>Nested comprehensions</h2>
+    <p>Comprehensions can nest, mirroring nested loops — flattening a 2D grid into a single list is a common case.</p>
+    <div class="code-block">grid = [[<span class="cn">1</span>,<span class="cn">2</span>], [<span class="cn">3</span>,<span class="cn">4</span>]]
+flat = [num <span class="ck">for</span> row <span class="ck">in</span> grid <span class="ck">for</span> num <span class="ck">in</span> row]
+<span class="co">print</span>(flat)  <span class="cm"># → [1, 2, 3, 4]</span></div>
+    <h2>Generator expressions</h2>
+    <p>Swap the square brackets for parentheses and you get a generator — it computes values lazily, one at a time, instead of building the whole list in memory at once.</p>
+    <div class="code-block">total = <span class="co">sum</span>(n*n <span class="ck">for</span> n <span class="ck">in</span> <span class="co">range</span>(<span class="cn">1000000</span>))  <span class="cm"># memory-efficient</span></div>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Use a list comprehension to extract all vowels from a sentence into a list.</div>
+`},
   'File I/O':{time:'~25 min',level:'Beginner',lang:'Python',body:`
     <h2>Reading and writing files</h2>
     <p>File I/O lets a program persist data beyond a single run. Python's <code>open()</code> function is the entry point, and the <code>with</code> statement ensures the file is closed automatically.</p>
@@ -1626,7 +1743,20 @@ squares = [n * n <span class="ck">for</span> n <span class="ck">in</span> <span 
       <li><code>"a"</code> — append to the end without erasing</li>
     </ul>
     <div class="lesson-callout">💡 <strong>Always use <code>with</code>.</strong> It closes the file automatically, even if an error occurs mid-write — manual <code>open()</code>/<code>close()</code> pairs are easy to forget.</div>
-  `},
+  
+    <h2>Reading line by line</h2>
+    <p>For large files, reading the whole thing into memory with <code>.read()</code> can be wasteful. Iterating over the file object reads one line at a time instead.</p>
+    <div class="code-block"><span class="ck">with</span> <span class="co">open</span>(<span class="cs">"notes.txt"</span>) <span class="ck">as</span> f:
+    <span class="ck">for</span> line <span class="ck">in</span> f:
+        <span class="co">print</span>(line.<span class="co">strip</span>())   <span class="cm"># .strip() removes the trailing newline</span></div>
+    <h2>Working with CSV data</h2>
+    <div class="code-block"><span class="ck">import</span> csv
+<span class="ck">with</span> <span class="co">open</span>(<span class="cs">"scores.csv"</span>) <span class="ck">as</span> f:
+    reader = csv.reader(f)
+    <span class="ck">for</span> row <span class="ck">in</span> reader:
+        <span class="co">print</span>(row)   <span class="cm"># each row is a list of strings</span></div>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Write a script that reads a text file and counts how many lines it has, without loading the whole file into one string.</div>
+`},
   'Error Handling':{time:'~30 min',level:'Beginner',lang:'Python',body:`
     <h2>When things go wrong</h2>
     <p>Errors (exceptions) stop a program unless you handle them. <code>try</code>/<code>except</code> lets you catch a problem and respond instead of crashing.</p>
@@ -1647,7 +1777,23 @@ squares = [n * n <span class="ck">for</span> n <span class="ck">in</span> <span 
 <span class="ck">finally</span>:
     <span class="co">print</span>(<span class="cs">"This always runs"</span>)  <span class="cm"># cleanup code goes here</span></div>
     <div class="lesson-callout">⚠️ Never write a bare <code>except:</code> that catches everything silently — it hides real bugs. Catch specific exception types you actually expect.</div>
-  `},
+  
+    <h2>Catching multiple exceptions at once</h2>
+    <div class="code-block"><span class="ck">try</span>:
+    risky_operation()
+<span class="ck">except</span> (ValueError, TypeError) <span class="ck">as</span> e:
+    <span class="co">print</span>(<span class="cs">"Bad input:"</span>, e)</div>
+    <h2>Custom exceptions</h2>
+    <p>You can define your own exception types by subclassing <code>Exception</code> — useful for signalling domain-specific problems clearly.</p>
+    <div class="code-block"><span class="ck">class</span> <span class="co">InsufficientFundsError</span>(Exception):
+    <span class="ck">pass</span>
+
+<span class="ck">def</span> <span class="co">withdraw</span>(balance, amount):
+    <span class="ck">if</span> amount > balance:
+        <span class="ck">raise</span> InsufficientFundsError(<span class="cs">"Not enough balance"</span>)
+    <span class="ck">return</span> balance - amount</div>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Write a function that safely converts a list of strings to integers, skipping (not crashing on) any that fail.</div>
+`},
   'Modules & Imports':{time:'~20 min',level:'Beginner',lang:'Python',body:`
     <h2>Splitting code across files</h2>
     <p>A module is just a Python file. Importing lets you reuse code from one file in another, and use Python's huge standard library.</p>
@@ -1662,7 +1808,21 @@ squares = [n * n <span class="ck">for</span> n <span class="ck">in</span> <span 
     <h2>Your own modules</h2>
     <p>If you have a file <code>helpers.py</code> with a function <code>greet()</code>, another file in the same folder can use it with <code>from helpers import greet</code>.</p>
     <div class="lesson-callout">💡 <code>from module import *</code> works but is discouraged — it dumps every name into your file and makes it unclear where things came from.</div>
-  `},
+  
+    <h2>Packages — modules grouped in folders</h2>
+    <p>A package is a folder containing an <code>__init__.py</code> file plus one or more modules — it lets you organise related code into a namespace, like <code>myapp.utils.strings</code>.</p>
+    <h2>Useful standard-library modules</h2>
+    <ul>
+      <li><code>datetime</code> — dates and times</li>
+      <li><code>os</code> — interacting with the operating system and file paths</li>
+      <li><code>json</code> — reading and writing JSON data</li>
+      <li><code>collections</code> — extra data structures like <code>deque</code> and <code>Counter</code></li>
+    </ul>
+    <div class="code-block"><span class="ck">import</span> json
+data = json.loads(<span class="cs">'{"name": "Neha"}'</span>)
+<span class="co">print</span>(data[<span class="cs">"name"</span>])  <span class="cm"># → Neha</span></div>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Use the <code>datetime</code> module to print today's date in the format DD-MM-YYYY.</div>
+`},
   'Intro to OOP':{time:'~40 min',level:'Beginner',lang:'Python',body:`
     <h2>Bundling data and behaviour</h2>
     <p>Object-Oriented Programming groups related data (attributes) and functions (methods) into a single unit called a class. Each object created from a class is an <strong>instance</strong>.</p>
@@ -1683,7 +1843,22 @@ d = Dog(<span class="cs">"Rex"</span>, <span class="cn">3</span>)
       <li>Supports inheritance — a class can build on another class's behaviour</li>
     </ul>
     <div class="lesson-callout">💡 <code>__init__</code> runs automatically whenever you create a new object — it's where you set up the initial state.</div>
-  `},
+  
+    <h2>Inheritance</h2>
+    <p>A class can inherit from another, reusing its behaviour and adding or overriding what's different — avoiding duplicated code between similar classes.</p>
+    <div class="code-block"><span class="ck">class</span> <span class="co">Animal</span>:
+    <span class="ck">def</span> <span class="co">__init__</span>(self, name):
+        self.name = name
+    <span class="ck">def</span> <span class="co">speak</span>(self):
+        <span class="ck">return</span> <span class="cs">f"{self.name} makes a sound"</span>
+
+<span class="ck">class</span> <span class="co">Cat</span>(Animal):           <span class="cm"># Cat inherits from Animal</span>
+    <span class="ck">def</span> <span class="co">speak</span>(self):        <span class="cm"># override the parent's method</span>
+        <span class="ck">return</span> <span class="cs">f"{self.name} says meow"</span></div>
+    <h2>Encapsulation</h2>
+    <p>Prefixing an attribute with an underscore (<code>self._balance</code>) signals "internal use only" by convention — Python doesn't enforce privacy strictly, but this tells other developers not to touch it directly.</p>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Create a <code>BankAccount</code> class with <code>deposit()</code> and <code>withdraw()</code> methods that prevent the balance from going negative.</div>
+`},
   'Basic Recursion Intro':{time:'~30 min',level:'Beginner',lang:'Python',body:`
     <h2>A function that calls itself</h2>
     <p>Recursion solves a problem by breaking it into a smaller version of the same problem, until it reaches a case simple enough to answer directly — the <strong>base case</strong>.</p>
@@ -1701,7 +1876,16 @@ countdown(<span class="cn">3</span>)  <span class="cm"># → 3 2 1 Liftoff!</spa
         <span class="ck">return</span> <span class="cn">1</span>              <span class="cm"># base case</span>
     <span class="ck">return</span> n * factorial(n - <span class="cn">1</span>)  <span class="cm"># n! = n × (n-1)!</span></div>
     <div class="lesson-callout">⚠️ <strong>Every recursive function needs a base case.</strong> Without one, it calls itself forever and crashes with a RecursionError.</div>
-  `},
+  
+    <h2>Recursion vs iteration</h2>
+    <p>Anything recursion can do, a loop can also do (and vice versa) — recursion is often chosen because it maps more naturally onto problems that are already defined in terms of smaller versions of themselves, like tree traversal.</p>
+    <div class="code-block"><span class="cm"># Sum of a list — recursive version</span>
+<span class="ck">def</span> <span class="co">sum_list</span>(arr):
+    <span class="ck">if</span> <span class="ck">not</span> arr:
+        <span class="ck">return</span> <span class="cn">0</span>                      <span class="cm"># base case: empty list</span>
+    <span class="ck">return</span> arr[<span class="cn">0</span>] + sum_list(arr[<span class="cn">1</span>:])  <span class="cm"># first + rest</span></div>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Write a recursive function <code>reverse_string(s)</code> that reverses a string without using slicing or a loop.</div>
+`},
   'Recursion Deep Dive':{time:'~45 min',level:'Intermediate',lang:'Python',body:`
     <h2>The call stack</h2>
     <p>Each recursive call is pushed onto the call stack and waits there until its recursive call returns. Understanding this stack is the key to understanding recursion's cost and limits.</p>
@@ -1721,7 +1905,14 @@ countdown(<span class="cn">3</span>)  <span class="cm"># → 3 2 1 Liftoff!</spa
     cache[n] = fib_fast(n - <span class="cn">1</span>) + fib_fast(n - <span class="cn">2</span>)
     <span class="ck">return</span> cache[n]</div>
     <div class="lesson-callout">💡 Naive recursive Fibonacci is O(2ⁿ) — exponential. Memoizing drops it to O(n). Whenever a recursive function recomputes the same sub-problem, cache it.</div>
-  `},
+  
+    <h2>Tail recursion (and why Python doesn't optimise it)</h2>
+    <p>A tail-recursive call is the very last thing a function does. Some languages optimise this into a loop internally, avoiding stack growth — Python does not, so deep tail recursion in Python can still hit the recursion limit.</p>
+    <div class="code-block"><span class="co">print</span>(<span class="ck">import</span> sys, sys.getrecursionlimit())  <span class="cm"># default ~1000</span></div>
+    <h2>Converting recursion to iteration</h2>
+    <p>When recursion depth becomes a problem, an explicit stack (a list you manage yourself) can replace the call stack, turning a recursive traversal into an iterative one.</p>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Rewrite the Fibonacci memoization example using <code>functools.lru_cache</code> instead of a manual dictionary cache.</div>
+`},
   'Merge Sort & Quick Sort':{time:'~50 min',level:'Intermediate',lang:'Python',body:`
     <h2>Merge Sort — divide, sort, combine</h2>
     <p>Merge sort splits the array in half recursively until each piece has one element, then merges pairs back together in sorted order. Guaranteed O(n log n).</p>
@@ -1743,7 +1934,20 @@ countdown(<span class="cn">3</span>)  <span class="cm"># → 3 2 1 Liftoff!</spa
     right = [x <span class="ck">for</span> x <span class="ck">in</span> arr <span class="ck">if</span> x > pivot]
     <span class="ck">return</span> quick_sort(left) + mid + quick_sort(right)</div>
     <div class="lesson-callout">⚠️ Quick sort's worst case comes from a consistently bad pivot. Random or median-of-three pivot selection avoids the O(n²) trap on sorted input.</div>
-  `},
+  
+    <h2>Space complexity matters too</h2>
+    <p>Merge sort needs O(n) extra space for the temporary arrays used during merging. Quick sort, done in place, needs only O(log n) extra space for the recursion stack — a real advantage when memory is tight.</p>
+    <div class="code-block"><span class="ck">def</span> <span class="co">merge</span>(left, right):
+    result = []
+    i = j = <span class="cn">0</span>
+    <span class="ck">while</span> i < <span class="co">len</span>(left) <span class="ck">and</span> j < <span class="co">len</span>(right):
+        <span class="ck">if</span> left[i] <= right[j]:
+            result.append(left[i]); i += <span class="cn">1</span>
+        <span class="ck">else</span>:
+            result.append(right[j]); j += <span class="cn">1</span>
+    <span class="ck">return</span> result + left[i:] + right[j:]</div>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Trace merge sort by hand on <code>[8, 3, 5, 1]</code> — write out every split and every merge step.</div>
+`},
   'Binary Search':{time:'~30 min',level:'Intermediate',lang:'Python',body:`
     <h2>Halving the search space</h2>
     <p>Binary search finds a value in a <strong>sorted</strong> array by repeatedly checking the middle element and discarding the half that can't contain the target. O(log n) instead of O(n).</p>
@@ -1761,7 +1965,20 @@ countdown(<span class="cn">3</span>)  <span class="cm"># → 3 2 1 Liftoff!</spa
     <h2>Why the array must be sorted</h2>
     <p>Binary search relies on being able to eliminate half the elements based on one comparison. On unsorted data that guarantee breaks — you'd have to check every element anyway.</p>
     <div class="lesson-callout">⚠️ <strong>Common mistake:</strong> writing <code>mid = (lo + hi) / 2</code> in languages without integer division, or forgetting <code>lo <= hi</code> vs <code>lo < hi</code> — off-by-one errors are binary search's classic bug.</div>
-  `},
+  
+    <h2>Binary search on the answer</h2>
+    <p>Binary search isn't just for finding a value in an array — it also works for finding the smallest/largest value that satisfies some condition, as long as the condition is "monotonic" (once true, stays true).</p>
+    <div class="code-block"><span class="cm"># Find the smallest x where condition(x) is True, over a sorted range</span>
+<span class="ck">def</span> <span class="co">binary_search_answer</span>(lo, hi, condition):
+    <span class="ck">while</span> lo < hi:
+        mid = (lo + hi) // <span class="cn">2</span>
+        <span class="ck">if</span> condition(mid):
+            hi = mid
+        <span class="ck">else</span>:
+            lo = mid + <span class="cn">1</span>
+    <span class="ck">return</span> lo</div>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Implement binary search recursively instead of with a while loop.</div>
+`},
   'Two Pointers Technique':{time:'~35 min',level:'Intermediate',lang:'Python',body:`
     <h2>Two indices, one pass</h2>
     <p>The two pointers technique uses two indices moving through a sequence — often from opposite ends, or one fast and one slow — to solve problems in O(n) instead of a nested O(n²) loop.</p>
@@ -1780,7 +1997,18 @@ countdown(<span class="cn">3</span>)  <span class="cm"># → 3 2 1 Liftoff!</spa
     <h2>When to reach for it</h2>
     <p>Look for two pointers whenever the input is sorted (or can be) and you're comparing pairs, removing duplicates in place, or reversing a sequence.</p>
     <div class="lesson-callout">💡 This turns an O(n²) brute-force pair check into a single O(n) pass — one of the most common interview optimisations.</div>
-  `},
+  
+    <h2>Same-direction pointers</h2>
+    <p>Not all two-pointer problems move from opposite ends — sometimes both pointers move forward together, one fast and one slow, e.g. removing duplicates from a sorted array in place.</p>
+    <div class="code-block"><span class="ck">def</span> <span class="co">remove_duplicates</span>(arr):
+    slow = <span class="cn">0</span>
+    <span class="ck">for</span> fast <span class="ck">in</span> <span class="co">range</span>(<span class="cn">1</span>, <span class="co">len</span>(arr)):
+        <span class="ck">if</span> arr[fast] != arr[slow]:
+            slow += <span class="cn">1</span>
+            arr[slow] = arr[fast]
+    <span class="ck">return</span> arr[:slow + <span class="cn">1</span>]</div>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Given a sorted array, write a two-pointer solution to find all unique triplets that sum to zero.</div>
+`},
   'Sliding Window':{time:'~35 min',level:'Intermediate',lang:'Python',body:`
     <h2>A window that slides across the data</h2>
     <p>Sliding window keeps a running range (the "window") over a sequence, expanding and shrinking it instead of recomputing from scratch — turning many O(n²) subarray problems into O(n).</p>
@@ -1795,7 +2023,20 @@ countdown(<span class="cn">3</span>)  <span class="cm"># → 3 2 1 Liftoff!</spa
     <h2>Fixed vs variable window</h2>
     <p>A fixed window (like above) always has size k. A variable window grows until a condition breaks, then shrinks from the left — used for problems like "longest substring without repeating characters."</p>
     <div class="lesson-callout">💡 Recognise sliding window from phrases like "contiguous subarray," "substring," or "longest/shortest window that satisfies X."</div>
-  `},
+  
+    <h2>Variable-size window example</h2>
+    <div class="code-block"><span class="cm"># Longest substring with no repeated characters</span>
+<span class="ck">def</span> <span class="co">longest_unique</span>(s):
+    seen, left, best = <span class="co">set</span>(), <span class="cn">0</span>, <span class="cn">0</span>
+    <span class="ck">for</span> right <span class="ck">in</span> <span class="co">range</span>(<span class="co">len</span>(s)):
+        <span class="ck">while</span> s[right] <span class="ck">in</span> seen:
+            seen.remove(s[left])
+            left += <span class="cn">1</span>              <span class="cm"># shrink from the left</span>
+        seen.add(s[right])
+        best = <span class="co">max</span>(best, right - left + <span class="cn">1</span>)  <span class="cm"># grow to the right</span>
+    <span class="ck">return</span> best</div>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Find the smallest window in a string that contains every character of another string at least once.</div>
+`},
   'Stacks & Queues':{time:'~35 min',level:'Intermediate',lang:'Python',body:`
     <h2>Stack — Last In, First Out</h2>
     <p>A stack adds and removes from the same end, like a stack of plates. The last item pushed is the first popped.</p>
@@ -1812,7 +2053,22 @@ queue.<span class="co">append</span>(<span class="cn">1</span>)   <span class="c
 queue.<span class="co">append</span>(<span class="cn">2</span>)
 <span class="co">print</span>(queue.<span class="co">popleft</span>())  <span class="cm"># → 1 (FIFO)</span></div>
     <div class="lesson-callout">💡 Stacks power undo history and function call tracking (the call stack). Queues power task scheduling and breadth-first search.</div>
-  `},
+  
+    <h2>Real use: matching brackets</h2>
+    <div class="code-block"><span class="ck">def</span> <span class="co">is_balanced</span>(s):
+    stack = []
+    pairs = {<span class="cs">")"</span>: <span class="cs">"("</span>, <span class="cs">"]"</span>: <span class="cs">"["</span>, <span class="cs">"}"</span>: <span class="cs">"{"</span>}
+    <span class="ck">for</span> ch <span class="ck">in</span> s:
+        <span class="ck">if</span> ch <span class="ck">in</span> <span class="cs">"([{"</span>:
+            stack.append(ch)
+        <span class="ck">elif</span> ch <span class="ck">in</span> pairs:
+            <span class="ck">if</span> <span class="ck">not</span> stack <span class="ck">or</span> stack.pop() != pairs[ch]:
+                <span class="ck">return</span> <span class="co">False</span>
+    <span class="ck">return</span> <span class="ck">not</span> stack</div>
+    <h2>Deque as a double-ended structure</h2>
+    <p>A <code>deque</code> supports fast append/pop at both ends, which makes it flexible enough to act as either a stack or a queue.</p>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Use a stack to check whether <code>"(a+b)*(c-d)"</code> has balanced parentheses.</div>
+`},
   'Linked Lists':{time:'~40 min',level:'Intermediate',lang:'Python',body:`
     <h2>Nodes connected by pointers</h2>
     <p>A linked list stores elements as nodes, each holding a value and a reference to the next node — unlike an array, elements aren't stored contiguously in memory.</p>
@@ -1831,7 +2087,20 @@ head.next.next = Node(<span class="cn">3</span>)</div>
     <span class="co">print</span>(current.value)
     current = current.next   <span class="cm"># O(1) insert anywhere — no shifting needed</span></div>
     <div class="lesson-callout">💡 Arrays give O(1) random access but O(n) insertion in the middle. Linked lists flip that: O(n) access but O(1) insertion once you have the node.</div>
-  `},
+  
+    <h2>Reversing a linked list</h2>
+    <div class="code-block"><span class="ck">def</span> <span class="co">reverse</span>(head):
+    prev = <span class="ck">None</span>
+    <span class="ck">while</span> head:
+        next_node = head.next
+        head.next = prev     <span class="cm"># flip the pointer</span>
+        prev = head
+        head = next_node
+    <span class="ck">return</span> prev              <span class="cm"># prev is the new head</span></div>
+    <h2>Singly vs doubly linked</h2>
+    <p>A singly linked list's nodes point only forward. A doubly linked list also stores a pointer back to the previous node, making backward traversal and deletion of a known node O(1) instead of O(n).</p>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Write a function that detects whether a linked list has a cycle, using two pointers moving at different speeds (Floyd's algorithm).</div>
+`},
   'Trees & BSTs':{time:'~45 min',level:'Intermediate',lang:'Python',body:`
     <h2>Hierarchical structure</h2>
     <p>A tree is a set of nodes connected by edges, with one root and no cycles. A Binary Search Tree (BST) adds a rule: for every node, the left subtree holds smaller values and the right subtree holds larger ones.</p>
@@ -1852,7 +2121,18 @@ head.next.next = Node(<span class="cn">3</span>)</div>
     <h2>Traversal orders</h2>
     <p>In-order traversal (left, node, right) visits a BST's values in sorted order — a handy property worth remembering.</p>
     <div class="lesson-callout">⚠️ A BST only guarantees O(log n) search if it's balanced. Inserting sorted data one-by-one into a naive BST degrades it into a straight line — O(n) search, same as a list.</div>
-  `},
+  
+    <h2>Traversal orders in code</h2>
+    <div class="code-block"><span class="ck">def</span> <span class="co">inorder</span>(node, result):
+    <span class="ck">if</span> node:
+        inorder(node.left, result)
+        result.append(node.val)
+        inorder(node.right, result)
+    <span class="ck">return</span> result</div>
+    <h2>Tree height and balance</h2>
+    <p>A tree's height is the longest path from root to a leaf. A balanced tree keeps height close to log(n); self-balancing trees like AVL and Red-Black trees automatically rebalance on insert to guarantee this.</p>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Write a function that checks if a binary tree is a valid BST (every left descendant smaller, every right descendant larger).</div>
+`},
   'Heaps & Priority Queues':{time:'~40 min',level:'Intermediate',lang:'Python',body:`
     <h2>Always know the smallest (or largest)</h2>
     <p>A heap is a tree-shaped structure where the smallest (min-heap) or largest (max-heap) element is always at the root, retrievable in O(1) and re-heapified in O(log n) after insert/remove.</p>
@@ -1865,7 +2145,16 @@ heapq.heappush(nums, <span class="cn">3</span>)
     <h2>Why not just sort?</h2>
     <p>Sorting the whole list every time you need the minimum is O(n log n) per lookup. A heap keeps insert and extract-min at O(log n) each — much better when you repeatedly need the current smallest/largest as data streams in.</p>
     <div class="lesson-callout">💡 Python's <code>heapq</code> is min-heap only. For a max-heap, push negated values and negate them back on pop.</div>
-  `},
+  
+    <h2>Building a heap from a list</h2>
+    <div class="code-block"><span class="ck">import</span> heapq
+nums = [<span class="cn">5</span>, <span class="cn">1</span>, <span class="cn">8</span>, <span class="cn">2</span>]
+heapq.heapify(nums)          <span class="cm"># O(n), rearranges in place</span>
+<span class="co">print</span>(heapq.heappop(nums))  <span class="cm"># → 1</span></div>
+    <h2>Priority queue use case</h2>
+    <p>A task scheduler that always needs to run the highest-priority job next is a natural priority queue — push jobs in with their priority, always pop the most urgent one.</p>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Given a list of numbers, use a heap to find the k largest values without fully sorting the list.</div>
+`},
   'Graphs & BFS/DFS':{time:'~50 min',level:'Intermediate',lang:'Python',body:`
     <h2>Modelling connections</h2>
     <p>A graph is a set of nodes (vertices) connected by edges — perfect for modelling networks, maps, and relationships. Represent it as an adjacency list: a dict mapping each node to its neighbours.</p>
@@ -1888,7 +2177,20 @@ heapq.heappush(nums, <span class="cn">3</span>)
                 queue.append(neighbour)</div>
     <p>DFS dives as deep as possible before backtracking (using a stack or recursion), while BFS spreads outward one layer at a time — BFS finds the <em>shortest</em> path in an unweighted graph, DFS does not guarantee that.</p>
     <div class="lesson-callout">💡 Use BFS for shortest path / "fewest steps" problems. Use DFS for exploring all paths, detecting cycles, or when you need to go deep before wide.</div>
-  `},
+  
+    <h2>DFS in code</h2>
+    <div class="code-block"><span class="ck">def</span> <span class="co">dfs</span>(graph, node, visited=<span class="ck">None</span>):
+    <span class="ck">if</span> visited <span class="ck">is</span> <span class="ck">None</span>:
+        visited = <span class="co">set</span>()
+    visited.add(node)
+    <span class="co">print</span>(node)
+    <span class="ck">for</span> neighbour <span class="ck">in</span> graph[node]:
+        <span class="ck">if</span> neighbour <span class="ck">not</span> <span class="ck">in</span> visited:
+            dfs(graph, neighbour, visited)</div>
+    <h2>Directed vs undirected, weighted vs unweighted</h2>
+    <p>An undirected edge goes both ways (friendship); a directed edge is one-way (a follows relationship). Weighted edges carry a cost (distance, time); unweighted edges just represent a connection.</p>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Given a grid of land ("1") and water ("0"), use DFS or BFS to count the number of separate islands.</div>
+`},
   'Hash Tables':{time:'~35 min',level:'Intermediate',lang:'Python',body:`
     <h2>O(1) average lookup</h2>
     <p>A hash table maps keys to values using a hash function that converts a key into an array index. Python's <code>dict</code> and <code>set</code> are both hash tables under the hood.</p>
@@ -1903,7 +2205,19 @@ heapq.heappush(nums, <span class="cn">3</span>)
     <h2>Collisions</h2>
     <p>Two different keys can hash to the same slot — a collision. Python's dict handles this internally (via open addressing), so you rarely think about it, but it's why worst-case lookup is technically O(n) even though average case is O(1).</p>
     <div class="lesson-callout">💡 Whenever you find yourself scanning a list repeatedly to check "have I seen this before?", a set or dict turns that O(n) scan into an O(1) check.</div>
-  `},
+  
+    <h2>Using a hash table for two-sum</h2>
+    <div class="code-block"><span class="ck">def</span> <span class="co">two_sum</span>(nums, target):
+    seen = {}
+    <span class="ck">for</span> i, n <span class="ck">in</span> <span class="co">enumerate</span>(nums):
+        <span class="ck">if</span> target - n <span class="ck">in</span> seen:
+            <span class="ck">return</span> [seen[target - n], i]
+        seen[n] = i
+    <span class="ck">return</span> []</div>
+    <h2>What makes a good hash function</h2>
+    <p>A good hash function spreads keys evenly across buckets and is fast to compute. Python's built-in <code>hash()</code> handles this for you for standard immutable types — you rarely need to write your own.</p>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Given two strings, use a hash table (dict) to check if one is an anagram of the other in O(n) time.</div>
+`},
   'Tries (Prefix Trees)':{time:'~40 min',level:'Intermediate',lang:'Python',body:`
     <h2>A tree built for prefixes</h2>
     <p>A trie stores strings character by character in a tree, where words sharing a prefix share the same path. It's the structure behind autocomplete and spell-check.</p>
@@ -1926,7 +2240,19 @@ heapq.heappush(nums, <span class="cn">3</span>)
     <h2>Why not just a set of strings?</h2>
     <p>A set can check "does this exact word exist?" in O(1), but can't efficiently answer "what words start with 'pre'?" A trie answers prefix queries in O(k) where k is the prefix length, regardless of how many words are stored.</p>
     <div class="lesson-callout">💡 Reach for a trie when the problem is about prefixes — autocomplete, word search boards, or finding the longest common prefix among many strings.</div>
-  `},
+  
+    <h2>Searching a trie</h2>
+    <div class="code-block"><span class="ck">def</span> <span class="co">search</span>(self, word):
+    node = self.root
+    <span class="ck">for</span> ch <span class="ck">in</span> word:
+        <span class="ck">if</span> ch <span class="ck">not</span> <span class="ck">in</span> node.children:
+            <span class="ck">return</span> <span class="co">False</span>
+        node = node.children[ch]
+    <span class="ck">return</span> node.is_word</div>
+    <h2>Space trade-off</h2>
+    <p>Tries trade memory for speed — a trie of many short words can use more memory than a plain list, because shared prefixes are the only thing being saved on, not overall storage.</p>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Add a <code>starts_with(prefix)</code> method to the Trie class that returns True if any stored word begins with that prefix.</div>
+`},
   'Backtracking':{time:'~45 min',level:'Intermediate',lang:'Python',body:`
     <h2>Try, and undo if it fails</h2>
     <p>Backtracking explores choices one step at a time, and "undoes" (backtracks) a choice as soon as it can't lead to a valid solution — instead of blindly checking every full combination.</p>
@@ -1944,7 +2270,24 @@ heapq.heappush(nums, <span class="cn">3</span>)
     <h2>The pattern: choose, explore, un-choose</h2>
     <p>Every backtracking solution follows this shape. The "un-choose" step is what makes it backtracking rather than plain recursion — it resets state before trying the next option.</p>
     <div class="lesson-callout">💡 Classic backtracking problems: N-Queens, Sudoku solving, generating permutations/combinations, and maze path-finding.</div>
-  `},
+  
+    <h2>Permutations example</h2>
+    <div class="code-block"><span class="ck">def</span> <span class="co">permutations</span>(nums):
+    result = []
+    <span class="ck">def</span> <span class="co">backtrack</span>(path, remaining):
+        <span class="ck">if</span> <span class="ck">not</span> remaining:
+            result.append(path[:])
+            <span class="ck">return</span>
+        <span class="ck">for</span> i <span class="ck">in</span> <span class="co">range</span>(<span class="co">len</span>(remaining)):
+            path.append(remaining[i])
+            backtrack(path, remaining[:i] + remaining[i+<span class="cn">1</span>:])
+            path.pop()
+    backtrack([], nums)
+    <span class="ck">return</span> result</div>
+    <h2>Pruning — cutting off bad branches early</h2>
+    <p>The real power of backtracking comes from pruning: checking a constraint as early as possible so you never even explore branches that can't succeed, instead of generating everything and filtering afterward.</p>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Solve the N-Queens problem for a 4×4 board using backtracking with pruning.</div>
+`},
   'Bit Manipulation':{time:'~35 min',level:'Intermediate',lang:'Python',body:`
     <h2>Operating on individual bits</h2>
     <p>Bit manipulation works directly on a number's binary representation using operators that are extremely fast — useful for flags, compact storage, and certain algorithmic tricks.</p>
@@ -1959,7 +2302,18 @@ heapq.heappush(nums, <span class="cn">3</span>)
 <span class="ck">def</span> <span class="co">is_even</span>(n):
     <span class="ck">return</span> (n & <span class="cn">1</span>) == <span class="cn">0</span></div>
     <div class="lesson-callout">💡 XOR has a neat property: XOR-ing a number with itself gives 0. This is the trick behind "find the single number that doesn't repeat in a list of pairs."</div>
-  `},
+  
+    <h2>Counting set bits</h2>
+    <div class="code-block"><span class="ck">def</span> <span class="co">count_bits</span>(n):
+    count = <span class="cn">0</span>
+    <span class="ck">while</span> n:
+        count += n & <span class="cn">1</span>
+        n >>= <span class="cn">1</span>
+    <span class="ck">return</span> count</div>
+    <h2>Bitmasks for sets</h2>
+    <p>A bitmask represents a set of small integers as bits in a single number — bit <em>i</em> set means <em>i</em> is "in" the set. This makes union, intersection, and membership checks extremely fast for small universes.</p>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Write a function that finds the single number that appears once in a list where every other number appears twice, using XOR.</div>
+`},
   'Dynamic Programming':{time:'~55 min',level:'Advanced',lang:'Python',body:`
     <h2>Break it down, remember the answers</h2>
     <p>Dynamic Programming solves a problem by breaking it into overlapping sub-problems, solving each one once, and reusing the stored result instead of recomputing it — the same idea as memoized recursion, applied deliberately.</p>
@@ -1975,7 +2329,23 @@ heapq.heappush(nums, <span class="cn">3</span>)
     <h2>Top-down vs bottom-up</h2>
     <p><strong>Top-down</strong> starts at the full problem and recurses down, caching results (memoization). <strong>Bottom-up</strong> starts from the smallest sub-problem and builds up iteratively (tabulation), as shown above.</p>
     <div class="lesson-callout">💡 Recognise DP from: "count the number of ways," "find the min/max," or "is it possible" — combined with choices that overlap across sub-problems.</div>
-  `},
+  
+    <h2>0/1 Knapsack — a classic DP problem</h2>
+    <div class="code-block"><span class="ck">def</span> <span class="co">knapsack</span>(weights, values, capacity):
+    n = <span class="co">len</span>(weights)
+    dp = [[<span class="cn">0</span>]*(capacity+<span class="cn">1</span>) <span class="ck">for</span> _ <span class="ck">in</span> <span class="co">range</span>(n+<span class="cn">1</span>)]
+    <span class="ck">for</span> i <span class="ck">in</span> <span class="co">range</span>(<span class="cn">1</span>, n+<span class="cn">1</span>):
+        <span class="ck">for</span> w <span class="ck">in</span> <span class="co">range</span>(capacity+<span class="cn">1</span>):
+            <span class="ck">if</span> weights[i-<span class="cn">1</span>] <= w:
+                dp[i][w] = <span class="co">max</span>(dp[i-<span class="cn">1</span>][w],
+                               dp[i-<span class="cn">1</span>][w-weights[i-<span class="cn">1</span>]] + values[i-<span class="cn">1</span>])
+            <span class="ck">else</span>:
+                dp[i][w] = dp[i-<span class="cn">1</span>][w]
+    <span class="ck">return</span> dp[n][capacity]</div>
+    <h2>Identifying the DP state</h2>
+    <p>The hardest part of DP is defining what <code>dp[i]</code> (or <code>dp[i][j]</code>) actually represents, and the recurrence that connects it to smaller states. Get that right and the code almost writes itself.</p>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Solve "longest increasing subsequence" using DP — define <code>dp[i]</code> as the LIS ending exactly at index i.</div>
+`},
   'Divide & Conquer':{time:'~40 min',level:'Advanced',lang:'Python',body:`
     <h2>Split, solve, combine</h2>
     <p>Divide and Conquer breaks a problem into independent smaller sub-problems, solves each recursively, then combines the results. Merge sort and binary search are both divide-and-conquer algorithms.</p>
@@ -1990,7 +2360,13 @@ heapq.heappush(nums, <span class="cn">3</span>)
     <h2>Divide & Conquer vs Dynamic Programming</h2>
     <p>Both split problems recursively. The difference: D&C sub-problems are independent (no overlap, no need to cache), while DP sub-problems overlap and benefit from memoization.</p>
     <div class="lesson-callout">💡 The Master Theorem gives a shortcut for the time complexity of many divide-and-conquer recurrences — worth knowing exists, even before you memorise the formula.</div>
-  `},
+  
+    <h2>Counting inversions with merge sort</h2>
+    <p>A neat trick: while merging two sorted halves, you can count how many "out of order" pairs (inversions) exist between them for free — this is divide-and-conquer solving a problem beyond just sorting.</p>
+    <h2>Master Theorem, briefly</h2>
+    <p>For a recurrence <code>T(n) = aT(n/b) + f(n)</code>, the Master Theorem gives the overall complexity by comparing how <code>f(n)</code> grows against <code>n^(log_b a)</code> — it's a shortcut so you don't need to expand the recursion tree by hand every time.</p>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Implement the "closest pair of points" problem using divide and conquer on a sorted list of x-coordinates.</div>
+`},
   'Greedy Algorithms':{time:'~40 min',level:'Advanced',lang:'Python',body:`
     <h2>Locally best, hoping for globally best</h2>
     <p>A greedy algorithm makes the choice that looks best right now, at every step, without reconsidering earlier decisions. It's fast, but only correct for problems where local optimal choices actually lead to a global optimum.</p>
@@ -2007,7 +2383,21 @@ heapq.heappush(nums, <span class="cn">3</span>)
     <h2>When greedy fails</h2>
     <p>With coins <code>[1, 3, 4]</code> and target 6, greedy picks 4 + 1 + 1 = 3 coins, but the optimal answer is 3 + 3 = 2 coins. Greedy only works when the problem has the "greedy choice property" — not every problem does.</p>
     <div class="lesson-callout">⚠️ Always ask: "could an early greedy choice lock out a better later option?" If yes, greedy is the wrong tool — reach for DP instead.</div>
-  `},
+  
+    <h2>Activity selection — greedy that works</h2>
+    <div class="code-block"><span class="cm"># Pick the max number of non-overlapping meetings</span>
+<span class="ck">def</span> <span class="co">max_activities</span>(activities):
+    activities.<span class="co">sort</span>(key=<span class="ck">lambda</span> a: a[<span class="cn">1</span>])   <span class="cm"># sort by end time</span>
+    count, last_end = <span class="cn">0</span>, -<span class="co">float</span>(<span class="cs">"inf"</span>)
+    <span class="ck">for</span> start, end <span class="ck">in</span> activities:
+        <span class="ck">if</span> start >= last_end:
+            count += <span class="cn">1</span>
+            last_end = end
+    <span class="ck">return</span> count</div>
+    <h2>Proving greedy is correct</h2>
+    <p>Greedy algorithms need justification, not just intuition — typically via an "exchange argument" showing any optimal solution can be transformed into the greedy one without getting worse.</p>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Given jobs with deadlines and profits, write a greedy algorithm to maximise total profit when only one job can run per time slot.</div>
+`},
   'Graph Optimisation':{time:'~45 min',level:'Advanced',lang:'Python',body:`
     <h2>Finding the best structure in a graph</h2>
     <p>Graph optimisation problems ask for the "best" substructure of a graph — the cheapest way to connect everything, the shortest route, or the maximum flow through a network.</p>
@@ -2021,7 +2411,14 @@ mst = []
         union(edge.u, edge.v)
         mst.append(edge)</div>
     <div class="lesson-callout">💡 Prim's algorithm solves the same MST problem by growing one connected tree outward instead of sorting all edges globally — pick whichever fits your graph's density better.</div>
-  `},
+  
+    <h2>Max flow — moving as much as possible</h2>
+    <p>Max flow problems ask: given a network with capacities on each edge, how much can flow from a source to a sink? The Ford-Fulkerson method repeatedly finds an "augmenting path" with spare capacity and pushes flow along it until none remain.</p>
+    <h2>Prim's algorithm sketch</h2>
+    <div class="code-block"><span class="cm"># Grow the MST one node at a time, always picking the cheapest edge out</span>
+<span class="cm"># of the current tree that reaches a new node — uses a min-heap</span></div>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Given a small weighted graph, run Kruskal's algorithm by hand: list the edges sorted by weight and mark which ones join the MST.</div>
+`},
   'Shortest Path Algorithms':{time:'~45 min',level:'Advanced',lang:'Python',body:`
     <h2>Beyond BFS: weighted graphs</h2>
     <p>BFS finds shortest paths only when every edge costs the same. When edges have different weights, Dijkstra's algorithm finds the shortest path from a source to every other node.</p>
@@ -2041,7 +2438,20 @@ mst = []
                 heapq.heappush(pq, (new_dist, neighbour))
     <span class="ck">return</span> dist</div>
     <div class="lesson-callout">⚠️ Dijkstra assumes non-negative edge weights. If negative weights are possible, use Bellman-Ford instead — it's slower (O(VE)) but handles them correctly.</div>
-  `},
+  
+    <h2>Bellman-Ford — handles negative weights</h2>
+    <div class="code-block"><span class="ck">def</span> <span class="co">bellman_ford</span>(edges, n, start):
+    dist = [<span class="co">float</span>(<span class="cs">"inf"</span>)] * n
+    dist[start] = <span class="cn">0</span>
+    <span class="ck">for</span> _ <span class="ck">in</span> <span class="co">range</span>(n - <span class="cn">1</span>):        <span class="cm"># relax all edges n-1 times</span>
+        <span class="ck">for</span> u, v, w <span class="ck">in</span> edges:
+            <span class="ck">if</span> dist[u] + w < dist[v]:
+                dist[v] = dist[u] + w
+    <span class="ck">return</span> dist</div>
+    <h2>Floyd-Warshall — all pairs at once</h2>
+    <p>When you need shortest paths between <em>every</em> pair of nodes rather than from one source, Floyd-Warshall computes them all in O(V³) using dynamic programming over intermediate nodes.</p>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Run Dijkstra's algorithm by hand on a 5-node weighted graph, tracking the distance table after each step.</div>
+`},
   'Topological Sort':{time:'~35 min',level:'Advanced',lang:'Python',body:`
     <h2>Ordering tasks with dependencies</h2>
     <p>A topological sort orders the nodes of a Directed Acyclic Graph (DAG) so that every edge points forward — used for scheduling tasks where some must happen before others, like course prerequisites.</p>
@@ -2058,7 +2468,22 @@ mst = []
             dfs(node)
     <span class="ck">return</span> order[::-<span class="cn">1</span>]           <span class="cm"># reverse post-order = topological order</span></div>
     <div class="lesson-callout">💡 A topological sort only exists if the graph has no cycles. If your "prerequisite graph" has a cycle, the tasks are literally impossible to schedule — that's the real-world meaning of a cycle here.</div>
-  `},
+  
+    <h2>Kahn's algorithm — the BFS approach</h2>
+    <div class="code-block"><span class="ck">from</span> collections <span class="ck">import</span> deque
+<span class="ck">def</span> <span class="co">topo_kahn</span>(graph, in_degree):
+    queue = deque([n <span class="ck">for</span> n <span class="ck">in</span> graph <span class="ck">if</span> in_degree[n] == <span class="cn">0</span>])
+    order = []
+    <span class="ck">while</span> queue:
+        node = queue.popleft()
+        order.append(node)
+        <span class="ck">for</span> neighbour <span class="ck">in</span> graph[node]:
+            in_degree[neighbour] -= <span class="cn">1</span>
+            <span class="ck">if</span> in_degree[neighbour] == <span class="cn">0</span>:
+                queue.append(neighbour)
+    <span class="ck">return</span> order</div>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Given a list of course prerequisites, determine a valid order to take all the courses (or detect it's impossible).</div>
+`},
   'Union Find':{time:'~40 min',level:'Advanced',lang:'Python',body:`
     <h2>Tracking connected groups</h2>
     <p>Union-Find (Disjoint Set Union) efficiently answers "are these two elements in the same group?" and "merge these two groups" — both in near-constant time, using path compression and union by rank.</p>
@@ -2075,7 +2500,21 @@ mst = []
     <h2>What it's for</h2>
     <p>Union-Find shines in problems about connectivity: detecting cycles in an undirected graph, building a Minimum Spanning Tree (Kruskal's algorithm), or grouping friends into friend-circles.</p>
     <div class="lesson-callout">💡 Without path compression, <code>find()</code> can degrade to O(n). With it (plus union by rank), both operations are effectively O(1) — this optimisation matters.</div>
-  `},
+  
+    <h2>Union by rank</h2>
+    <p>Always attaching the smaller tree under the root of the larger one keeps the overall tree shallow, which is what makes <code>find()</code> fast even before path compression kicks in.</p>
+    <div class="code-block">rank = {}
+<span class="ck">def</span> <span class="co">union</span>(x, y):
+    rootX, rootY = find(x), find(y)
+    <span class="ck">if</span> rootX == rootY:
+        <span class="ck">return</span>
+    <span class="ck">if</span> rank[rootX] < rank[rootY]:
+        rootX, rootY = rootY, rootX
+    parent[rootY] = rootX
+    <span class="ck">if</span> rank[rootX] == rank[rootY]:
+        rank[rootX] += <span class="cn">1</span></div>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Given a list of friendship pairs, use Union-Find to count how many separate friend groups exist.</div>
+`},
   'Segment Trees':{time:'~50 min',level:'Advanced',lang:'Python',body:`
     <h2>Fast range queries on changing data</h2>
     <p>A segment tree answers range queries (like "sum of elements 3 to 7") in O(log n), and supports updating a single element in O(log n) too — far better than recomputing the whole range each time.</p>
@@ -2092,7 +2531,20 @@ mst = []
     <h2>Why not just a running total?</h2>
     <p>A prefix-sum array answers range-sum queries in O(1), but any update forces an O(n) rebuild. A segment tree keeps both queries and updates at O(log n) — the right trade-off when data changes often.</p>
     <div class="lesson-callout">💡 Segment trees generalise beyond sums — build one for range min, range max, or even range GCD, by changing what each node combines.</div>
-  `},
+  
+    <h2>Range query in code</h2>
+    <div class="code-block"><span class="ck">def</span> <span class="co">query</span>(tree, node, lo, hi, l, r):
+    <span class="ck">if</span> r < lo <span class="ck">or</span> hi < l:
+        <span class="ck">return</span> <span class="cn">0</span>                          <span class="cm"># no overlap</span>
+    <span class="ck">if</span> l <= lo <span class="ck">and</span> hi <= r:
+        <span class="ck">return</span> tree[node]                   <span class="cm"># total overlap</span>
+    mid = (lo + hi) // <span class="cn">2</span>
+    <span class="ck">return</span> (query(tree, <span class="cn">2</span>*node, lo, mid, l, r) +
+            query(tree, <span class="cn">2</span>*node+<span class="cn">1</span>, mid+<span class="cn">1</span>, hi, l, r))</div>
+    <h2>Fenwick trees (Binary Indexed Trees)</h2>
+    <p>For simple prefix-sum-style queries, a Fenwick tree does the same job as a segment tree with less code and a smaller constant factor — worth knowing as a lighter-weight alternative.</p>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Given an array, build a segment tree and answer three range-sum queries by hand, tracing which nodes get visited.</div>
+`},
   'Complexity Analysis':{time:'~35 min',level:'Advanced',lang:'Python',body:`
     <h2>Big-O: measuring growth, not speed</h2>
     <p>Big-O notation describes how an algorithm's running time or memory grows as input size grows — not the exact number of seconds it takes. It answers "what happens as n gets huge?"</p>
@@ -2111,7 +2563,19 @@ mst = []
     <h2>The common orders, fastest to slowest</h2>
     <p>O(1) &lt; O(log n) &lt; O(n) &lt; O(n log n) &lt; O(n²) &lt; O(2ⁿ) &lt; O(n!). At small n they can look similar; at large n the gap becomes enormous — that's the whole point of analysing it.</p>
     <div class="lesson-callout">⚠️ Big-O describes the <strong>worst case growth trend</strong>, not a guarantee of real-world speed. A O(n) algorithm with a huge constant factor can be slower than O(n log n) for realistic input sizes.</div>
-  `},
+  
+    <h2>Best, worst, and average case</h2>
+    <p>An algorithm's complexity can differ by input. Quick sort is O(n log n) on average but O(n²) worst case (bad pivots). Always specify which case you're describing — "quick sort is O(n²)" without qualification is misleading.</p>
+    <h2>Space complexity</h2>
+    <p>Big-O also measures memory, not just time. An algorithm using extra arrays proportional to input size is O(n) space; one that only uses a few variables regardless of input size is O(1) space.</p>
+    <div class="code-block"><span class="cm"># O(n) space — creates a new list</span>
+<span class="ck">def</span> <span class="co">doubled</span>(arr): <span class="ck">return</span> [x*<span class="cn">2</span> <span class="ck">for</span> x <span class="ck">in</span> arr]
+
+<span class="cm"># O(1) space — modifies in place</span>
+<span class="ck">def</span> <span class="co">double_in_place</span>(arr):
+    <span class="ck">for</span> i <span class="ck">in</span> <span class="co">range</span>(<span class="co">len</span>(arr)): arr[i] *= <span class="cn">2</span></div>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Work out the Big-O of a function that has one loop of n iterations followed by a separate nested loop of n×n iterations. (Hint: they add, and the larger term dominates.)</div>
+`},
   'NP-Completeness':{time:'~40 min',level:'Advanced',lang:'Python',body:`
     <h2>Problems with no known fast solution</h2>
     <p>P is the set of problems solvable in polynomial time. NP is the set of problems where a proposed solution can be <em>checked</em> in polynomial time, even if finding one might not be. NP-Complete problems are the "hardest" problems in NP.</p>
@@ -2121,7 +2585,17 @@ mst = []
     <h2>Why it matters practically</h2>
     <p>If a problem is proven NP-Complete (like the Travelling Salesman Problem or Boolean Satisfiability), don't waste time hunting for a fast exact algorithm — instead reach for approximation algorithms, heuristics, or accept exponential time for small inputs only.</p>
     <div class="lesson-callout">💡 The famous open question "does P = NP?" asks whether every problem that's easy to <em>check</em> is also easy to <em>solve</em>. Nobody has proven it either way — it's one of the biggest open problems in computer science.</div>
-  `},
+  
+    <h2>Reductions — proving hardness</h2>
+    <p>A problem is shown NP-Complete by reducing a known NP-Complete problem to it in polynomial time — if you could solve the new problem fast, you could solve the known hard one fast too, which (as far as we know) you can't.</p>
+    <h2>Living with NP-Completeness</h2>
+    <ul>
+      <li>Approximation algorithms — get close to optimal, provably within some bound</li>
+      <li>Heuristics — fast in practice, no guarantee, e.g. simulated annealing</li>
+      <li>Exact solving only for small n, using backtracking with heavy pruning</li>
+    </ul>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Research (or think through) why the Travelling Salesman Problem is easy to state but has no known polynomial-time exact solution.</div>
+`},
   'System Design':{time:'~50 min',level:'Advanced',lang:'Concepts',body:`
     <h2>Designing systems, not just algorithms</h2>
     <p>System design is about structuring software components — servers, databases, caches, queues — so a system meets real-world requirements: scale, reliability, and speed, often with trade-offs between them.</p>
@@ -2135,7 +2609,13 @@ mst = []
     <h2>The core trade-off: CAP theorem</h2>
     <p>A distributed system can't fully guarantee Consistency, Availability, and Partition tolerance all at once — when a network partition happens, you must choose between staying consistent or staying available.</p>
     <div class="lesson-callout">💡 There's rarely a single "correct" design — good system design is explicitly naming your trade-offs (e.g. "I chose availability over strict consistency because stale reads are acceptable here").</div>
-  `},
+  
+    <h2>Vertical vs horizontal scaling</h2>
+    <p><strong>Vertical scaling</strong> means adding more power to one machine (more RAM, faster CPU) — simple, but has a hard ceiling. <strong>Horizontal scaling</strong> means adding more machines and distributing the load — more complex, but scales much further.</p>
+    <h2>Designing a URL shortener — a worked walkthrough</h2>
+    <p>Requirements: shorten a long URL, redirect quickly on visit. Approach: a database mapping short codes to long URLs, a hash or counter to generate codes, and a cache in front of the database since reads (redirects) vastly outnumber writes (new shortens).</p>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Sketch (on paper) the components you'd need to design a simple chat application supporting 1 million users.</div>
+`},
   'Memory Management':{time:'~40 min',level:'Advanced',lang:'Concepts',body:`
     <h2>Stack vs heap</h2>
     <p>Programs use two main memory regions. The <strong>stack</strong> holds function calls and local variables — fast, automatically freed when a function returns. The <strong>heap</strong> holds dynamically allocated data that can outlive the function that created it.</p>
@@ -2146,7 +2626,17 @@ mst = []
     <h2>Garbage collection</h2>
     <p>Languages like Python automatically free heap memory once nothing references it anymore, using reference counting plus a cycle collector for objects that reference each other. Languages like C require manual <code>malloc</code>/<code>free</code>.</p>
     <div class="lesson-callout">⚠️ A memory leak happens when memory is still referenced (so it's never garbage collected) but never actually used again — commonly caused by growing caches or lists no one clears.</div>
-  `},
+  
+    <h2>Reference counting, concretely</h2>
+    <div class="code-block"><span class="ck">import</span> sys
+a = [<span class="cn">1</span>, <span class="cn">2</span>, <span class="cn">3</span>]
+b = a                          <span class="cm"># same list, refcount goes to 2</span>
+<span class="co">print</span>(sys.getrefcount(a))  <span class="cm"># includes a temporary reference too</span>
+<span class="ck">del</span> b                        <span class="cm"># refcount drops back down</span></div>
+    <h2>Reference cycles</h2>
+    <p>Two objects that reference each other keep their reference count above zero forever through simple counting alone — Python's cycle-detecting garbage collector runs periodically to catch and clean up exactly this case.</p>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Think through why a class holding a list that keeps growing (and never getting cleared) causes a memory leak even in a garbage-collected language.</div>
+`},
   'AI/ML Foundations':{time:'~45 min',level:'Advanced',lang:'Concepts',body:`
     <h2>Learning from data instead of rules</h2>
     <p>Traditional programs follow rules you write explicitly. Machine learning instead learns a function from examples — given enough labelled data, a model finds the pattern connecting inputs to outputs on its own.</p>
@@ -2162,7 +2652,18 @@ model.adjust_weights(error)   <span class="cm"># nudge the model to be less wron
     <h2>Overfitting — the central trap</h2>
     <p>A model that memorises training data instead of learning the underlying pattern performs great on data it's seen and poorly on new data. Guarding against this — via more data, regularisation, or simpler models — is one of the biggest practical concerns in ML.</p>
     <div class="lesson-callout">💡 "Garbage in, garbage out" applies more to ML than almost anywhere else in computing — model quality is bounded by data quality, not just algorithm choice.</div>
-  `},
+  
+    <h2>A simple linear model</h2>
+    <div class="code-block"><span class="cm"># Predicting y from x using a straight line: y = w*x + b</span>
+<span class="ck">def</span> <span class="co">predict</span>(x, w, b):
+    <span class="ck">return</span> w * x + b
+
+<span class="cm"># Training nudges w and b to reduce the error between</span>
+<span class="cm"># predict(x) and the real y, over many examples</span></div>
+    <h2>Train / validation / test split</h2>
+    <p>Data is typically split three ways: train the model on one chunk, tune choices (like model complexity) on a validation chunk, and only check final performance once on an untouched test chunk — reusing the test set for tuning quietly leaks information and inflates results.</p>
+    <div class="lesson-callout">🛠️ <strong>Practice:</strong> Think through what would happen to a model's real-world accuracy if you accidentally trained on data that included the test set.</div>
+`},
 };
 
 function getDefaultLesson(name, path) {
