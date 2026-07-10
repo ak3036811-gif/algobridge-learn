@@ -1684,18 +1684,11 @@ function completeTopic() {
     const nextTopic = PATHS[APP.currentTopicPath][APP.currentTopicId + 1];
     if (nextTopic && nextTopic.state === 'locked') nextTopic.state = 'available';
     APP.recentActivity.unshift('Completed "' + topic.name + '"');
-    // Increment global lessons counter via worker
-    fetch('https://algobridge-counter.ak3036811.workers.dev/lesson')
-      .then(r => r.json())
-      .then(data => {
-        const doneEl = document.getElementById('completed-count');
-        if (doneEl) doneEl.textContent = data.lessons;
-      })
-      .catch(() => {
-        // fallback: just increment locally on failure
-        const doneEl = document.getElementById('completed-count');
-        if (doneEl) doneEl.textContent = parseInt(doneEl.textContent || '0') + 1;
-      });
+    // Increment completed lessons counter
+    const doneCount = parseInt(localStorage.getItem('ab_lessons_done') || '0') + 1;
+    localStorage.setItem('ab_lessons_done', doneCount);
+    const doneEl = document.getElementById('completed-count');
+    if (doneEl) doneEl.textContent = doneCount;
     renderPath(APP.currentTopicPath);
     updateDashboard();
     updateIntermediateLock();
@@ -2834,33 +2827,25 @@ async function tcSend() {
   }, 1000);
 
   // ── COMPLETED LESSONS COUNT ──
-  // Loaded from worker alongside visitor count (see /hit response below)
+  const savedDone = parseInt(localStorage.getItem('ab_lessons_done') || '0');
+  const doneEl = document.getElementById('completed-count');
+  if (doneEl) doneEl.textContent = savedDone;
 
-  // ── VISITOR COUNT ──
-  // Self-hosted Cloudflare Worker counter — deploy counter-worker.js to your workers.dev
-  // Then update the URL below to match your deployed worker
-  const COUNTER_URL = 'https://algobridge-counter.ak3036811.workers.dev/hit';
+  // ── VISITOR COUNT (existing) ──
+  const SITE = 'ak3036811-gif.github.io%2Falgobridge-learn';
+  const img = new Image();
+  img.src = `https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2F${SITE}&nocache=${Date.now()}`;
 
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 5000);
-
-  fetch(COUNTER_URL, { signal: controller.signal })
-    .then(r => {
-      clearTimeout(timeout);
-      if (!r.ok) throw new Error('bad response');
-      return r.json();
-    })
+  fetch(`https://hits.seeyoufarm.com/api/count/incr/badge.json?url=https%3A%2F%2F${SITE}`)
+    .then(r => r.json())
     .then(data => {
-      const count = data.count || 1;
-      localStorage.setItem('ab_visits_cache', count);
+      const count = data.total_count || data.today_count || 1;
       showBadge(count);
-      // Also update global lessons count from same response
-      const doneEl = document.getElementById('completed-count');
-      if (doneEl && data.lessons !== undefined) doneEl.textContent = data.lessons;
     })
     .catch(() => {
-      const cached = parseInt(localStorage.getItem('ab_visits_cache') || '0');
-      showBadge(cached || 1);
+      const local = parseInt(localStorage.getItem('ab_visits') || '0') + 1;
+      localStorage.setItem('ab_visits', local);
+      showBadge(local);
     });
 })();
 </script>
