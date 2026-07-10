@@ -6,6 +6,46 @@
 <title>AlgoBridge Learn</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<!-- Firebase (modular SDK, loaded as an ES module) -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import {
+    getFirestore, doc, getDoc, updateDoc, runTransaction
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCwbEvq-5cT1h2cQKY-7OqNcseLS7zr6rM",
+    authDomain: "algobridge-learn.firebaseapp.com",
+    projectId: "algobridge-learn",
+    storageBucket: "algobridge-learn.firebasestorage.app",
+    messagingSenderId: "215204896883",
+    appId: "1:215204896883:web:c7c49cd3dbbe3157d7ca06"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // Reads a counter's current value without changing it
+  window.readFirestoreCounter = function (counterId) {
+    const ref = doc(db, 'counters', counterId);
+    return getDoc(ref).then(snap => snap.exists() ? (snap.data().value || 0) : 0);
+  };
+
+  // Atomically increments a counter by `by` (use 0 to just read) and returns the new value
+  window.incrementFirestoreCounter = function (counterId, by) {
+    const ref = doc(db, 'counters', counterId);
+    return runTransaction(db, async (t) => {
+      const snap = await t.get(ref);
+      const current = snap.exists() ? (snap.data().value || 0) : 0;
+      const next = current + by;
+      t.update(ref, { value: next });
+      return next;
+    });
+  };
+
+  // Let the rest of the page know Firebase helpers are ready
+  window.dispatchEvent(new Event('firebase-ready'));
+</script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -1611,6 +1651,32 @@ function revealPage() {
   });
 }
 
+// ── PERSIST / RESTORE TOPIC PROGRESS (per-device) ─────────────────────────────
+function saveTopicProgress() {
+  const saved = {};
+  for (const pathName in PATHS) {
+    saved[pathName] = PATHS[pathName].map(t => t.state);
+  }
+  localStorage.setItem('ab_path_state', JSON.stringify(saved));
+}
+
+function restoreTopicProgress() {
+  const raw = localStorage.getItem('ab_path_state');
+  if (!raw) return;
+  try {
+    const saved = JSON.parse(raw);
+    for (const pathName in saved) {
+      if (!PATHS[pathName]) continue;
+      saved[pathName].forEach((state, idx) => {
+        if (PATHS[pathName][idx]) PATHS[pathName][idx].state = state;
+      });
+    }
+  } catch (e) {
+    // Corrupt data — ignore and keep defaults
+  }
+}
+restoreTopicProgress();
+
 // ── TOPIC RENDERING ──────────────────────────────────────────────────────────
 function renderPath(pathName) {
   const topics = PATHS[pathName];
@@ -1684,11 +1750,14 @@ function completeTopic() {
     const nextTopic = PATHS[APP.currentTopicPath][APP.currentTopicId + 1];
     if (nextTopic && nextTopic.state === 'locked') nextTopic.state = 'available';
     APP.recentActivity.unshift('Completed "' + topic.name + '"');
-    // Increment completed lessons counter
-    const doneCount = parseInt(localStorage.getItem('ab_lessons_done') || '0') + 1;
-    localStorage.setItem('ab_lessons_done', doneCount);
-    const doneEl = document.getElementById('completed-count');
-    if (doneEl) doneEl.textContent = doneCount;
+    // Remember which topics this device has completed, so refreshing doesn't
+    // let the same topic get "completed" (and counted) twice
+    saveTopicProgress();
+    // Increment the shared global lessons-done counter (Firestore)
+    incrementFirestoreCounter('lessons', 1).then(count => {
+      const doneEl = document.getElementById('completed-count');
+      if (doneEl) doneEl.textContent = count;
+    });
     renderPath(APP.currentTopicPath);
     updateDashboard();
     updateIntermediateLock();
@@ -2826,27 +2895,38 @@ async function tcSend() {
     timerEl.textContent = m + ':' + String(s).padStart(2, '0');
   }, 1000);
 
-  // ── COMPLETED LESSONS COUNT ──
-  const savedDone = parseInt(localStorage.getItem('ab_lessons_done') || '0');
+  // ── GLOBAL COUNTERS (Firebase Firestore) ──
   const doneEl = document.getElementById('completed-count');
-  if (doneEl) doneEl.textContent = savedDone;
 
-  // ── VISITOR COUNT (existing) ──
-  const SITE = 'ak3036811-gif.github.io%2Falgobridge-learn';
-  const img = new Image();
-  img.src = `https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2F${SITE}&nocache=${Date.now()}`;
+  function runCounters() {
+    // Only increment the visitor counter once per browser session (not on every page reload within the same visit)
+    const alreadyCountedThisSession = sessionStorage.getItem('ab_visit_counted');
 
-  fetch(`https://hits.seeyoufarm.com/api/count/incr/badge.json?url=https%3A%2F%2F${SITE}`)
-    .then(r => r.json())
-    .then(data => {
-      const count = data.total_count || data.today_count || 1;
-      showBadge(count);
-    })
-    .catch(() => {
-      const local = parseInt(localStorage.getItem('ab_visits') || '0') + 1;
-      localStorage.setItem('ab_visits', local);
-      showBadge(local);
-    });
+    incrementFirestoreCounter('visitors', alreadyCountedThisSession ? 0 : 1)
+      .then(count => {
+        sessionStorage.setItem('ab_visit_counted', '1');
+        showBadge(count);
+      })
+      .catch(() => {
+        showBadge('—');
+      });
+
+    readFirestoreCounter('lessons')
+      .then(count => {
+        if (doneEl) doneEl.textContent = count;
+      })
+      .catch(() => {
+        if (doneEl) doneEl.textContent = '—';
+      });
+  }
+
+  // The Firebase helpers load via a <script type="module"> tag, which may
+  // finish slightly after this script runs — wait for it if needed.
+  if (window.incrementFirestoreCounter && window.readFirestoreCounter) {
+    runCounters();
+  } else {
+    window.addEventListener('firebase-ready', runCounters, { once: true });
+  }
 })();
 </script>
 <div id="google_translate_element"></div>
