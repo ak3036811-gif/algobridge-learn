@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>AlgoBridge Learn</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;0,700;0,900;1,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <!-- Firebase (modular SDK, loaded as an ES module) -->
 <script type="module">
@@ -49,61 +49,54 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#FAFAF8;
+  --bg:#FAF7F0;
   --bg2:#FFFFFF;
-  --bg3:#F3F2EF;
-  --bg4:#ECEAE5;
-  --text:#0C0C0F;
-  --text2:#4A4857;
-  --text3:#9896AB;
-  --accent:#5B3FE0;
-  --accent2:#4029C0;
-  --accent-glow:rgba(91,63,224,0.15);
-  --accent-soft:rgba(91,63,224,0.07);
-  --green:#1A7A50;
-  --green-bg:rgba(26,122,80,0.07);
-  --amber:#8A6A00;
-  --amber-bg:rgba(138,106,0,0.07);
-  --red:#D42B4E;
-  --red-bg:rgba(212,43,78,0.07);
-  --border:rgba(0,0,0,0.08);
-  --border2:rgba(0,0,0,0.05);
-  --mono:'DM Mono',monospace;
-  --serif:'Lora',serif;
-  --sans:'Syne',sans-serif;
-  --radius:10px;
-  --radius-lg:16px;
-  --transition:cubic-bezier(0.22, 1, 0.36, 1);
+  --bg3:#F1EADA;
+  --bg4:#E5DAC0;
+  --text:#201C14;
+  --text2:#5B5544;
+  --text3:#948C78;
+  --accent:#2C5470;
+  --accent2:#1E3C50;
+  --accent-glow:rgba(44,84,112,0.18);
+  --accent-soft:rgba(44,84,112,0.08);
+  --green:#3E7D4C;
+  --green-bg:rgba(62,125,76,0.09);
+  --amber:#A6740E;
+  --amber-bg:rgba(166,116,14,0.09);
+  --red:#A83A2E;
+  --red-bg:rgba(168,58,46,0.09);
+  --border:rgba(32,28,20,0.12);
+  --border2:rgba(32,28,20,0.06);
+  --mono:'IBM Plex Mono',monospace;
+  --serif:'Fraunces',serif;
+  --sans:'IBM Plex Sans',sans-serif;
+  --radius:7px;
+  --radius-lg:10px;
+  --transition:cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ── GLOBAL ── */
 html{scroll-behavior:smooth}
-body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:15px;line-height:1.65;min-height:100vh;overflow-x:hidden}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:15px;line-height:1.65;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 ::selection{background:var(--accent);color:#fff}
 
-/* ── NOISE TEXTURE OVERLAY ── */
-body::before{
-  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-  opacity:0.4;
-}
+/* ── (flat background — no texture overlay, matches clean-platform look) ── */
 
 /* ── NAV ── */
 nav{
-  background:rgba(12,12,15,0.85);
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
+  background:var(--bg2);
   border-bottom:1px solid var(--border);
   padding:0 2rem;
   display:flex;align-items:center;gap:1rem;height:60px;
   position:sticky;top:0;z-index:200;
-  transition:box-shadow 0.4s var(--transition);
+  transition:box-shadow 0.25s var(--transition);
 }
-nav.scrolled{box-shadow:0 4px 40px rgba(0,0,0,0.4)}
+nav.scrolled{box-shadow:0 2px 12px rgba(33,36,44,0.07)}
 
 .nav-logo{
-  font-family:var(--mono);font-size:13px;font-weight:500;
-  color:var(--text);letter-spacing:.04em;white-space:nowrap;cursor:pointer;
+  font-family:var(--sans);font-size:16px;font-weight:900;
+  color:var(--text);letter-spacing:-.02em;white-space:nowrap;cursor:pointer;
   display:flex;align-items:center;gap:2px;
   transition:color 0.2s;
 }
@@ -111,14 +104,14 @@ nav.scrolled{box-shadow:0 4px 40px rgba(0,0,0,0.4)}
 .nav-logo .slash{color:var(--accent);margin:0 1px}
 .nav-logo .dot{color:var(--text3)}
 
-.nav-links{display:flex;gap:2px;flex:1;margin-left:1rem}
+.nav-links{display:flex;gap:2px;flex:1;margin-left:1.5rem}
 .nav-link{
-  background:none;border:none;padding:6px 14px;
-  font-family:var(--sans);font-size:13px;font-weight:500;
-  color:var(--text3);cursor:pointer;border-radius:8px;
-  transition:color 0.2s, background 0.2s;white-space:nowrap;letter-spacing:.01em;
+  background:none;border:none;padding:8px 14px;
+  font-family:var(--sans);font-size:14px;font-weight:700;
+  color:var(--text2);cursor:pointer;border-radius:8px;
+  transition:color 0.18s, background 0.18s;white-space:nowrap;letter-spacing:0;
 }
-.nav-link:hover{color:var(--text);background:rgba(255,255,255,0.04)}
+.nav-link:hover{color:var(--text);background:var(--bg3)}
 .nav-link.active{color:var(--accent);background:var(--accent-soft)}
 .nav-link:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
@@ -174,11 +167,11 @@ body{top:0!important;position:static!important}
 
 .mobile-nav{
   display:none;position:fixed;top:60px;left:0;right:0;
-  background:rgba(12,12,15,0.97);backdrop-filter:blur(20px);
+  background:var(--bg2);
   border-bottom:1px solid var(--border);
   padding:12px;z-index:199;
   flex-direction:column;gap:4px;
-  box-shadow:0 20px 60px rgba(0,0,0,0.5);
+  box-shadow:0 12px 32px rgba(33,36,44,0.12);
 }
 .mobile-nav.open{display:flex}
 .mobile-nav .nav-link{text-align:left;padding:12px 16px;font-size:14px}
@@ -186,27 +179,29 @@ body{top:0!important;position:static!important}
 /* ── BUTTONS ── */
 .btn{
   display:inline-flex;align-items:center;gap:7px;
-  padding:9px 22px;border-radius:10px;
-  font-family:var(--sans);font-size:13px;font-weight:600;
+  padding:10px 22px;border-radius:8px;
+  font-family:var(--sans);font-size:14px;font-weight:700;
   cursor:pointer;border:none;
-  transition:transform 0.2s var(--transition), box-shadow 0.2s var(--transition), background 0.2s;
-  white-space:nowrap;text-decoration:none;letter-spacing:.02em;
+  transition:background 0.18s var(--transition), transform 0.18s var(--transition), box-shadow 0.18s var(--transition);
+  white-space:nowrap;text-decoration:none;letter-spacing:0;
 }
 .btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .btn-primary{
   background:var(--accent);color:#fff;
-  box-shadow:0 0 0 0 rgba(123,97,255,0);
+  box-shadow:0 1px 3px rgba(44,84,112,0.25);
 }
 .btn-primary:hover{
-  background:var(--accent2);transform:translateY(-2px);
-  box-shadow:0 8px 30px rgba(123,97,255,0.4);
+  background:var(--accent2);
+  transform:translateY(-1px);
+  box-shadow:0 6px 16px rgba(44,84,112,0.3);
 }
+.btn-primary:active{transform:translateY(0)}
 .btn-secondary{
   background:var(--bg3);color:var(--text);
   border:1px solid var(--border);
 }
-.btn-secondary:hover{background:var(--bg4);transform:translateY(-1px)}
-.btn-sm{padding:5px 14px;font-size:12px;border-radius:8px}
+.btn-secondary:hover{background:var(--bg4)}
+.btn-sm{padding:6px 14px;font-size:13px;border-radius:7px}
 .btn-ghost{background:none;border:1px solid var(--border);color:var(--text2)}
 .btn-ghost:hover{border-color:var(--text3);color:var(--text)}
 
@@ -223,41 +218,33 @@ body{top:0!important;position:static!important}
 
 /* ── HERO ── */
 .hero{
-  padding:5rem 2.5rem 4rem;
+  padding:4rem 2.5rem 3.5rem;
   max-width:900px;margin:0 auto;text-align:center;
   position:relative;
 }
-.hero::before{
-  content:'';position:absolute;
-  top:-100px;left:50%;transform:translateX(-50%);
-  width:600px;height:400px;
-  background:radial-gradient(ellipse at center, rgba(123,97,255,0.12) 0%, transparent 70%);
-  pointer-events:none;
-}
 .hero-eyebrow{
-  font-family:var(--mono);font-size:11px;color:var(--accent);
-  letter-spacing:.15em;text-transform:uppercase;
+  font-family:var(--sans);font-size:12px;color:var(--accent);
+  letter-spacing:.02em;text-transform:none;font-weight:700;
   margin-bottom:1.5rem;
   display:inline-flex;align-items:center;gap:10px;
-  background:var(--accent-soft);border:1px solid rgba(123,97,255,0.2);
-  padding:5px 14px;border-radius:999px;
+  background:var(--accent-soft);
+  padding:6px 14px;border-radius:999px;
 }
-.hero-eyebrow .dot{width:5px;height:5px;border-radius:50%;background:var(--accent);animation:pulse 2s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
+.hero-eyebrow .dot{display:none}
 
 h1{
   font-family:var(--serif);
-  font-size:clamp(2.2rem,5.5vw,3.6rem);
-  font-weight:600;line-height:1.15;
+  font-size:clamp(2.1rem,5vw,3.2rem);
+  font-weight:900;line-height:1.2;
   margin-bottom:1.2rem;color:var(--text);
   letter-spacing:-0.5px;
 }
-h1 em{font-style:italic;color:var(--accent)}
+h1 em{font-style:normal;color:var(--accent)}
 
 .hero-sub{
-  font-size:1rem;color:var(--text2);
+  font-size:1.05rem;color:var(--text2);
   max-width:560px;margin:0 auto 2.5rem;
-  line-height:1.8;font-weight:400;
+  line-height:1.7;font-weight:400;
 }
 
 .hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
@@ -276,45 +263,155 @@ h1 em{font-style:italic;color:var(--accent)}
 .hero-stat:last-child{border-right:none}
 .hero-stat:hover{background:var(--bg3)}
 .hero-stat-val{
-  font-family:var(--mono);font-size:1.6rem;font-weight:500;
+  font-family:var(--sans);font-size:1.6rem;font-weight:900;
   color:var(--accent);line-height:1;
 }
-.hero-stat-label{font-size:11px;color:var(--text3);margin-top:4px;letter-spacing:.04em}
+.hero-stat-label{font-size:12px;color:var(--text3);margin-top:4px;letter-spacing:0}
 
-/* ── SECTIONS ── */
-main section{padding:3rem 2.5rem;max-width:1060px;margin:0 auto;position:relative}
+/* ── HOME HERO ── */
+.algo-hero{
+  background:var(--bg2);
+  border-bottom:1px solid var(--border);
+  padding:4rem 2.5rem;
+}
+.algo-hero-inner{
+  max-width:1060px;margin:0 auto;
+  display:grid;grid-template-columns:1.05fr 0.95fr;gap:3.5rem;align-items:center;
+}
+.algo-hero-eyebrow{
+  font-family:var(--mono);font-size:12.5px;color:var(--text3);
+  margin-bottom:1.1rem;letter-spacing:0;display:block;
+}
+.algo-hero-eyebrow::before{content:'// ';color:var(--accent)}
+.algo-hero-text h1{
+  font-family:var(--serif);color:var(--text);font-weight:600;
+  font-size:clamp(2rem,4vw,2.85rem);line-height:1.14;
+  margin-bottom:1.1rem;letter-spacing:-0.01em;max-width:560px;
+}
+.algo-hero-text h1 em{font-style:italic;font-weight:500;color:var(--accent)}
+.algo-hero-text p{color:var(--text2);font-size:1.02rem;max-width:460px;line-height:1.75;margin-bottom:1.9rem}
+.algo-hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:2.2rem}
+.algo-hero-stats{display:flex;gap:1.9rem;flex-wrap:wrap}
+.algo-hero-stat-val{font-family:var(--serif);font-weight:700;font-size:1.25rem;color:var(--text);line-height:1}
+.algo-hero-stat-label{font-family:var(--mono);font-size:10.5px;color:var(--text3);margin-top:3px}
+
+/* signature element: a small always-sorting panel */
+.sort-panel{
+  background:#1D1811;border-radius:var(--radius-lg);overflow:hidden;
+  border:1px solid rgba(0,0,0,0.3);
+  box-shadow:0 24px 56px -24px rgba(32,28,20,0.4), 0 6px 20px rgba(32,28,20,0.14);
+}
+.sort-panel-tab{
+  background:#241F16;padding:9px 14px;display:flex;align-items:center;gap:9px;
+  font-family:var(--mono);font-size:11px;color:#9E9686;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.sort-panel-tab .dots{display:flex;gap:5px;margin-right:2px}
+.sort-panel-tab .dot{width:9px;height:9px;border-radius:50%}
+.sort-panel-tab .dot.r{background:#B65C4F}
+.sort-panel-tab .dot.y{background:#B8923F}
+.sort-panel-tab .dot.g{background:#5A9B67}
+.sort-panel-body{
+  padding:30px 22px 8px;display:flex;align-items:flex-end;gap:5%;
+  height:150px;
+}
+.sort-bar{
+  flex:1;border-radius:3px 3px 1px 1px;
+  background:linear-gradient(180deg,#6FA3C4,#325C77);
+  transform-origin:bottom;
+  animation:sortPulse 2.6s ease-in-out infinite;
+}
+@keyframes sortPulse{
+  0%,100%{transform:scaleY(1);filter:brightness(1)}
+  50%{transform:scaleY(1.16);filter:brightness(1.4)}
+}
+.sort-panel-caption{
+  font-family:var(--mono);font-size:11px;color:#8A8270;
+  padding:10px 14px 14px;border-top:1px solid rgba(255,255,255,0.06);
+}
+.sort-panel-caption b{color:#D9A73E;font-weight:500}
+.sort-bar:nth-child(1){animation-delay:0s}
+.sort-bar:nth-child(2){animation-delay:.13s}
+.sort-bar:nth-child(3){animation-delay:.26s}
+.sort-bar:nth-child(4){animation-delay:.39s}
+.sort-bar:nth-child(5){animation-delay:.52s}
+.sort-bar:nth-child(6){animation-delay:.65s}
+.sort-bar:nth-child(7){animation-delay:.78s}
+.sort-bar:nth-child(8){animation-delay:.91s}
+.sort-bar:nth-child(9){animation-delay:1.04s}
+.sort-bar:nth-child(10){animation-delay:1.17s}
+.sort-bar:nth-child(11){animation-delay:1.3s}
+@media(prefers-reduced-motion:reduce){.sort-bar{animation:none}}
+@media(max-width:900px){.algo-hero-inner{grid-template-columns:1fr}.sort-panel{max-width:440px}}
+
+/* ── COURSE CATALOG CARDS ── */
+.course-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-bottom:3.5rem}
+.course-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);
+  overflow:hidden;cursor:pointer;
+  transition:transform .2s var(--transition), box-shadow .2s var(--transition), border-color .2s var(--transition);
+  box-shadow:0 1px 2px rgba(33,36,44,0.04);
+}
+.course-card:hover{
+  border-color:rgba(44,84,112,0.35);
+  box-shadow:0 8px 24px rgba(33,36,44,0.09), 0 2px 6px rgba(33,36,44,0.06);
+  transform:translateY(-2px);
+}
+.course-card-bar{height:5px;width:100%}
+.course-card-body{padding:1.3rem 1.5rem}
+.course-card-level{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.04em;margin-bottom:.5rem}
+.course-card-body h3{font-family:var(--serif);font-size:1.12rem;font-weight:900;color:var(--text);margin-bottom:.55rem;letter-spacing:-0.2px}
+.course-card-body p{font-size:.87rem;color:var(--text2);line-height:1.6;margin-bottom:.9rem}
+.course-card-meta{font-size:12px;color:var(--text3);font-weight:600}
+
+.tool-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:3.5rem}
+.tool-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);
+  padding:1.3rem 1.5rem;cursor:pointer;
+  transition:transform .2s var(--transition), box-shadow .2s var(--transition), border-color .2s var(--transition);
+  box-shadow:0 1px 2px rgba(33,36,44,0.04);
+}
+.tool-card:hover{
+  border-color:rgba(44,84,112,0.35);
+  box-shadow:0 8px 24px rgba(33,36,44,0.09), 0 2px 6px rgba(33,36,44,0.06);
+  transform:translateY(-2px);
+}
+.tool-card h3{font-size:1rem;font-weight:800;color:var(--text);margin-bottom:.45rem;letter-spacing:-0.1px}
+.tool-card p{font-size:.85rem;color:var(--text2);line-height:1.6}
+main section{padding:3.2rem 2.5rem;max-width:1060px;margin:0 auto;position:relative}
 main section+section{border-top:1px solid var(--border2)}
 
 .section-label{
-  font-family:var(--mono);font-size:11px;color:var(--text3);
-  letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem;
+  font-family:var(--mono);font-size:12.5px;color:var(--text3);
+  letter-spacing:0;text-transform:none;margin-bottom:.6rem;font-weight:500;
 }
+.section-label::before{content:'// ';color:var(--accent)}
 .section-title{
-  font-family:var(--serif);font-size:1.7rem;font-weight:600;
-  margin-bottom:.6rem;color:var(--text);
+  font-family:var(--serif);font-size:1.75rem;font-weight:900;
+  margin-bottom:.7rem;color:var(--text);letter-spacing:-0.4px;line-height:1.25;
 }
-.section-sub{color:var(--text2);max-width:580px;margin-bottom:2rem;font-size:.93rem;line-height:1.75}
+.section-sub{color:var(--text2);max-width:580px;margin-bottom:2.2rem;font-size:.95rem;line-height:1.7}
 
 /* ── CARDS ── */
-.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(268px,1fr));gap:1px;background:var(--border)}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(268px,1fr));gap:14px}
 .card{
-  background:var(--bg2);padding:1.5rem 1.6rem;
-  transition:background 0.2s var(--transition), transform 0.2s var(--transition);
-  position:relative;overflow:hidden;
+  background:var(--bg2);padding:1.6rem 1.7rem;
+  border:1px solid var(--border);border-radius:var(--radius-lg);
+  box-shadow:0 1px 2px rgba(33,36,44,0.04);
+  transition:transform .2s var(--transition), box-shadow .2s var(--transition), border-color .2s var(--transition);
+  position:relative;
 }
-.card::before{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg, var(--accent-soft) 0%, transparent 60%);
-  opacity:0;transition:opacity 0.3s;
+.card:hover{
+  border-color:rgba(44,84,112,0.3);
+  box-shadow:0 8px 20px rgba(33,36,44,0.08);
+  transform:translateY(-2px);
 }
-.card:hover{background:var(--bg3)}
-.card:hover::before{opacity:1}
 .card-tag{
-  font-family:var(--mono);font-size:10px;color:var(--accent);
-  letter-spacing:.08em;text-transform:uppercase;margin-bottom:.7rem;
+  font-family:var(--sans);font-size:11px;color:var(--accent);
+  letter-spacing:.03em;text-transform:none;margin-bottom:.75rem;font-weight:700;
 }
-.card h3{font-size:.95rem;font-weight:600;margin-bottom:.4rem;color:var(--text)}
-.card p{font-size:.85rem;color:var(--text2);line-height:1.65}
+.card h3{font-size:1.02rem;font-weight:800;margin-bottom:.45rem;color:var(--text);letter-spacing:-0.1px}
+.card p{font-size:.88rem;color:var(--text2);line-height:1.62}
 
 /* ── LEARNING PATHS ── */
 .path-tabs{
@@ -325,12 +422,12 @@ main section+section{border-top:1px solid var(--border2)}
 }
 .path-tab{
   background:none;border:none;padding:8px 20px;
-  font-family:var(--sans);font-size:13px;font-weight:500;
+  font-family:var(--sans);font-size:14px;font-weight:700;
   color:var(--text3);cursor:pointer;border-radius:8px;
-  transition:all 0.25s var(--transition);letter-spacing:.02em;
+  transition:all 0.2s var(--transition);letter-spacing:0;
 }
 .path-tab:hover{color:var(--text);background:var(--bg3)}
-.path-tab.active{color:var(--text);background:var(--bg4);box-shadow:0 1px 8px rgba(0,0,0,0.3)}
+.path-tab.active{color:var(--accent);background:var(--accent-soft)}
 .path-tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
 .topic-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
@@ -338,18 +435,18 @@ main section+section{border-top:1px solid var(--border2)}
   background:var(--bg2);border:1px solid var(--border);
   border-radius:var(--radius);padding:12px 16px;
   display:flex;align-items:flex-start;gap:10px;
-  transition:all 0.25s var(--transition);
+  transition:transform .2s var(--transition), box-shadow .2s var(--transition), border-color .2s var(--transition), background .2s var(--transition);
 }
 .topic-item.clickable{cursor:pointer}
 .topic-item.clickable:hover{
-  background:var(--bg3);border-color:rgba(123,97,255,0.3);
-  transform:translateY(-2px);
-  box-shadow:0 8px 24px rgba(0,0,0,0.2);
+  background:var(--bg3);border-color:rgba(44,84,112,0.3);
+  transform:translateY(-1px);
+  box-shadow:0 4px 12px rgba(33,36,44,0.07);
 }
 .topic-item.clickable:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .topic-item.locked{opacity:.3;cursor:not-allowed}
-.topic-item.inprogress{background:var(--accent-soft);border-color:rgba(123,97,255,0.25)}
-.topic-item.done{background:var(--green-bg);border-color:rgba(61,214,140,0.2)}
+.topic-item.inprogress{background:var(--accent-soft);border-color:rgba(44,84,112,0.25)}
+.topic-item.done{background:var(--green-bg);border-color:rgba(62,125,76,0.2)}
 
 .topic-dot{
   width:8px;height:8px;border-radius:50%;
@@ -387,19 +484,19 @@ main section+section{border-top:1px solid var(--border2)}
 .lesson-back:hover .arrow{transform:translateX(-3px)}
 
 .lesson-eyebrow{
-  font-family:var(--mono);font-size:11px;color:var(--text3);
-  text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem;
+  font-family:var(--sans);font-size:12px;color:var(--accent);
+  text-transform:none;letter-spacing:0;margin-bottom:.5rem;font-weight:700;
 }
-.lesson-title{font-family:var(--serif);font-size:2.2rem;font-weight:600;margin-bottom:.6rem;color:var(--text)}
+.lesson-title{font-family:var(--serif);font-size:2rem;font-weight:900;margin-bottom:.6rem;color:var(--text)}
 .lesson-meta{
-  font-size:12px;color:var(--text3);font-family:var(--mono);
+  font-size:13px;color:var(--text3);font-family:var(--sans);
   margin-bottom:2.5rem;display:flex;gap:16px;flex-wrap:wrap;
 }
 .lesson-meta span{display:flex;align-items:center;gap:5px}
 
-.lesson-body{font-size:.95rem;color:var(--text2);line-height:1.85}
+.lesson-body{font-size:1rem;color:var(--text2);line-height:1.75}
 .lesson-body h2{
-  font-family:var(--serif);font-size:1.2rem;font-weight:600;
+  font-family:var(--serif);font-size:1.3rem;font-weight:900;
   color:var(--text);margin:2.5rem 0 .8rem;
 }
 .lesson-body p{margin-bottom:1.1rem}
@@ -411,29 +508,24 @@ main section+section{border-top:1px solid var(--border2)}
 }
 
 .code-block{
-  background:#0E0E18;border:1px solid rgba(123,97,255,0.15);
+  background:#282C34;border:1px solid #3A3F4B;
   border-radius:var(--radius);padding:1.2rem 1.4rem;
   font-family:var(--mono);font-size:13px;
-  color:#CDD6F4;line-height:1.75;margin:1.2rem 0;
+  color:#ABB2BF;line-height:1.7;margin:1.2rem 0;
   overflow-x:auto;position:relative;
 }
-.code-block::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg, var(--accent), transparent);
-  opacity:0.4;
-}
-.code-block .cm{color:#5C5A78;font-style:italic}
-.code-block .ck{color:#C084FC}
-.code-block .cs{color:#F1FA8C}
-.code-block .cn{color:#A78BFF}
-.code-block .co{color:#4ADE80}
+.code-block .cm{color:#5C6370;font-style:italic}
+.code-block .ck{color:#C678DD}
+.code-block .cs{color:#98C379}
+.code-block .cn{color:#D19A66}
+.code-block .co{color:#61AFEF}
 
 .lesson-callout{
-  background:rgba(123,97,255,0.06);
-  border-left:2px solid var(--accent);
+  background:var(--accent-soft);
+  border-left:3px solid var(--accent);
   border-radius:0 var(--radius) var(--radius) 0;
-  padding:1rem 1.4rem;font-size:.88rem;
-  color:var(--text2);margin:1.2rem 0;line-height:1.75;
+  padding:1rem 1.4rem;font-size:.92rem;
+  color:var(--text2);margin:1.2rem 0;line-height:1.7;
 }
 
 .lesson-actions{
@@ -458,7 +550,7 @@ main section+section{border-top:1px solid var(--border2)}
 .ws-body{flex:1;overflow-y:auto;padding:1.4rem;scrollbar-width:thin;scrollbar-color:var(--bg4) transparent}
 
 .problem-title{
-  font-family:var(--serif);font-size:1.2rem;font-weight:600;
+  font-family:var(--serif);font-size:1.3rem;font-weight:900;
   margin-bottom:.8rem;color:var(--text);
 }
 .problem-desc{font-size:.88rem;color:var(--text2);line-height:1.8;margin-bottom:1.1rem}
@@ -480,9 +572,9 @@ main section+section{border-top:1px solid var(--border2)}
   background:var(--bg3);color:var(--text2);
   border:1px solid var(--border);
 }
-.tag.easy{background:var(--green-bg);color:var(--green);border-color:rgba(61,214,140,0.2)}
-.tag.medium{background:rgba(245,197,66,0.1);color:var(--amber);border-color:rgba(245,197,66,0.25)}
-.tag.hard{background:rgba(232,93,93,0.1);color:var(--red);border-color:rgba(232,93,93,0.25)}
+.tag.easy{background:var(--green-bg);color:var(--green);border-color:rgba(62,125,76,0.2)}
+.tag.medium{background:rgba(166,116,14,0.1);color:var(--amber);border-color:rgba(166,116,14,0.25)}
+.tag.hard{background:rgba(168,58,46,0.1);color:var(--red);border-color:rgba(168,58,46,0.25)}
 
 .problem-filters{
   display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:1.2rem;
@@ -490,36 +582,38 @@ main section+section{border-top:1px solid var(--border2)}
 .problem-search-input, .problem-filter-select{
   background:var(--bg2);border:1.5px solid var(--border);border-radius:10px;
   padding:9px 13px;font-size:13px;font-family:var(--sans);color:var(--text);
-  outline:none;transition:border-color .15s;
+  outline:none;transition:border-color .18s var(--transition), box-shadow .18s var(--transition);
 }
 .problem-search-input{flex:1;min-width:200px}
-.problem-search-input:focus, .problem-filter-select:focus{border-color:var(--accent)}
+.problem-search-input:focus, .problem-filter-select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
 .problem-count-label{font-size:12px;color:var(--text3);font-family:var(--mono);margin-bottom:.9rem}
 .problem-grid{
   display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;
 }
 .problem-card{
   background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);
-  padding:14px 16px;cursor:pointer;transition:border-color .15s,transform .15s;
+  padding:14px 16px;cursor:pointer;
+  box-shadow:0 1px 2px rgba(33,36,44,0.04);
+  transition:border-color .2s var(--transition),transform .2s var(--transition),box-shadow .2s var(--transition);
   display:flex;flex-direction:column;gap:8px;
 }
-.problem-card:hover{border-color:var(--accent);transform:translateY(-1px)}
-.problem-card-title{font-family:var(--serif);font-size:1rem;font-weight:600;color:var(--text)}
+.problem-card:hover{border-color:rgba(44,84,112,0.3);transform:translateY(-1px);box-shadow:0 6px 16px rgba(33,36,44,0.08)}
+.problem-card-title{font-family:var(--serif);font-size:1.05rem;font-weight:900;color:var(--text)}
 .problem-card-topic{font-size:11.5px;color:var(--text3);font-family:var(--mono)}
 .problem-empty{padding:2.5rem 1rem;text-align:center;color:var(--text3);font-size:14px}
 
 .struggle-overlay{
-  background:rgba(245,197,66,0.06);
-  border:1px solid rgba(245,197,66,0.2);
+  background:var(--amber-bg);
+  border:1px solid rgba(154,106,0,0.2);
   border-radius:var(--radius);padding:1.1rem 1.3rem;margin-bottom:.9rem;
 }
 .struggle-head{
-  font-family:var(--mono);font-size:10px;color:var(--amber);
-  letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem;
+  font-family:var(--sans);font-size:11px;color:var(--amber);
+  letter-spacing:.04em;text-transform:uppercase;margin-bottom:.4rem;font-weight:700;
 }
 .struggle-timer-val{
-  font-family:var(--mono);font-size:2rem;font-weight:500;
-  color:var(--text);margin-bottom:.3rem;letter-spacing:.04em;
+  font-family:var(--sans);font-size:2rem;font-weight:900;
+  color:var(--text);margin-bottom:.3rem;letter-spacing:0;
 }
 .struggle-msg{font-size:.82rem;color:var(--text2);line-height:1.6}
 
@@ -531,7 +625,7 @@ main section+section{border-top:1px solid var(--border2)}
 }
 .tutor-msg.ai{
   background:var(--accent-soft);
-  border-left:2px solid rgba(123,97,255,0.4);
+  border-left:2px solid rgba(44,84,112,0.4);
   color:var(--text);
 }
 
@@ -557,7 +651,7 @@ textarea.code-input{
   border:none;outline:none;resize:none;
   padding:16px;width:100%;height:230px;tab-size:4;
 }
-textarea.code-input:focus{box-shadow:inset 0 0 0 1px rgba(123,97,255,0.3)}
+textarea.code-input:focus{box-shadow:inset 0 0 0 1px rgba(44,84,112,0.3)}
 
 .output-box{
   background:#06060E;border-radius:var(--radius);
@@ -567,7 +661,7 @@ textarea.code-input:focus{box-shadow:inset 0 0 0 1px rgba(123,97,255,0.3)}
 }
 .output-box .ok{color:#4ADE80}
 .output-box .fail{color:#FF5F7E}
-.output-box .info{color:#7B61FF}
+.output-box .info{color:#6FA3C4}
 .output-box .warn{color:#F5C542}
 
 .tc-row{
@@ -578,15 +672,16 @@ textarea.code-input:focus{box-shadow:inset 0 0 0 1px rgba(123,97,255,0.3)}
 }
 
 /* ── DASHBOARD ── */
-.dash-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.5rem}
+.dash-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1.5rem}
 .stat-card{
   background:var(--bg2);border:1px solid var(--border);
-  border-radius:var(--radius-lg);padding:1.1rem 1.3rem;
-  transition:border-color 0.2s, background 0.2s;
+  border-radius:var(--radius-lg);padding:1.15rem 1.35rem;
+  box-shadow:0 1px 2px rgba(33,36,44,0.04);
+  transition:transform .2s var(--transition), box-shadow .2s var(--transition), border-color 0.2s;
 }
-.stat-card:hover{background:var(--bg3);border-color:rgba(123,97,255,0.25)}
+.stat-card:hover{border-color:rgba(44,84,112,0.3);box-shadow:0 6px 16px rgba(33,36,44,0.08);transform:translateY(-1px)}
 .stat-val{
-  font-family:var(--mono);font-size:1.5rem;font-weight:500;
+  font-family:var(--sans);font-size:1.6rem;font-weight:900;
   color:var(--text);margin-bottom:.2rem;
 }
 .stat-label{font-size:12px;color:var(--text3);font-weight:500}
@@ -595,10 +690,11 @@ textarea.code-input:focus{box-shadow:inset 0 0 0 1px rgba(123,97,255,0.3)}
 .chart-card{
   background:var(--bg2);border:1px solid var(--border);
   border-radius:var(--radius-lg);padding:1.4rem 1.6rem;
+  box-shadow:0 1px 2px rgba(33,36,44,0.04);
 }
-.chart-title{font-size:13px;font-weight:600;margin-bottom:1rem;color:var(--text)}
+.chart-title{font-size:13px;font-weight:700;margin-bottom:1rem;color:var(--text)}
 .chart-container{position:relative;height:150px}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
 
 .weak-list{list-style:none;margin-top:.7rem}
 .weak-item{
@@ -624,65 +720,61 @@ textarea.code-input:focus{box-shadow:inset 0 0 0 1px rgba(123,97,255,0.3)}
 }
 
 /* ── RESEARCH ── */
-.research-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1px;background:var(--border)}
+.research-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
 .research-card{
-  background:var(--bg2);padding:1.5rem;
-  position:relative;overflow:hidden;
-  transition:background 0.2s;
+  background:var(--bg2);padding:1.6rem;
+  border:1px solid var(--border);border-radius:var(--radius-lg);
+  box-shadow:0 1px 2px rgba(33,36,44,0.04);
+  position:relative;
+  transition:transform .2s var(--transition), box-shadow .2s var(--transition), border-color .2s var(--transition);
 }
-.research-card:hover{background:var(--bg3)}
-.research-card::before{
-  content:attr(data-num);position:absolute;top:-8px;right:10px;
-  font-family:var(--mono);font-size:5rem;color:rgba(123,97,255,0.05);
-  font-weight:700;line-height:1;pointer-events:none;
-  transition:color 0.3s;
+.research-card:hover{
+  border-color:rgba(44,84,112,0.3);
+  box-shadow:0 8px 20px rgba(33,36,44,0.08);
+  transform:translateY(-2px);
 }
-.research-card:hover::before{color:rgba(123,97,255,0.1)}
 
 .rc-title{
-  font-family:var(--serif);font-size:1rem;font-weight:600;
+  font-family:var(--serif);font-size:1.05rem;font-weight:900;
   margin-bottom:.5rem;color:var(--text);
 }
-.rc-body{font-size:.83rem;color:var(--text2);line-height:1.7;max-width:55ch}
+.rc-body{font-size:.88rem;color:var(--text2);line-height:1.65;max-width:55ch}
 .rc-cite{
-  font-family:var(--mono);font-size:10px;color:var(--text3);
+  font-family:var(--sans);font-size:11px;color:var(--text3);
   margin-top:.8rem;padding-top:.6rem;
   border-top:1px solid var(--border2);
 }
 
 /* ── ABOUT ── */
-.mission-text{font-family:var(--serif);font-size:.97rem;line-height:1.95;color:var(--text2);max-width:660px;margin-bottom:1.3rem}
+.mission-text{font-family:var(--serif);font-size:1rem;line-height:1.8;color:var(--text2);max-width:660px;margin-bottom:1.3rem}
 .impact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.5rem}
-.impact-num{font-family:var(--mono);font-size:1.9rem;font-weight:500;color:var(--accent);margin-bottom:.2rem}
-.impact-label{font-size:.83rem;color:var(--text2)}
+.impact-num{font-family:var(--sans);font-size:2rem;font-weight:900;color:var(--accent);margin-bottom:.2rem}
+.impact-label{font-size:.85rem;color:var(--text2)}
 
 .ngo-card{
-  background:var(--green-bg);border:1px solid rgba(61,214,140,0.15);
+  background:var(--green-bg);border:1px solid rgba(0,132,74,0.15);
   border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:.9rem;
 }
-.ngo-head{font-family:var(--serif);font-size:1rem;font-weight:600;color:var(--green);margin-bottom:.5rem}
-.ngo-body{font-size:.85rem;color:var(--text2);line-height:1.7}
+.ngo-head{font-family:var(--serif);font-size:1.05rem;font-weight:900;color:var(--green);margin-bottom:.5rem}
+.ngo-body{font-size:.88rem;color:var(--text2);line-height:1.65}
 
 .link-card{
   background:var(--bg2);border:1px solid var(--border);
   border-radius:var(--radius-lg);padding:1.5rem;
-  transition:all 0.25s var(--transition);text-decoration:none;color:inherit;display:block;
+  box-shadow:0 1px 2px rgba(33,36,44,0.04);
+  transition:transform .2s var(--transition), box-shadow .2s var(--transition), border-color 0.2s;text-decoration:none;color:inherit;display:block;
 }
-.link-card:hover{
-  background:var(--bg3);border-color:rgba(123,97,255,0.3);
-  transform:translateY(-3px);
-  box-shadow:0 16px 40px rgba(0,0,0,0.25);
-}
+.link-card:hover{border-color:rgba(44,84,112,0.3);box-shadow:0 8px 20px rgba(33,36,44,0.08);transform:translateY(-2px)}
 .link-card-icon{font-size:1.4rem;margin-bottom:.6rem}
-.link-card h3{font-size:.95rem;font-weight:600;margin-bottom:.35rem;color:var(--text)}
-.link-card p{font-size:.83rem;color:var(--text2);line-height:1.6}
-.link-card .link-url{font-family:var(--mono);font-size:11px;color:var(--accent);margin-top:.6rem;display:block}
+.link-card h3{font-size:1rem;font-weight:700;margin-bottom:.35rem;color:var(--text)}
+.link-card p{font-size:.85rem;color:var(--text2);line-height:1.6}
+.link-card .link-url{font-family:var(--sans);font-size:12px;color:var(--accent);margin-top:.6rem;display:block;font-weight:700}
 
 /* ── BADGES ── */
 .badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:5px;font-size:11px;font-family:var(--mono)}
-.badge-blue{background:var(--accent-soft);color:var(--accent);border:1px solid rgba(123,97,255,0.2)}
-.badge-green{background:var(--green-bg);color:var(--green);border:1px solid rgba(61,214,140,0.15)}
-.badge-amber{background:var(--amber-bg);color:var(--amber);border:1px solid rgba(245,197,66,0.15)}
+.badge-blue{background:var(--accent-soft);color:var(--accent);border:1px solid rgba(44,84,112,0.2)}
+.badge-green{background:var(--green-bg);color:var(--green);border:1px solid rgba(62,125,76,0.15)}
+.badge-amber{background:var(--amber-bg);color:var(--amber);border:1px solid rgba(166,116,14,0.15)}
 
 /* ── MISC ── */
 .divider{height:1px;background:var(--border2);margin:2rem 0}
@@ -710,69 +802,61 @@ textarea.code-input:focus{box-shadow:inset 0 0 0 1px rgba(123,97,255,0.3)}
   position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:999;
   background:var(--accent);color:#fff;
   padding:10px 18px;border-radius:999px;
-  text-decoration:none;font-size:12px;font-weight:600;
-  font-family:var(--sans);letter-spacing:.03em;
-  box-shadow:0 8px 30px rgba(123,97,255,0.4);
-  transition:transform 0.2s var(--transition), box-shadow 0.2s;
+  text-decoration:none;font-size:13px;font-weight:700;
+  font-family:var(--sans);letter-spacing:0;
+  box-shadow:0 4px 14px rgba(44,84,112,0.25);
+  transition:background 0.15s;
   display:flex;align-items:center;gap:6px;
   white-space:nowrap;
 }
 .feedback-btn:hover{
-  transform:translateX(-50%) translateY(-2px);
-  box-shadow:0 12px 40px rgba(123,97,255,0.5);
+  background:var(--accent2);
 }
 
 /* ── DEFAULT LIGHT CODE EDITOR ── */
-.code-block{background:#F0EFF8;border-color:rgba(91,63,224,0.12)}
-.code-block .cm{color:#9B98B8}
-.code-block .ck{color:#7B3FD4}
-.code-block .cs{color:#9A6700}
-.code-block .cn{color:#5B3FE0}
-.code-block .co{color:#1A7A50}
-textarea.code-input{background:#F0EFF8;color:#1C1B2E}
-.output-box{background:#F0EFF8}
-.editor-wrap{background:#F0EFF8}
-.editor-tab{background:#E8E6F5}
-body::before{opacity:0.15}
-nav{background:rgba(250,250,248,0.9)}
+.code-block{background:#282C34;border-color:#3A3F4B;color:#ABB2BF}
+textarea.code-input{background:#282C34;color:#ABB2BF}
+.output-box{background:#282C34}
+.editor-wrap{background:#282C34}
+.editor-tab{background:#1F2329}
+nav{background:var(--bg2)}
 
 /* ── DARK THEME ── */
 [data-theme=dark]{
-  --bg:#0C0C0F;
-  --bg2:#131318;
-  --bg3:#1A1A22;
-  --bg4:#22222E;
-  --text:#F0EEF8;
-  --text2:#9E9CB8;
-  --text3:#5C5A78;
-  --accent:#7B61FF;
-  --accent2:#5B3FE0;
-  --accent-glow:rgba(123,97,255,0.18);
-  --accent-soft:rgba(123,97,255,0.08);
-  --green:#3DD68C;
-  --green-bg:rgba(61,214,140,0.08);
-  --amber:#F5C542;
-  --amber-bg:rgba(245,197,66,0.08);
-  --red:#FF5F7E;
-  --red-bg:rgba(255,95,126,0.08);
-  --border:rgba(255,255,255,0.06);
-  --border2:rgba(255,255,255,0.04);
+  --bg:#191510;
+  --bg2:#221D16;
+  --bg3:#2C2519;
+  --bg4:#3A311F;
+  --text:#F2EEE3;
+  --text2:#C9C0A9;
+  --text3:#8B8570;
+  --accent:#6FA3C4;
+  --accent2:#8FBBD8;
+  --accent-glow:rgba(111,163,196,0.2);
+  --accent-soft:rgba(111,163,196,0.12);
+  --green:#6FBE82;
+  --green-bg:rgba(111,190,130,0.12);
+  --amber:#D9A73E;
+  --amber-bg:rgba(217,167,62,0.12);
+  --red:#E17D6E;
+  --red-bg:rgba(225,125,110,0.12);
+  --border:rgba(255,255,255,0.09);
+  --border2:rgba(255,255,255,0.05);
 }
-[data-theme=dark] .code-block{background:#0E0E18;border-color:rgba(123,97,255,0.15)}
-[data-theme=dark] .code-block .cm{color:#5C5A78}
-[data-theme=dark] .code-block .ck{color:#C084FC}
-[data-theme=dark] .code-block .cs{color:#F1FA8C}
-[data-theme=dark] .code-block .cn{color:#A78BFF}
-[data-theme=dark] .code-block .co{color:#4ADE80}
-[data-theme=dark] textarea.code-input{background:#090910;color:#CDD6F4}
-[data-theme=dark] .output-box{background:#06060E}
-[data-theme=dark] .editor-wrap{background:#090910}
-[data-theme=dark] .editor-tab{background:#0F0F1A}
-[data-theme=dark] body::before{opacity:0.4}
-[data-theme=dark] nav{background:rgba(12,12,15,0.85)}
+[data-theme=dark] .code-block{background:#282C34;border-color:#3A3F4B}
+[data-theme=dark] .code-block .cm{color:#5C6370}
+[data-theme=dark] .code-block .ck{color:#C678DD}
+[data-theme=dark] .code-block .cs{color:#98C379}
+[data-theme=dark] .code-block .cn{color:#D19A66}
+[data-theme=dark] .code-block .co{color:#61AFEF}
+[data-theme=dark] textarea.code-input{background:#20242B;color:#ABB2BF}
+[data-theme=dark] .output-box{background:#181B21}
+[data-theme=dark] .editor-wrap{background:#20242B}
+[data-theme=dark] .editor-tab{background:#1B1F26}
+[data-theme=dark] nav{background:var(--bg2)}
 
 /* ── SCROLL ANIMATIONS ── */
-.fade-up{opacity:0;transform:translateY(20px);transition:opacity 0.6s var(--transition),transform 0.6s var(--transition)}
+.fade-up{opacity:0;transform:translateY(14px);transition:opacity 0.5s cubic-bezier(0.16,1,0.3,1),transform 0.5s cubic-bezier(0.16,1,0.3,1)}
 .fade-up.visible{opacity:1;transform:none}
 .fade-up.d1{transition-delay:0.07s}
 .fade-up.d2{transition-delay:0.14s}
@@ -820,22 +904,22 @@ nav{background:rgba(250,250,248,0.9)}
 .rf-arrow{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.06em}
 .rf-arrow::before{content:'';display:block;width:1px;height:12px;background:var(--accent);opacity:.5}
 .rf-feature{font-size:.88rem;font-weight:600;color:var(--text);display:flex;align-items:center;gap:6px}
-.rf-feature-tag{font-family:var(--mono);font-size:10px;background:var(--accent-soft);color:var(--accent);padding:2px 7px;border-radius:5px;border:1px solid rgba(123,97,255,0.15)}
+.rf-feature-tag{font-family:var(--mono);font-size:10px;background:var(--accent-soft);color:var(--accent);padding:2px 7px;border-radius:5px;border:1px solid rgba(44,84,112,0.15)}
 
 /* ── SCREENSHOTS ── */
 .screenshots-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
-.screenshot-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;cursor:pointer;transition:all .25s var(--transition)}
-.screenshot-card:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,0.2);border-color:rgba(123,97,255,.3)}
+.screenshot-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;cursor:pointer;box-shadow:0 1px 2px rgba(33,36,44,0.04);transition:transform .2s var(--transition), box-shadow .2s var(--transition), border-color .2s var(--transition)}
+.screenshot-card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(33,36,44,0.1);border-color:rgba(44,84,112,.3)}
 .screenshot-preview{height:160px;position:relative;overflow:hidden;display:block;background:var(--bg3)}
 .screenshot-label{font-size:12px;font-weight:600;color:var(--text);padding:10px 14px;border-top:1px solid var(--border);font-family:var(--mono)}
 
 /* ── CASE STUDY ── */
-.case-study-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.case-study-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:0 1px 3px rgba(33,36,44,0.05)}
 .case-study-header{display:flex;gap:8px;flex-wrap:wrap;padding:14px 18px;background:var(--bg3);border-bottom:1px solid var(--border)}
 .case-pill{font-size:11px;font-family:var(--mono);padding:3px 9px;border-radius:5px;background:var(--bg2);border:1px solid var(--border);color:var(--text2)}
-.case-pill-green{background:var(--green-bg);color:var(--green);border-color:rgba(61,214,140,.2)}
-.case-pill-red{background:var(--red-bg);color:var(--red);border-color:rgba(212,43,78,.2)}
-.case-pill-amber{background:var(--amber-bg);color:var(--amber);border-color:rgba(138,106,0,.2)}
+.case-pill-green{background:var(--green-bg);color:var(--green);border-color:rgba(62,125,76,.2)}
+.case-pill-red{background:var(--red-bg);color:var(--red);border-color:rgba(168,58,46,.2)}
+.case-pill-amber{background:var(--amber-bg);color:var(--amber);border-color:rgba(166,116,14,.2)}
 .case-table{width:100%;border-collapse:collapse}
 .case-row{display:grid;grid-template-columns:60px 1fr 1fr 80px 110px;padding:9px 18px;border-bottom:1px solid var(--border2);align-items:center;gap:8px;font-size:12px;color:var(--text2)}
 .case-row-head{font-family:var(--mono);font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;padding:8px 18px;background:var(--bg3)}
@@ -846,7 +930,7 @@ nav{background:rgba(250,250,248,0.9)}
 .case-bar{height:100%;border-radius:999px;background:var(--accent);transition:width .6s var(--transition)}
 .case-val{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--text)}
 .case-num{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--text);text-align:center}
-.case-insight{padding:14px 18px;background:rgba(123,97,255,.04);border-top:1px solid var(--border2);font-size:.85rem;color:var(--text2);line-height:1.75}
+.case-insight{padding:14px 18px;background:rgba(44,84,112,.04);border-top:1px solid var(--border2);font-size:.85rem;color:var(--text2);line-height:1.75}
 .case-insight-label{font-family:var(--mono);font-size:10px;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:.4rem}
 
 @media(max-width:700px){
@@ -861,9 +945,7 @@ nav{background:rgba(250,250,248,0.9)}
 </style>
 <body>
 
-<a href="https://forms.gle/eTC9jaXcismcE2Vm7" target="_blank" rel="noopener" class="feedback-btn">
-  <span>📝</span> Share Feedback
-</a>
+<!-- feedback moved to footer, see .footer-links -->
 
 <!-- ══ NAV ══ -->
 <nav id="main-nav" role="navigation" aria-label="Main navigation">
@@ -874,7 +956,7 @@ nav{background:rgba(250,250,248,0.9)}
     <button class="nav-link active" onclick="showPage('home')">Home</button>
     <button class="nav-link" onclick="showPage('paths')">Learning Paths</button>
     <button class="nav-link" onclick="showPage('problems')">Workspace</button>
-    <button class="nav-link" onclick="showPage('tutor')" style="color:var(--accent)">🧠 AI Tutor</button>
+    <button class="nav-link" onclick="showPage('tutor')" style="color:var(--accent)">AI Tutor</button>
     <button class="nav-link" onclick="showPage('dashboard')">Dashboard</button>
     <button class="nav-link" onclick="showPage('research')">Research</button>
     <button class="nav-link" onclick="showPage('about')">About</button>
@@ -882,7 +964,7 @@ nav{background:rgba(250,250,248,0.9)}
   <div class="nav-right">
     <div class="lang-dropdown">
       <button class="lang-btn" onclick="toggleLangMenu(event)" aria-label="Change language" aria-haspopup="true" aria-expanded="false" id="lang-btn">
-        <span>🌐</span><span id="lang-current">EN</span>
+        <span id="lang-current">EN</span>
       </button>
       <div class="lang-menu" id="lang-menu" role="menu">
         <button class="lang-option" role="menuitem" onclick="setLanguage('en')" data-lang="en"><span>English</span><span class="lang-native">EN</span></button>
@@ -895,8 +977,8 @@ nav{background:rgba(250,250,248,0.9)}
         <button class="lang-option" role="menuitem" onclick="setLanguage('ar')" data-lang="ar"><span>العربية</span><span class="lang-native">AR</span></button>
       </div>
     </div>
-    <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">◑ Theme</button>
-    <button class="btn btn-primary btn-sm" onclick="showPage('paths')">Start Learning →</button>
+    <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">Theme</button>
+    <button class="btn btn-primary btn-sm" onclick="showPage('paths')">Start learning</button>
     <button class="ham-btn" onclick="toggleMobileNav()" aria-label="Open menu" aria-expanded="false" id="ham-btn">☰</button>
   </div>
 </nav>
@@ -905,7 +987,7 @@ nav{background:rgba(250,250,248,0.9)}
   <button class="nav-link" onclick="showPage('home');toggleMobileNav()">Home</button>
   <button class="nav-link" onclick="showPage('paths');toggleMobileNav()">Learning Paths</button>
   <button class="nav-link" onclick="showPage('problems');toggleMobileNav()">Workspace</button>
-  <button class="nav-link" onclick="showPage('tutor');toggleMobileNav()" style="color:var(--accent)">🧠 AI Tutor</button>
+  <button class="nav-link" onclick="showPage('tutor');toggleMobileNav()" style="color:var(--accent)">AI Tutor</button>
   <button class="nav-link" onclick="showPage('dashboard');toggleMobileNav()">Dashboard</button>
   <button class="nav-link" onclick="showPage('research');toggleMobileNav()">Research</button>
   <button class="nav-link" onclick="showPage('about');toggleMobileNav()">About</button>
@@ -913,37 +995,114 @@ nav{background:rgba(250,250,248,0.9)}
 
 <!-- ══ HOME ══ -->
 <div id="page-home" class="page active" role="main">
-  <div class="hero">
-    <div class="hero-eyebrow fade-up">
-      <span class="dot"></span>
-      Open Educational Platform · by Ayush Kumar
-    </div>
-    <h1 class="fade-up d1">Learn algorithms<br>without outsourcing <em>the thinking</em></h1>
-    <p class="hero-sub fade-up d2">Structured CS curriculum built on cognitive science — with an AI tutor that guides your reasoning rather than replacing it. Every feature has a citation.</p>
-    <div class="hero-actions fade-up d3">
-      <button class="btn btn-primary" onclick="showPage('paths')" style="font-size:14px;padding:12px 28px">Start Learning →</button>
-      <button class="btn btn-ghost" onclick="showPage('research')">See the research</button>
-    </div>
-    <div class="hero-stats-row fade-up d4">
-      <div class="hero-stat"><div class="hero-stat-val">218</div><div class="hero-stat-label">Students across 5 NGO cohorts</div></div>
-      <div class="hero-stat"><div class="hero-stat-val">4,127</div><div class="hero-stat-label">Registered platform learners</div></div>
-      <div class="hero-stat"><div class="hero-stat-val">21→81%</div><div class="hero-stat-label">Avg quiz score lift across 218 students</div></div>
-      <div class="hero-stat"><div class="hero-stat-val">6</div><div class="hero-stat-label">Peer-reviewed studies informing platform design</div></div>
+  <div class="algo-hero">
+    <div class="algo-hero-inner">
+      <div class="algo-hero-text">
+        <span class="algo-hero-eyebrow">algobridge.learn</span>
+        <h1>Learn to code by <em>watching it think</em>, not just reading about it</h1>
+        <p>Lessons, 210 practice problems, and an AI tutor that asks questions instead of handing you the answer — built on published learning-science research, free for anyone.</p>
+        <div class="algo-hero-actions">
+          <button class="btn btn-primary" onclick="showPage('paths')">Start learning</button>
+          <button class="btn btn-secondary" onclick="showPage('research')">See the research</button>
+        </div>
+        <div class="algo-hero-stats">
+          <div><div class="algo-hero-stat-val">42</div><div class="algo-hero-stat-label">TOPICS</div></div>
+          <div><div class="algo-hero-stat-val">210</div><div class="algo-hero-stat-label">PROBLEMS</div></div>
+          <div><div class="algo-hero-stat-val">$0</div><div class="algo-hero-stat-label">ALWAYS</div></div>
+        </div>
+      </div>
+      <div class="sort-panel" aria-hidden="true">
+        <div class="sort-panel-tab">
+          <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
+          merge_sort.py — running
+        </div>
+        <div class="sort-panel-body">
+          <div class="sort-bar" style="height:42%"></div>
+          <div class="sort-bar" style="height:78%"></div>
+          <div class="sort-bar" style="height:28%"></div>
+          <div class="sort-bar" style="height:92%"></div>
+          <div class="sort-bar" style="height:55%"></div>
+          <div class="sort-bar" style="height:20%"></div>
+          <div class="sort-bar" style="height:68%"></div>
+          <div class="sort-bar" style="height:38%"></div>
+          <div class="sort-bar" style="height:98%"></div>
+          <div class="sort-bar" style="height:62%"></div>
+          <div class="sort-bar" style="height:33%"></div>
+        </div>
+        <div class="sort-panel-caption">this is <b>every lesson</b> on the platform — trace the algorithm, don't just read it</div>
+      </div>
     </div>
   </div>
 
   <main>
+    <section aria-labelledby="courses-title" style="padding-top:2.5rem">
+      <div class="section-title" id="courses-title" style="margin-bottom:1.4rem">Courses</div>
+      <div class="course-grid">
+        <div class="course-card" onclick="showPage('paths')" role="button" tabindex="0">
+          <div class="course-card-bar" style="background:var(--green)"></div>
+          <div class="course-card-body">
+            <div class="course-card-level">Beginner</div>
+            <h3>Foundations of Programming</h3>
+            <p>Variables, functions, loops, and the basics of Python — no prior experience needed.</p>
+            <div class="course-card-meta">14 topics · ~12 hrs · Python</div>
+          </div>
+        </div>
+        <div class="course-card" onclick="showPage('paths')" role="button" tabindex="0">
+          <div class="course-card-bar" style="background:var(--amber)"></div>
+          <div class="course-card-body">
+            <div class="course-card-level">Intermediate</div>
+            <h3>Algorithms &amp; Data Structures</h3>
+            <p>Sorting, searching, recursion, trees, and graphs — the core of technical interviews and CS courses.</p>
+            <div class="course-card-meta">15 topics · ~22 hrs · Python + Pseudocode</div>
+          </div>
+        </div>
+        <div class="course-card" onclick="showPage('paths')" role="button" tabindex="0">
+          <div class="course-card-bar" style="background:var(--red)"></div>
+          <div class="course-card-body">
+            <div class="course-card-level">Advanced</div>
+            <h3>Optimisation &amp; Systems</h3>
+            <p>Dynamic programming, greedy algorithms, graph theory, and system design fundamentals.</p>
+            <div class="course-card-meta">Unlocks after Intermediate</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="tools-title">
+      <div class="section-title" id="tools-title" style="margin-bottom:1.4rem">Practice &amp; tools</div>
+      <div class="tool-row">
+        <div class="tool-card" onclick="showPage('problems')" role="button" tabindex="0">
+          <h3>Workspace</h3>
+          <p>210 practice problems with instant feedback, filterable by topic and difficulty.</p>
+        </div>
+        <div class="tool-card" onclick="showPage('tutor')" role="button" tabindex="0">
+          <h3>AI Tutor</h3>
+          <p>Ask questions and get guided help without being handed the answer outright.</p>
+        </div>
+        <div class="tool-card" onclick="showPage('dashboard')" role="button" tabindex="0">
+          <h3>Your progress</h3>
+          <p>Track completed topics, problems solved, and where you're spending the most time.</p>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="sci-title">
+      <div class="section-label fade-up">Why it's built this way</div>
+      <div class="section-title fade-up d1" id="sci-title">Built on learning-science research</div>
+      <p class="section-sub fade-up d2">The hint timer, the AI tutor's approach, and the mistake log are based on published research, not guesswork. <a href="#" onclick="showPage('research');return false" style="color:var(--accent);font-weight:700;text-decoration:none">See the research →</a></p>
+    </section>
+
     <section aria-labelledby="feat-title">
       <div class="section-label fade-up">Platform overview</div>
-      <div class="section-title fade-up d1" id="feat-title">From curious to capable</div>
-      <p class="section-sub fade-up d2">AlgoBridge Learn is the digital extension of the AlgoBridge workshop programme. Workshop observations directly informed every platform decision — the same gaps seen in cohorts became features.</p>
+      <div class="section-title fade-up d1" id="feat-title">Everything you need to learn to code</div>
+      <p class="section-sub fade-up d2">Built alongside the AlgoBridge workshop programme, using what actually helped students learn in person.</p>
       <div class="card-grid">
-        <div class="card fade-up d1"><div class="card-tag">Feature 01</div><h3>Structured Learning Paths</h3><p>Three progressive tracks — Beginner, Intermediate, Advanced — each with full lessons, exercises, and visual progress tracking built around cognitive load theory.</p></div>
-        <div class="card fade-up d2"><div class="card-tag">Feature 02</div><h3>Socratic AI Tutor</h3><p>Context-aware: the tutor knows which lesson you're on, injects the specific concepts and common pitfalls, and asks guided questions. It never gives the answer — illusion-of-knowledge checks built in.</p></div>
-        <div class="card fade-up d3"><div class="card-tag">Feature 03</div><h3>Productive Struggle Timer</h3><p>Hints unlock only after genuine independent attempt. The discomfort you feel right now is retention being built — a direct application of Bjork (1994).</p></div>
-        <div class="card fade-up d4"><div class="card-tag">Feature 04</div><h3>Persistent Mistake Log</h3><p>Save misconceptions with root-cause analysis. Entries persist across sessions. Reviewing errors consistently outperforms practising only what you already know (Dunlosky, 2013).</p></div>
-        <div class="card fade-up d5"><div class="card-tag">Feature 05</div><h3>Learning Analytics Layer</h3><p>Tracks struggle time, hint dependency, and overconfidence gap. Surfaces your Retrieval Strength, Productive Struggle Index, and retention forecast — not just problems solved.</p></div>
-        <div class="card fade-up d6"><div class="card-tag">Feature 06</div><h3>Evidence-Based Design</h3><p>Every pedagogical choice maps to a citation. Active recall, spaced repetition, cognitive load — embedded into the UX by design, not mentioned in a footer.</p></div>
+        <div class="card fade-up d1"><div class="card-tag">Learning paths</div><h3>Structured learning paths</h3><p>Three progressive tracks — Beginner, Intermediate, and Advanced — each with lessons, exercises, and progress tracking.</p></div>
+        <div class="card fade-up d2"><div class="card-tag">AI tutor</div><h3>An AI tutor that asks questions</h3><p>The tutor knows which lesson you're on and asks guided questions instead of giving you the answer directly.</p></div>
+        <div class="card fade-up d3"><div class="card-tag">Practice</div><h3>A timer that protects your attempt</h3><p>Hints unlock after a few minutes of independent work, so you get a real shot at solving it yourself first.</p></div>
+        <div class="card fade-up d4"><div class="card-tag">Mistake log</div><h3>A log of your past mistakes</h3><p>Save misconceptions as you find them and review them later — reviewing errors is one of the most effective ways to learn.</p></div>
+        <div class="card fade-up d5"><div class="card-tag">Analytics</div><h3>Progress you can actually read</h3><p>See how much you're relying on hints, where you're strongest, and where you need more practice.</p></div>
+        <div class="card fade-up d6"><div class="card-tag">Approach</div><h3>Built on how learning actually works</h3><p>Active recall, spaced practice, and manageable cognitive load guided the design — see the research behind it.</p></div>
       </div>
     </section>
 
@@ -951,7 +1110,7 @@ nav{background:rgba(250,250,248,0.9)}
     <section aria-labelledby="rfmap-title">
       <div class="section-label fade-up">Design rationale</div>
       <div class="section-title fade-up d1" id="rfmap-title">Research → Feature</div>
-      <p class="section-sub fade-up d2">Every feature traces directly to a published finding. This is not random building — it is research-driven design.</p>
+      <p class="section-sub fade-up d2">Each feature is based on published learning-science research. Here's how they connect.</p>
       <div class="rf-map fade-up d3" id="rf-map-container"></div>
     </section>
 
@@ -982,9 +1141,9 @@ nav{background:rgba(250,250,248,0.9)}
 
     <!-- ── CASE STUDY ── -->
     <section aria-labelledby="case-title">
-      <div class="section-label fade-up">Longitudinal evidence</div>
+      <div class="section-label fade-up">Workshop data</div>
       <div class="section-title fade-up d1" id="case-title">What five weeks looks like</div>
-      <p class="section-sub fade-up d2">Anonymised data from a single student across the Beginner track. The trajectory is consistent across the cohort.</p>
+      <p class="section-sub fade-up d2">Anonymised data from one student in a Beginner-track workshop cohort, shown as an example of the pattern we typically see.</p>
       <div class="case-study-wrap fade-up d3">
         <div class="case-study-header">
           <div class="case-pill">Representative anonymised learner trajectory · NGO Cohort 3</div>
@@ -1037,14 +1196,14 @@ nav{background:rgba(250,250,248,0.9)}
       </div>
     </section>
 
-    <section aria-labelledby="sci-title">
+    <section aria-labelledby="philosophy-title">
       <div class="section-label fade-up">Why this works</div>
-      <div class="section-title fade-up d1" id="sci-title">The struggle is the point</div>
-      <p class="section-sub fade-up d2">Most tools optimise for how comfortable they feel. AlgoBridge optimises for how much you actually retain. These are often opposite things.</p>
+      <div class="section-title fade-up d1" id="philosophy-title">The approach behind the platform</div>
+      <p class="section-sub fade-up d2">A few ideas from learning science shaped most of the design decisions here.</p>
       <div class="card-grid">
-        <div class="card fade-up d1"><div class="card-tag">Desirable difficulties</div><h3>Effort builds retention</h3><p>Bjork (1994) shows that introducing difficulties during learning leads to dramatically stronger long-term memory, even when it feels harder in the moment. The timer exists for this reason.</p></div>
-        <div class="card fade-up d2"><div class="card-tag">Guided discovery</div><h3>Questions beat answers</h3><p>Socratic questioning activates deeper cognitive processing than passive delivery. When the AI asks you a question instead of giving the answer, that is a deliberate design decision.</p></div>
-        <div class="card fade-up d3"><div class="card-tag">Metacognition</div><h3>Know your gaps</h3><p>Students who regularly review their errors consistently outperform those who only practise new material. The Mistake Log makes this habit frictionless and automatic.</p></div>
+        <div class="card fade-up d1"><div class="card-tag">Desirable difficulty</div><h3>A bit of effort helps memory</h3><p>Research on desirable difficulties (Bjork, 1994) shows that some struggle during learning builds stronger long-term memory. The hint timer is built around this idea.</p></div>
+        <div class="card fade-up d2"><div class="card-tag">Guided discovery</div><h3>Questions over answers</h3><p>Working through a guided question tends to build deeper understanding than being handed an answer directly. That's why the AI tutor asks rather than tells.</p></div>
+        <div class="card fade-up d3"><div class="card-tag">Metacognition</div><h3>Knowing your own gaps</h3><p>Reviewing your mistakes regularly tends to outperform only practicing new material. The Mistake Log is built to make that a habit.</p></div>
       </div>
     </section>
   </main>
@@ -1054,6 +1213,7 @@ nav{background:rgba(250,250,248,0.9)}
     <div class="footer-links">
       <a href="#" onclick="showPage('about');return false">About</a>
       <a href="#" onclick="showPage('research');return false">Research</a>
+      <a href="https://forms.gle/eTC9jaXcismcE2Vm7" target="_blank" rel="noopener">Feedback</a>
       <a href="https://ak3036811-gif.github.io/Main-Website/" target="_blank" rel="noopener">Ayush Kumar ↗</a>
       <a href="https://github.com/ak3036811-gif" target="_blank" rel="noopener">GitHub</a>
     </div>
@@ -1069,9 +1229,9 @@ nav{background:rgba(250,250,248,0.9)}
       <p class="section-sub fade-up d2">Three tracks, each unlocking progressively. Click any available topic to open the full lesson, then mark it complete to unlock the next one.</p>
 
       <div class="path-tabs fade-up d3" role="tablist">
-        <button class="path-tab active" role="tab" aria-selected="true" onclick="switchPath('beginner',this)">🟢 Beginner</button>
-        <button class="path-tab" role="tab" aria-selected="false" onclick="switchPath('intermediate',this)">🟡 Intermediate</button>
-        <button class="path-tab" role="tab" aria-selected="false" onclick="switchPath('advanced',this)">🔴 Advanced</button>
+        <button class="path-tab active" role="tab" aria-selected="true" onclick="switchPath('beginner',this)">Beginner</button>
+        <button class="path-tab" role="tab" aria-selected="false" onclick="switchPath('intermediate',this)">Intermediate</button>
+        <button class="path-tab" role="tab" aria-selected="false" onclick="switchPath('advanced',this)">Advanced</button>
       </div>
 
       <div id="path-beginner" role="tabpanel" class="fade-up d4">
@@ -1100,7 +1260,7 @@ nav{background:rgba(250,250,248,0.9)}
           </div>
         </div>
         <div id="int-lock" style="padding:.9rem 1.2rem;background:var(--bg3);border-radius:var(--radius);font-size:.88rem;color:var(--text2);margin-bottom:1rem;display:none;border:1px solid var(--border)">
-          🔒 Complete at least 5 Beginner topics to unlock Intermediate.
+          Complete at least 5 Beginner topics to unlock Intermediate.
         </div>
         <div class="topic-list" id="topic-list-intermediate"></div>
       </div>
@@ -1114,7 +1274,7 @@ nav{background:rgba(250,250,248,0.9)}
           <div><div class="badge badge-amber" style="opacity:.4">Locked</div></div>
         </div>
         <div id="adv-lock" style="padding:.9rem 1.2rem;background:var(--bg3);border-radius:var(--radius);font-size:.88rem;color:var(--text2);margin-bottom:1rem;border:1px solid var(--border)">
-          🔒 Complete the full Intermediate path to unlock Advanced topics.
+          Complete the full Intermediate path to unlock Advanced topics.
         </div>
         <div class="topic-list" id="topic-list-advanced" style="opacity:.3;pointer-events:none"></div>
       </div>
@@ -1132,14 +1292,14 @@ nav{background:rgba(250,250,248,0.9)}
       <div class="lesson-eyebrow" id="lesson-eyebrow">Beginner · Topic</div>
       <h1 class="lesson-title" id="lesson-title">Topic</h1>
       <div class="lesson-meta">
-        <span>⏱ <span id="lesson-time">~30 min</span></span>
-        <span>◎ <span id="lesson-level">Beginner</span></span>
-        <span>⌨ <span id="lesson-lang">Python</span></span>
+        <span><span id="lesson-time">~30 min</span></span>
+        <span><span id="lesson-level">Beginner</span></span>
+        <span><span id="lesson-lang">Python</span></span>
       </div>
       <div class="lesson-body" id="lesson-body"></div>
       <div class="lesson-actions">
         <button class="btn btn-primary" onclick="completeTopic();showPage('paths')">Mark Complete &amp; Continue →</button>
-        <button class="btn btn-secondary" id="test-with-algobot-btn" onclick="openTutorFromLesson()" style="background:var(--accent-soft);border-color:rgba(123,97,255,0.3);color:var(--accent)">🧠 Test my understanding with AlgoBot</button>
+        <button class="btn btn-secondary" id="test-with-algobot-btn" onclick="openTutorFromLesson()" style="background:var(--accent-soft);border-color:rgba(44,84,112,0.3);color:var(--accent)">Test my understanding with AlgoBot</button>
         <button class="btn btn-secondary" onclick="tryProblemFromLesson()">Try a Problem</button>
         <button class="btn btn-ghost" onclick="showPage('paths')">Back to Paths</button>
       </div>
@@ -1182,7 +1342,7 @@ nav{background:rgba(250,250,248,0.9)}
         <span class="ws-title" id="ws-problem-title">Problem — Two Sum</span>
         <div class="tags" style="margin-left:auto">
           <span class="tag easy" id="ws-difficulty-tag">Easy</span>
-          <span class="tag" id="ws-topic-tag" style="background:var(--accent-soft);color:var(--accent);border-color:rgba(123,97,255,0.2)">Arrays</span>
+          <span class="tag" id="ws-topic-tag" style="background:var(--accent-soft);color:var(--accent);border-color:rgba(44,84,112,0.2)">Arrays</span>
         </div>
       </div>
       <div class="ws-body">
@@ -1194,15 +1354,15 @@ nav{background:rgba(250,250,248,0.9)}
         </div>
 
         <div class="struggle-overlay" id="struggle-zone">
-          <div class="struggle-head">⏱ Productive Struggle Mode</div>
+          <div class="struggle-head">Practice Timer</div>
           <div class="struggle-timer-val" id="timer-display">05:00</div>
-          <div class="struggle-msg">Hints unlock after 5 minutes of independent work. The discomfort you feel right now is retention being built.<br><br><em style="color:var(--text3)">"Cognitive effort during learning predicts memory consolidation." — Kornell &amp; Bjork, 2008</em></div>
+          <div class="struggle-msg">Hints unlock after 5 minutes of independent work — a genuine attempt first tends to build stronger understanding.<br><br><em style="color:var(--text3)">Kornell &amp; Bjork (2008), on retrieval practice and memory</em></div>
         </div>
 
         <div id="hint-section" style="margin-top:.7rem">
           <div style="font-size:13px;font-weight:600;margin-bottom:.7rem;color:var(--text2)">AI Tutor</div>
           <div id="hints-locked" class="hint-locked">
-            <div class="tutor-msg ai" style="font-style:italic;color:var(--text3)">🔒 Hints unlock after the timer. Keep working — you're building stronger understanding right now.</div>
+            <div class="tutor-msg ai" style="font-style:italic;color:var(--text3)">Hints unlock after the timer. Keep working — you're building stronger understanding right now.</div>
           </div>
           <div id="hints-unlocked" style="display:none">
             <div class="tutor-msg ai" id="hint1-text">Let's think through this. What's the simplest approach you'd try first — even if it's slow? Try to write out the logic before you code it.</div>
@@ -1437,19 +1597,19 @@ print(two_sum([3, 2, 4], 6))        # → [1, 2]
       <p class="fade-up d2" style="font-size:.9rem;color:var(--text2);margin-bottom:1.4rem;max-width:540px">Research, code, writing, and more — all the work that went into and around building AlgoBridge.</p>
       <div class="card-grid">
         <a class="link-card fade-up d1" href="https://ak3036811-gif.github.io/Main-Website/" target="_blank" rel="noopener" aria-label="Visit Ayush Kumar's website">
-          <div class="link-card-icon">🌐</div>
+          <div class="link-card-icon"></div>
           <h3>Portfolio Website</h3>
           <p>AI Researcher &amp; Educator. Projects, credentials, AlgoBridge impact data, and published research — all in one place.</p>
           <span class="link-url">ak3036811-gif.github.io/Main-Website/ →</span>
         </a>
         <a class="link-card fade-up d2" href="https://github.com/ak3036811-gif" target="_blank" rel="noopener" aria-label="Visit Ayush Kumar's GitHub">
-          <div class="link-card-icon">⚙️</div>
+          <div class="link-card-icon"></div>
           <h3>GitHub</h3>
           <p>Open-source work — CS50AI projects, Python problem sets, adaptive difficulty experiments, and learning tools.</p>
           <span class="link-url">github.com/ak3036811-gif →</span>
         </a>
         <a class="link-card fade-up d3" href="https://itsreadingtimee.blogspot.com" target="_blank" rel="noopener" aria-label="Read Ayush Kumar's blog">
-          <div class="link-card-icon">✍️</div>
+          <div class="link-card-icon"></div>
           <h3>Blog</h3>
           <p>23+ research-backed essays on AI and education — reaching 40,000+ readers across 10+ countries.</p>
           <span class="link-url">itsreadingtimee.blogspot.com →</span>
@@ -3323,7 +3483,7 @@ function initCharts() {
   const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
   const textColor = isDark ? '#5C5A78' : '#9896AB';
   const gridColor = isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.05)';
-  const accentColor = isDark ? '#7B61FF' : '#5B3FE0';
+  const accentColor = isDark ? '#6FA3C4' : '#2C5470';
 
   if (APP.solved > 0) {
     document.getElementById('chart-empty-1').style.display = 'none';
@@ -3343,7 +3503,7 @@ function initCharts() {
     if (APP.accuracyChartInst) APP.accuracyChartInst.destroy();
     APP.accuracyChartInst = new Chart(document.getElementById('accuracy-chart'), {
       type:'doughnut',
-      data:{labels:['Done','Remaining'],datasets:[{data:[totalDone, 24 - totalDone],backgroundColor:[accentColor, isDark?'#1A1A22':'#F3F2EF'],borderWidth:0}]},
+      data:{labels:['Done','Remaining'],datasets:[{data:[totalDone, 42 - totalDone],backgroundColor:[accentColor, isDark?'#2C2519':'#F1EADA'],borderWidth:0}]},
       options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:textColor,font:{size:11}}}},cutout:'68%'}
     });
   }
@@ -3749,7 +3909,7 @@ function updateTutorContextBanner(topicName) {
   if (!banner) {
     banner = document.createElement('div');
     banner.id = 'tutor-context-banner';
-    banner.style.cssText = 'font-size:11px;font-family:var(--mono);color:var(--accent);background:var(--accent-soft);border:1px solid rgba(123,97,255,0.2);border-radius:8px;padding:5px 12px;margin-top:.5rem;display:inline-flex;align-items:center;gap:6px;';
+    banner.style.cssText = 'font-size:11px;font-family:var(--mono);color:var(--accent);background:var(--accent-soft);border:1px solid rgba(44,84,112,0.2);border-radius:8px;padding:5px 12px;margin-top:.5rem;display:inline-flex;align-items:center;gap:6px;';
     const header = document.querySelector('.tutor-page-header');
     if (header) header.appendChild(banner);
   }
@@ -3935,7 +4095,7 @@ function makeSVGBase(w, h, content) {
   const text = isDark ? '#F0EEF8' : '#0C0C0F';
   const text2 = isDark ? '#9E9CB8' : '#4A4857';
   const text3 = isDark ? '#5C5A78' : '#9896AB';
-  const accent = isDark ? '#7B61FF' : '#5B3FE0';
+  const accent = isDark ? '#6FA3C4' : '#2C5470';
   const border = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.08)';
   const green = isDark ? '#3DD68C' : '#1A7A50';
   const red = isDark ? '#FF5F7E' : '#D42B4E';
@@ -4102,20 +4262,20 @@ setTimeout(buildScreenshots, 80);
 
 <div class="tutor-page">
   <div class="tutor-page-header fade-up">
-    <div class="tutor-page-eyebrow">🧠 AI Literacy · Free for Everyone</div>
+    <div class="tutor-page-eyebrow">AI Literacy · Free for Everyone</div>
     <div class="tutor-page-title">AlgoBridge Tutor</div>
     <div class="tutor-page-sub">Ask anything about AI, algorithms, or technology. No prior knowledge needed — ever. The tutor guides your thinking rather than replacing it.</div>
   </div>
 
   <div class="tutor-topics">
-    <span class="tutor-topic-pill" onclick="tcAsk('What is an algorithm? Use a simple real-life example.')">⚙️ Algorithms</span>
+    <span class="tutor-topic-pill" onclick="tcAsk('What is an algorithm? Use a simple real-life example.')">Algorithms</span>
     <span class="tutor-topic-pill" onclick="tcAsk('What is AI bias and why does it matter?')">⚖️ AI Bias</span>
     <span class="tutor-topic-pill" onclick="tcAsk('How do search engines like Google decide what to show me?')">🔍 Search Systems</span>
     <span class="tutor-topic-pill" onclick="tcAsk('How does AI make decisions? Give me a real example.')">🤖 AI Decisions</span>
     <span class="tutor-topic-pill" onclick="tcAsk('What is machine learning in simple terms?')">📈 Machine Learning</span>
-    <span class="tutor-topic-pill" onclick="tcAsk('What is data privacy and why should I care?')">🔒 Data Privacy</span>
+    <span class="tutor-topic-pill" onclick="tcAsk('What is data privacy and why should I care?')">Data Privacy</span>
     <span class="tutor-topic-pill" onclick="tcAsk('How does YouTube or Instagram decide what to recommend?')">📱 Recommendations</span>
-    <span class="tutor-topic-pill" onclick="tcAsk('What is the difference between AI, ML, and deep learning?')">🧠 AI vs ML</span>
+    <span class="tutor-topic-pill" onclick="tcAsk('What is the difference between AI, ML, and deep learning?')">AI vs ML</span>
   </div>
 
   <div class="tutor-chat-area" id="tc-messages">
@@ -4297,20 +4457,20 @@ async function tcSend() {
 <!-- Visitor count badge -->
 <div id="visit-badge" style="
   background:#fff;
-  border:1.5px solid rgba(91,63,224,0.18);
+  border:1.5px solid rgba(44,84,112,0.18);
   border-radius:999px;
   padding:10px 18px 10px 14px;
   display:flex;
   align-items:center;
   gap:9px;
-  box-shadow:0 4px 24px rgba(91,63,224,0.13), 0 1px 4px rgba(0,0,0,0.07);
-  font-family:'Syne',sans-serif;
+  box-shadow:0 4px 24px rgba(44,84,112,0.13), 0 1px 4px rgba(0,0,0,0.07);
+  font-family:var(--sans);
   cursor:default;
   user-select:none;
 ">
   <span style="
     width:28px;height:28px;
-    background:linear-gradient(135deg,#5B3FE0,#7B6AFF);
+    background:linear-gradient(135deg,#2C5470,#6FA3C4);
     border-radius:50%;
     display:flex;align-items:center;justify-content:center;
     flex-shrink:0;
@@ -4321,7 +4481,7 @@ async function tcSend() {
     </svg>
   </span>
   <span style="display:flex;flex-direction:column;line-height:1.2;">
-    <span id="visit-count" style="font-size:15px;font-weight:700;color:#5B3FE0;letter-spacing:-0.3px;">—</span>
+    <span id="visit-count" style="font-size:15px;font-weight:700;color:#2C5470;letter-spacing:-0.3px;">—</span>
     <span style="font-size:10px;font-weight:500;color:#9896AB;text-transform:uppercase;letter-spacing:0.5px;">visitors</span>
   </span>
 </div>
@@ -4329,20 +4489,20 @@ async function tcSend() {
 <!-- Completed lessons badge -->
 <div id="completed-badge" style="
   background:#fff;
-  border:1.5px solid rgba(91,63,224,0.18);
+  border:1.5px solid rgba(44,84,112,0.18);
   border-radius:999px;
   padding:10px 18px 10px 14px;
   display:flex;
   align-items:center;
   gap:9px;
-  box-shadow:0 4px 24px rgba(91,63,224,0.13), 0 1px 4px rgba(0,0,0,0.07);
-  font-family:'Syne',sans-serif;
+  box-shadow:0 4px 24px rgba(44,84,112,0.13), 0 1px 4px rgba(0,0,0,0.07);
+  font-family:var(--sans);
   cursor:default;
   user-select:none;
 ">
   <span style="
     width:28px;height:28px;
-    background:linear-gradient(135deg,#5B3FE0,#7B6AFF);
+    background:linear-gradient(135deg,#2C5470,#6FA3C4);
     border-radius:50%;
     display:flex;align-items:center;justify-content:center;
     flex-shrink:0;
@@ -4352,7 +4512,7 @@ async function tcSend() {
     </svg>
   </span>
   <span style="display:flex;flex-direction:column;line-height:1.2;">
-    <span id="completed-count" style="font-size:15px;font-weight:700;color:#5B3FE0;letter-spacing:-0.3px;">0</span>
+    <span id="completed-count" style="font-size:15px;font-weight:700;color:#2C5470;letter-spacing:-0.3px;">0</span>
     <span style="font-size:10px;font-weight:500;color:#9896AB;text-transform:uppercase;letter-spacing:0.5px;">lessons done</span>
   </span>
 </div>
@@ -4360,20 +4520,20 @@ async function tcSend() {
 <!-- Session timer badge -->
 <div id="session-badge" style="
   background:#fff;
-  border:1.5px solid rgba(91,63,224,0.18);
+  border:1.5px solid rgba(44,84,112,0.18);
   border-radius:999px;
   padding:10px 18px 10px 14px;
   display:flex;
   align-items:center;
   gap:9px;
-  box-shadow:0 4px 24px rgba(91,63,224,0.13), 0 1px 4px rgba(0,0,0,0.07);
-  font-family:'Syne',sans-serif;
+  box-shadow:0 4px 24px rgba(44,84,112,0.13), 0 1px 4px rgba(0,0,0,0.07);
+  font-family:var(--sans);
   cursor:default;
   user-select:none;
 ">
   <span style="
     width:28px;height:28px;
-    background:linear-gradient(135deg,#5B3FE0,#7B6AFF);
+    background:linear-gradient(135deg,#2C5470,#6FA3C4);
     border-radius:50%;
     display:flex;align-items:center;justify-content:center;
     flex-shrink:0;
@@ -4383,7 +4543,7 @@ async function tcSend() {
     </svg>
   </span>
   <span style="display:flex;flex-direction:column;line-height:1.2;">
-    <span id="session-timer" style="font-size:15px;font-weight:700;color:#5B3FE0;letter-spacing:-0.3px;">0:00</span>
+    <span id="session-timer" style="font-size:15px;font-weight:700;color:#2C5470;letter-spacing:-0.3px;">0:00</span>
     <span style="font-size:10px;font-weight:500;color:#9896AB;text-transform:uppercase;letter-spacing:0.5px;">your session</span>
   </span>
 </div>
