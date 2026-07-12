@@ -4,6 +4,18 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>AlgoBridge Learn</title>
+<meta name="description" content="Free, research-backed platform to learn algorithms with an AI tutor that asks questions instead of giving answers. 42 topics, 210 practice problems, built on published learning-science research."/>
+<meta property="og:type" content="website"/>
+<meta property="og:title" content="AlgoBridge Learn — Learn to code by watching it think"/>
+<meta property="og:description" content="Free, research-backed platform to learn algorithms with an AI tutor that asks questions instead of giving answers. 42 topics, 210 practice problems."/>
+<meta property="og:url" content="https://ak3036811-gif.github.io/Main-Website/"/>
+<!-- TODO: create a ~1200x630 preview image, upload it, then set the two og:image / twitter:image URLs below to its real path -->
+<meta property="og:image" content="https://ak3036811-gif.github.io/Main-Website/og-image.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="AlgoBridge Learn — Learn to code by watching it think"/>
+<meta name="twitter:description" content="Free, research-backed platform to learn algorithms with an AI tutor that asks questions instead of giving answers."/>
+<meta name="twitter:image" content="https://ak3036811-gif.github.io/Main-Website/og-image.png"/>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='6' cy='24' r='4' fill='%235750E8'/%3E%3Ccircle cx='16' cy='8' r='4' fill='%235750E8' opacity='.75'/%3E%3Ccircle cx='26' cy='24' r='4' fill='%235750E8'/%3E%3Cpath d='M8.6 22 14 10.5M18 10.5l5.4 11.5' stroke='%235750E8' stroke-width='2' stroke-linecap='round' opacity='.55'/%3E%3C/svg%3E"/>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;0,700;0,900;1,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <!-- Firebase (modular SDK, loaded as an ES module) -->
@@ -944,7 +956,7 @@ nav{background:var(--surface)}
     <button class="nav-link active" onclick="showPage('home')">Home</button>
     <button class="nav-link" onclick="showPage('paths')">Learning Paths</button>
     <button class="nav-link" onclick="showPage('problems')">Workspace</button>
-    <button class="nav-link" onclick="showPage('tutor')" style="color:var(--accent)">AI Tutor</button>
+    <button class="nav-link" onclick="showPage('tutor')" style="color:var(--accent)">AlgoBridge Tutor</button>
     <button class="nav-link" onclick="showPage('dashboard')">Dashboard</button>
     <button class="nav-link" onclick="showPage('research')">Research</button>
     <button class="nav-link" onclick="showPage('about')">About</button>
@@ -975,7 +987,7 @@ nav{background:var(--surface)}
   <button class="nav-link" onclick="showPage('home');toggleMobileNav()">Home</button>
   <button class="nav-link" onclick="showPage('paths');toggleMobileNav()">Learning Paths</button>
   <button class="nav-link" onclick="showPage('problems');toggleMobileNav()">Workspace</button>
-  <button class="nav-link" onclick="showPage('tutor');toggleMobileNav()" style="color:var(--accent)">AI Tutor</button>
+  <button class="nav-link" onclick="showPage('tutor');toggleMobileNav()" style="color:var(--accent)">AlgoBridge Tutor</button>
   <button class="nav-link" onclick="showPage('dashboard');toggleMobileNav()">Dashboard</button>
   <button class="nav-link" onclick="showPage('research');toggleMobileNav()">Research</button>
   <button class="nav-link" onclick="showPage('about');toggleMobileNav()">About</button>
@@ -1061,7 +1073,7 @@ nav{background:var(--surface)}
           <p>210 practice problems with instant feedback, filterable by topic and difficulty.</p>
         </div>
         <div class="tool-card" onclick="showPage('tutor')" role="button" tabindex="0">
-          <h3>AI Tutor</h3>
+          <h3>AlgoBridge Tutor</h3>
           <p>Ask questions and get guided help without being handed the answer outright.</p>
         </div>
         <div class="tool-card" onclick="showPage('dashboard')" role="button" tabindex="0">
@@ -1111,7 +1123,7 @@ nav{background:var(--surface)}
         </div>
         <div class="screenshot-card" onclick="showScreenshotModal(1)">
           <div class="screenshot-preview" id="ss-preview-1"></div>
-          <div class="screenshot-label">AI Tutor — Socratic Conversation</div>
+          <div class="screenshot-label">AlgoBridge Tutor — Socratic Conversation</div>
         </div>
         <div class="screenshot-card" onclick="showScreenshotModal(2)">
           <div class="screenshot-preview" id="ss-preview-2"></div>
@@ -1345,7 +1357,7 @@ nav{background:var(--surface)}
         </div>
 
         <div id="hint-section" style="margin-top:.7rem">
-          <div style="font-size:13px;font-weight:600;margin-bottom:.7rem;color:var(--text2)">AI Tutor</div>
+          <div style="font-size:13px;font-weight:600;margin-bottom:.7rem;color:var(--text2)">AlgoBridge Tutor</div>
           <div id="hints-locked" class="hint-locked">
             <div class="tutor-msg ai" style="font-style:italic;color:var(--text3)">Hints unlock after the timer. Keep working — you're building stronger understanding right now.</div>
           </div>
@@ -1550,7 +1562,7 @@ print(two_sum([3, 2, 4], 6))        # → [1, 2]
 
       <p class="mission-text fade-up d2">AlgoBridge Learn is the digital extension of <strong>AlgoBridge</strong> — an AI literacy initiative founded by <strong>Ayush Kumar</strong>, a Grade 12 student from Ghaziabad, India. The initiative has reached 218 underserved students across 5 NGOs through free, in-person workshops. Every pattern observed in those cohorts became a platform feature — the workshop was the research lab.</p>
       <p class="mission-text fade-up d3">The platform was built to answer a question that kept coming up after every workshop: <em>"Where do I keep learning after today?"</em> AlgoBridge Learn is that answer — structured, free, and designed around how learning actually works rather than how it feels comfortable.</p>
-      <p class="mission-text fade-up d4">Ayush's independent research on AI-assisted learning — published on Academia and arXiv — directly shaped the platform's tutor design. A 2-month controlled study across 39 JEE students showed that students who used AI for understanding and solved independently outperformed passive AI users by +13 points. AlgoBridge is built on that finding.</p>
+      <p class="mission-text fade-up d4">Ayush's independent research on AI-assisted learning — published on Academia and arXiv — directly shaped the platform's tutor design. A 2-month controlled study across 39 top-5% JEE students showed that students who used AI for understanding and then solved independently outperformed passive AI users by a margin of +23 pts vs +10 pts. AlgoBridge is built on that finding. <a href="https://independent.academia.edu/Ayushkumar3145" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:underline;text-underline-offset:2px">Read the full study →</a></p>
 
       <div class="divider"></div>
 
@@ -1558,14 +1570,14 @@ print(two_sum([3, 2, 4], 6))        # → [1, 2]
       <div class="section-title fade-up d1" style="font-size:1.3rem">AlgoBridge Workshop Programme</div>
       <div class="impact-grid" style="margin-top:1.2rem">
         <div class="chart-card fade-up d1" style="text-align:center"><div class="impact-num">218</div><div class="impact-label">Students across 5 NGO cohorts · free, zero prior coding required</div></div>
-        <div class="chart-card fade-up d2" style="text-align:center"><div class="impact-num">4,127</div><div class="impact-label">Registered learners on AlgoBridge Learn</div></div>
-        <div class="chart-card fade-up d2" style="text-align:center"><div class="impact-num">5</div><div class="impact-label">NGOs partnered · workshop observations shaped platform features</div></div>
         <div class="chart-card fade-up d3" style="text-align:center"><div class="impact-num">21→81%</div><div class="impact-label">Average quiz score pre/post across 218 students · single session</div></div>
+        <div class="chart-card fade-up d2" style="text-align:center"><div class="impact-num">+23 vs +10</div><div class="impact-label">Point margin, active vs. passive AI use — 39-student JEE study</div></div>
       </div>
+      <div class="fade-up" style="font-size:.78rem;color:var(--text3);margin-top:.6rem">By the numbers: 4,127 registered learners on AlgoBridge Learn · 5 NGOs partnered</div>
 
       <div class="ngo-card fade-up">
         <div class="ngo-head">Workshop → Platform Feedback Loop</div>
-        <div class="ngo-body">Workshops are designed for students aged 11–18 with zero prior coding knowledge. Pre/post comprehension checks showed average quiz scores rise from 21% to 81% in a single session across 218 students. Crucially: every friction point observed in those sessions — students over-relying on hints, failing to recognise their own misconceptions, losing progress between sessions — became a direct platform feature. The Productive Struggle Timer, Mistake Log, and persistent analytics exist because workshop cohorts showed they were needed.</div>
+        <div class="ngo-body">Workshops are designed for students aged 11–18 with zero prior coding knowledge. Pre/post comprehension checks showed average quiz scores rise from 21% to 81% in a single session across 218 students. Crucially: every friction point observed in those sessions — students over-relying on hints, failing to recognise their own misconceptions, losing progress between sessions — became a direct platform feature. The Productive Struggle Timer, Mistake Log, and persistent analytics exist because workshop cohorts showed they were needed. <a href="https://independent.academia.edu/Ayushkumar3145" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:underline;text-underline-offset:2px">Read the full study →</a></div>
       </div>
 
       <div class="divider"></div>
@@ -1577,6 +1589,14 @@ print(two_sum([3, 2, 4], 6))        # → [1, 2]
         <div class="card fade-up d2"><h3>Accessibility is non-negotiable</h3><p>Built for students who cannot afford tutors, bootcamps, or private schools. Everything is free and always will be.</p></div>
         <div class="card fade-up d3"><h3>Evidence over intuition</h3><p>Every pedagogical choice has a citation. "I feel like this works" is not enough — we need to point to the research.</p></div>
       </div>
+
+      <div class="divider"></div>
+
+      <div class="section-label fade-up">Behind the build</div>
+      <div class="section-title fade-up d1" style="font-size:1.3rem">How this was built</div>
+      <p class="mission-text fade-up d2">
+        AlgoBridge Learn is built with vanilla HTML, CSS, and JavaScript — no framework — with Chart.js for the analytics visualizations, Firebase/Firestore for lightweight persistent counters, and the Google Translate API for the language switcher. The algorithm visualizations trace real execution rather than playing back a canned animation. It's a solo, ongoing project: some pieces (like the problem bank and research-to-feature mapping) are hand-authored content, others (charting, translation) lean on existing libraries rather than reinventing them.
+      </p>
 
       <div class="divider"></div>
 
@@ -1599,7 +1619,7 @@ print(two_sum([3, 2, 4], 6))        # → [1, 2]
         <a class="link-card fade-up d3" href="https://itsreadingtimee.blogspot.com" target="_blank" rel="noopener" aria-label="Read Ayush Kumar's blog">
           <div class="link-card-icon"></div>
           <h3>Blog</h3>
-          <p>23+ research-backed essays on AI and education — reaching 40,000+ readers across 10+ countries.</p>
+          <p>Research-backed essays on AI and education — 40,000+ readers, 10+ countries.</p>
           <span class="link-url">itsreadingtimee.blogspot.com →</span>
         </a>
       </div>
@@ -4070,7 +4090,7 @@ window.addEventListener('scroll', () => {
 const RF_MAP_DATA = [
   { research: 'Bjork, R.A. (1994) — Desirable difficulties improve long-term retention even when performance feels harder in the moment.', feature: 'Productive Struggle Timer', tag: 'Workspace' },
   { research: 'Roediger & Karpicke (2006) — Retrieval practice is dramatically more effective than re-reading for durable memory.', feature: 'Blank Function Bodies — Active Recall Cues', tag: 'Workspace' },
-  { research: 'VanLehn, K. (2011) — AI tutors using targeted hints outperform both no-feedback and answer-giving systems.', feature: 'Socratic AI Tutor — Questions before answers', tag: 'AI Tutor' },
+  { research: 'VanLehn, K. (2011) — AI tutors using targeted hints outperform both no-feedback and answer-giving systems.', feature: 'Socratic AlgoBridge Tutor — Questions before answers', tag: 'AlgoBridge Tutor' },
   { research: 'Dunlosky et al. (2013) — Students who monitor their own errors consistently outperform those who don\'t.', feature: 'Persistent Mistake Log + Root Cause Field', tag: 'Dashboard' },
   { research: 'Sweller, J. (1988) — Cognitive load theory: too much simultaneous information impairs learning.', feature: 'Progressive Topic Unlock — One concept at a time', tag: 'Paths' },
   { research: 'Cepeda et al. (2006) — Spaced retrieval dramatically outperforms massed practice for retention.', feature: 'Retention Forecast + Weak Areas surfacing', tag: 'Analytics' },
@@ -4207,7 +4227,7 @@ function renderProgressSS(el) {
 }
 
 function showScreenshotModal(idx) {
-  const labels = ['Learning Analytics Dashboard','AI Tutor — Socratic Conversation','Persistent Mistake Log','Lesson Progress View'];
+  const labels = ['Learning Analytics Dashboard','AlgoBridge Tutor — Socratic Conversation','Persistent Mistake Log','Lesson Progress View'];
   const renders = [renderDashboardSS, renderTutorSS, renderMistakeSS, renderProgressSS];
   const existing = document.getElementById('ss-modal-overlay');
   if (existing) existing.remove();
@@ -4438,14 +4458,25 @@ async function tcSend() {
     const res = await fetch('https://algobridge-tutor.ak3036811.workers.dev', {
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({model:'claude-sonnet-4-20250514', max_tokens:900, system:buildTCSystem(), messages:tcMsgs})
+      body: JSON.stringify({model:'claude-sonnet-5', max_tokens:900, system:buildTCSystem(), messages:tcMsgs})
     });
-    const data = await res.json();
-    const reply = data.content?.map(b=>b.text||'').join('') || "Something went wrong — please try again!";
-    typingBub.innerHTML = tcFmt(reply);
-    tcMsgs.push({role:'assistant', content:reply});
-  } catch {
-    typingBub.innerHTML = "Connection issue — please try again.";
+    if (!res.ok) {
+      console.error('AlgoBridge Tutor: worker returned', res.status, res.statusText);
+      const msg = res.status === 429
+        ? "I'm getting a lot of requests right now — give it a moment and try again."
+        : res.status >= 500
+          ? "The tutor service is temporarily down on my end — try again shortly."
+          : `Something went wrong on my end (error ${res.status}) — try again in a moment.`;
+      typingBub.innerHTML = msg;
+    } else {
+      const data = await res.json();
+      const reply = data.content?.map(b=>b.text||'').join('') || "Something went wrong — please try again!";
+      typingBub.innerHTML = tcFmt(reply);
+      tcMsgs.push({role:'assistant', content:reply});
+    }
+  } catch (e) {
+    console.error('AlgoBridge Tutor: network/fetch failure', e);
+    typingBub.innerHTML = "Couldn't reach the tutor — check your connection and try again.";
   }
 
   document.getElementById('tc-messages').scrollTop = 99999;
