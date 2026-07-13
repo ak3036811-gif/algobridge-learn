@@ -665,13 +665,25 @@ main section+section{border-top:1px solid var(--border2)}
 .problem-card-topic{font-size:11.5px;color:var(--text3);font-family:var(--mono)}
 .problem-empty{padding:2.5rem 1rem;text-align:center;color:var(--text3);font-size:14px}
 
+/* Opened but not yet solved — yellow */
+.problem-card.opened{background:var(--amber-bg);border-color:rgba(176,116,12,0.3)}
+.problem-card.opened .problem-card-title{color:var(--amber)}
+.problem-card-status-badge{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-family:var(--mono);font-weight:700;white-space:nowrap}
+.problem-card-status-badge.badge-opened{color:var(--amber)}
+.problem-card-status-badge.badge-wrong{color:var(--red)}
+.problem-card-status-badge.badge-solved{color:var(--green)}
+
+/* Submitted and still wrong — red. Takes priority over the plain "opened" yellow. */
+.problem-card.wrong{background:var(--red-bg);border-color:rgba(201,59,52,0.3)}
+.problem-card.wrong .problem-card-title{color:var(--red)}
+
 /* Solved problem — turns the card green and adds a small check badge */
 .problem-card.solved{background:var(--green-bg);border-color:rgba(14,154,99,0.3)}
 .problem-card.solved .problem-card-title{color:var(--green)}
-.problem-card-solved-badge{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-family:var(--mono);font-weight:700;color:var(--green);white-space:nowrap}
 
-/* Submit button flashes green for a moment right after a correct submission */
+/* Submit button flashes green/red for a moment right after a submission */
 #submit-btn.solved-flash{background:var(--green)!important;border-color:var(--green)!important;transition:background 0.2s, border-color 0.2s}
+#submit-btn.wrong-flash{background:var(--red)!important;border-color:var(--red)!important;transition:background 0.2s, border-color 0.2s}
 
 .struggle-overlay{background:var(--amber-bg);border:1px solid rgba(176,116,12,0.25);border-radius:var(--radius);padding:1.1rem 1.3rem;margin-bottom:.9rem}
 .struggle-head{font-family:var(--sans);font-size:11px;color:var(--amber);letter-spacing:.04em;text-transform:uppercase;margin-bottom:.4rem;font-weight:700}
@@ -3164,7 +3176,7 @@ const PATHS = {
 };
 
 const APP = {
-  solved:0, mistakes:[], recentActivity:[], solvedProblemIds:[],
+  solved:0, mistakes:[], recentActivity:[], solvedProblemIds:[], problemStatus:{},
   currentTopicId:null, currentTopicPath:null, currentProblem:null,
   timerSeconds:STRUGGLE_DURATION, timerDone:false, timerInterval:null,
   hintLevel:0, chartsInited:false,
@@ -3772,6 +3784,13 @@ async function submitCode() {
     saveMistakesToStorage();
     refreshMistakeDisplay();
     APP.recentActivity.unshift(`Attempted "${problem.title}" — ${failed.length} test${failed.length > 1 ? 's' : ''} failed`);
+    setProblemStatus(problem.id, 'wrong');
+    const failBtn = document.getElementById('submit-btn');
+    if (failBtn) {
+      failBtn.classList.add('wrong-flash');
+      setTimeout(() => failBtn.classList.remove('wrong-flash'), 1200);
+    }
+    renderProblemsList();
     updateDashboard();
     return;
   }
@@ -3784,6 +3803,7 @@ async function submitCode() {
     APP.solvedProblemIds.push(problem.id);
     saveSolvedProblemsToStorage();
   }
+  setProblemStatus(problem.id, 'solved');
   APP.recentActivity.unshift(`Submitted "${problem.title}" — problem complete`);
   extra.className = 'info';
   extra.textContent = alreadySolved ? '✓ Submitted — already marked complete.' : '✓ Submitted and marked complete.';
@@ -3821,10 +3841,14 @@ function loadProblem(id) {
 
   const submitBtnEl = document.getElementById('submit-btn');
   if (submitBtnEl) {
-    submitBtnEl.classList.remove('solved-flash');
+    submitBtnEl.classList.remove('solved-flash', 'wrong-flash');
     const isSolved = APP.solvedProblemIds.includes(problem.id);
     submitBtnEl.textContent = isSolved ? '✓ Solved — Resubmit' : 'Submit';
   }
+
+  // Opening a problem marks it yellow ("in progress") in the problem list,
+  // unless it's already been solved (which stays green).
+  setProblemStatus(problem.id, 'opened');
 
   const examplesContainer = document.getElementById('problem-examples-container');
   examplesContainer.innerHTML = '';
@@ -3915,12 +3939,17 @@ function renderProblemsList() {
   }
 
   filtered.forEach(p => {
-    const isSolved = APP.solvedProblemIds.includes(p.id);
+    const status = APP.problemStatus[p.id]; // undefined | 'opened' | 'wrong' | 'solved'
     const card = document.createElement('div');
-    card.className = 'problem-card' + (isSolved ? ' solved' : '');
+    card.className = 'problem-card' + (status ? ' ' + status : '');
     card.setAttribute('tabindex', '0');
     card.setAttribute('role', 'button');
-    card.setAttribute('aria-label', `Open problem ${p.title}` + (isSolved ? ' (solved)' : ''));
+    const statusLabel = status === 'solved' ? ' (solved)' : status === 'wrong' ? ' (last attempt incorrect)' : status === 'opened' ? ' (in progress)' : '';
+    card.setAttribute('aria-label', `Open problem ${p.title}${statusLabel}`);
+    const badge = status === 'solved' ? '<span class="problem-card-status-badge badge-solved">✓ Solved</span>'
+      : status === 'wrong' ? '<span class="problem-card-status-badge badge-wrong">✗ Try again</span>'
+      : status === 'opened' ? '<span class="problem-card-status-badge badge-opened">◐ In progress</span>'
+      : '';
     card.innerHTML = `
       <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
         <span class="problem-card-title">${p.title}</span>
@@ -3928,7 +3957,7 @@ function renderProblemsList() {
       </div>
       <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
         <span class="problem-card-topic">${p.topic}</span>
-        ${isSolved ? '<span class="problem-card-solved-badge">✓ Solved</span>' : ''}
+        ${badge}
       </div>
     `;
     card.addEventListener('click', () => loadProblem(p.id));
@@ -3962,6 +3991,26 @@ function loadSolvedProblemsFromStorage() {
 
 function saveSolvedProblemsToStorage() {
   try { localStorage.setItem('ab_solved_problems', JSON.stringify(APP.solvedProblemIds)); } catch(e) {}
+}
+
+// Tracks whether each problem card should show as yellow (opened, not yet
+// solved), red (submitted and still wrong), or green (solved) — 'solved'
+// always wins and is never downgraded back to yellow/red.
+function loadProblemStatusFromStorage() {
+  try {
+    const saved = localStorage.getItem('ab_problem_status');
+    APP.problemStatus = saved ? JSON.parse(saved) : {};
+  } catch(e) { APP.problemStatus = {}; }
+}
+
+function saveProblemStatusToStorage() {
+  try { localStorage.setItem('ab_problem_status', JSON.stringify(APP.problemStatus)); } catch(e) {}
+}
+
+function setProblemStatus(problemId, status) {
+  if (APP.problemStatus[problemId] === 'solved') return; // never downgrade a solved problem
+  APP.problemStatus[problemId] = status;
+  saveProblemStatusToStorage();
 }
 
 function refreshMistakeDisplay() {
@@ -4428,6 +4477,8 @@ function showScreenshotModal(idx) {
 
 loadMistakesFromStorage();
 loadSolvedProblemsFromStorage();
+loadProblemStatusFromStorage();
+APP.solvedProblemIds.forEach(id => { APP.problemStatus[id] = 'solved'; });
 renderPath('beginner');
 renderPath('intermediate');
 renderPath('advanced');
