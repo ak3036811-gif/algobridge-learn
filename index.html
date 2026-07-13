@@ -4,18 +4,6 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>AlgoBridge Learn</title>
-<meta name="description" content="Free, research-backed platform to learn algorithms with an AI tutor that asks questions instead of giving answers. 42 topics, 210 practice problems, built on published learning-science research."/>
-<meta property="og:type" content="website"/>
-<meta property="og:title" content="AlgoBridge Learn — Learn to code by watching it think"/>
-<meta property="og:description" content="Free, research-backed platform to learn algorithms with an AI tutor that asks questions instead of giving answers. 42 topics, 210 practice problems."/>
-<meta property="og:url" content="https://ak3036811-gif.github.io/Main-Website/"/>
-<!-- TODO: create a ~1200x630 preview image, upload it, then set the two og:image / twitter:image URLs below to its real path -->
-<meta property="og:image" content="https://ak3036811-gif.github.io/Main-Website/og-image.png"/>
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:title" content="AlgoBridge Learn — Learn to code by watching it think"/>
-<meta name="twitter:description" content="Free, research-backed platform to learn algorithms with an AI tutor that asks questions instead of giving answers."/>
-<meta name="twitter:image" content="https://ak3036811-gif.github.io/Main-Website/og-image.png"/>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='6' cy='24' r='4' fill='%235750E8'/%3E%3Ccircle cx='16' cy='8' r='4' fill='%235750E8' opacity='.75'/%3E%3Ccircle cx='26' cy='24' r='4' fill='%235750E8'/%3E%3Cpath d='M8.6 22 14 10.5M18 10.5l5.4 11.5' stroke='%235750E8' stroke-width='2' stroke-linecap='round' opacity='.55'/%3E%3C/svg%3E"/>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;0,700;0,900;1,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <!-- Firebase (modular SDK, loaded as an ES module) -->
@@ -239,6 +227,7 @@ body{top:0!important;position:static!important}
   position:relative;overflow:hidden;
 }
 .btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.btn:disabled{opacity:.55;cursor:default;pointer-events:none}
 .btn-primary{
   background:linear-gradient(135deg, var(--accent), var(--accent2));
   color:#fff;
@@ -275,6 +264,7 @@ body{top:0!important;position:static!important}
   background:linear-gradient(90deg,var(--accent),var(--glow-b));
   transform-origin:left;transform:scaleX(0);pointer-events:none;
 }
+#stats-cluster.stats-hidden{opacity:0!important;transform:translateY(12px)!important;pointer-events:none}
 
 /* ── COMPLETION CONFETTI ── */
 .confetti-piece{
@@ -670,10 +660,18 @@ main section+section{border-top:1px solid var(--border2)}
 .problem-search-input:focus, .problem-filter-select:focus{border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
 .problem-count-label{font-size:12px;color:var(--text3);font-family:var(--mono);margin-bottom:.9rem}
 .problem-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
-.problem-card{border-radius:var(--radius);padding:15px 16px;cursor:pointer;display:flex;flex-direction:column;gap:8px}
+.problem-card{border-radius:var(--radius);padding:15px 16px;cursor:pointer;display:flex;flex-direction:column;gap:8px;transition:background 0.25s var(--transition), border-color 0.25s var(--transition)}
 .problem-card-title{font-family:var(--serif);font-size:1.07rem;font-weight:900;color:var(--text)}
 .problem-card-topic{font-size:11.5px;color:var(--text3);font-family:var(--mono)}
 .problem-empty{padding:2.5rem 1rem;text-align:center;color:var(--text3);font-size:14px}
+
+/* Solved problem — turns the card green and adds a small check badge */
+.problem-card.solved{background:var(--green-bg);border-color:rgba(14,154,99,0.3)}
+.problem-card.solved .problem-card-title{color:var(--green)}
+.problem-card-solved-badge{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-family:var(--mono);font-weight:700;color:var(--green);white-space:nowrap}
+
+/* Submit button flashes green for a moment right after a correct submission */
+#submit-btn.solved-flash{background:var(--green)!important;border-color:var(--green)!important;transition:background 0.2s, border-color 0.2s}
 
 .struggle-overlay{background:var(--amber-bg);border:1px solid rgba(176,116,12,0.25);border-radius:var(--radius);padding:1.1rem 1.3rem;margin-bottom:.9rem}
 .struggle-head{font-family:var(--sans);font-size:11px;color:var(--amber);letter-spacing:.04em;text-transform:uppercase;margin-bottom:.4rem;font-weight:700}
@@ -956,7 +954,7 @@ nav{background:var(--surface)}
     <button class="nav-link active" onclick="showPage('home')">Home</button>
     <button class="nav-link" onclick="showPage('paths')">Learning Paths</button>
     <button class="nav-link" onclick="showPage('problems')">Workspace</button>
-    <button class="nav-link" onclick="showPage('tutor')" style="color:var(--accent)">AlgoBridge Tutor</button>
+    <button class="nav-link" onclick="showPage('tutor')" style="color:var(--accent)">AI Tutor</button>
     <button class="nav-link" onclick="showPage('dashboard')">Dashboard</button>
     <button class="nav-link" onclick="showPage('research')">Research</button>
     <button class="nav-link" onclick="showPage('about')">About</button>
@@ -987,7 +985,7 @@ nav{background:var(--surface)}
   <button class="nav-link" onclick="showPage('home');toggleMobileNav()">Home</button>
   <button class="nav-link" onclick="showPage('paths');toggleMobileNav()">Learning Paths</button>
   <button class="nav-link" onclick="showPage('problems');toggleMobileNav()">Workspace</button>
-  <button class="nav-link" onclick="showPage('tutor');toggleMobileNav()" style="color:var(--accent)">AlgoBridge Tutor</button>
+  <button class="nav-link" onclick="showPage('tutor');toggleMobileNav()" style="color:var(--accent)">AI Tutor</button>
   <button class="nav-link" onclick="showPage('dashboard');toggleMobileNav()">Dashboard</button>
   <button class="nav-link" onclick="showPage('research');toggleMobileNav()">Research</button>
   <button class="nav-link" onclick="showPage('about');toggleMobileNav()">About</button>
@@ -1073,7 +1071,7 @@ nav{background:var(--surface)}
           <p>210 practice problems with instant feedback, filterable by topic and difficulty.</p>
         </div>
         <div class="tool-card" onclick="showPage('tutor')" role="button" tabindex="0">
-          <h3>AlgoBridge Tutor</h3>
+          <h3>AI Tutor</h3>
           <p>Ask questions and get guided help without being handed the answer outright.</p>
         </div>
         <div class="tool-card" onclick="showPage('dashboard')" role="button" tabindex="0">
@@ -1123,7 +1121,7 @@ nav{background:var(--surface)}
         </div>
         <div class="screenshot-card" onclick="showScreenshotModal(1)">
           <div class="screenshot-preview" id="ss-preview-1"></div>
-          <div class="screenshot-label">AlgoBridge Tutor — Socratic Conversation</div>
+          <div class="screenshot-label">AI Tutor — Socratic Conversation</div>
         </div>
         <div class="screenshot-card" onclick="showScreenshotModal(2)">
           <div class="screenshot-preview" id="ss-preview-2"></div>
@@ -1357,7 +1355,7 @@ nav{background:var(--surface)}
         </div>
 
         <div id="hint-section" style="margin-top:.7rem">
-          <div style="font-size:13px;font-weight:600;margin-bottom:.7rem;color:var(--text2)">AlgoBridge Tutor</div>
+          <div style="font-size:13px;font-weight:600;margin-bottom:.7rem;color:var(--text2)">AI Tutor</div>
           <div id="hints-locked" class="hint-locked">
             <div class="tutor-msg ai" style="font-style:italic;color:var(--text3)">Hints unlock after the timer. Keep working — you're building stronger understanding right now.</div>
           </div>
@@ -1384,8 +1382,8 @@ nav{background:var(--surface)}
       <div class="ws-header">
         <span class="ws-title">Code Editor</span>
         <span class="badge badge-blue">Python 3</span>
-        <button class="btn btn-secondary btn-sm" style="margin-left:auto" onclick="runCode()">▶ Run</button>
-        <button class="btn btn-primary btn-sm" onclick="submitCode()">Submit</button>
+        <button class="btn btn-secondary btn-sm" id="run-btn" style="margin-left:auto" onclick="runCode()">▶ Run</button>
+        <button class="btn btn-primary btn-sm" id="submit-btn" onclick="submitCode()">Submit</button>
       </div>
       <div class="ws-body" style="display:flex;flex-direction:column;gap:9px">
         <div class="editor-wrap">
@@ -1562,7 +1560,7 @@ print(two_sum([3, 2, 4], 6))        # → [1, 2]
 
       <p class="mission-text fade-up d2">AlgoBridge Learn is the digital extension of <strong>AlgoBridge</strong> — an AI literacy initiative founded by <strong>Ayush Kumar</strong>, a Grade 12 student from Ghaziabad, India. The initiative has reached 218 underserved students across 5 NGOs through free, in-person workshops. Every pattern observed in those cohorts became a platform feature — the workshop was the research lab.</p>
       <p class="mission-text fade-up d3">The platform was built to answer a question that kept coming up after every workshop: <em>"Where do I keep learning after today?"</em> AlgoBridge Learn is that answer — structured, free, and designed around how learning actually works rather than how it feels comfortable.</p>
-      <p class="mission-text fade-up d4">Ayush's independent research on AI-assisted learning — published on Academia and arXiv — directly shaped the platform's tutor design. A 2-month controlled study across 39 top-5% JEE students showed that students who used AI for understanding and then solved independently outperformed passive AI users by a margin of +23 pts vs +10 pts. AlgoBridge is built on that finding. <a href="https://independent.academia.edu/Ayushkumar3145" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:underline;text-underline-offset:2px">Read the full study →</a></p>
+      <p class="mission-text fade-up d4">Ayush's independent research on AI-assisted learning — published on Academia and arXiv — directly shaped the platform's tutor design. A 2-month controlled study across 39 JEE students showed that students who used AI for understanding and solved independently outperformed passive AI users by +13 points. AlgoBridge is built on that finding.</p>
 
       <div class="divider"></div>
 
@@ -1570,14 +1568,14 @@ print(two_sum([3, 2, 4], 6))        # → [1, 2]
       <div class="section-title fade-up d1" style="font-size:1.3rem">AlgoBridge Workshop Programme</div>
       <div class="impact-grid" style="margin-top:1.2rem">
         <div class="chart-card fade-up d1" style="text-align:center"><div class="impact-num">218</div><div class="impact-label">Students across 5 NGO cohorts · free, zero prior coding required</div></div>
+        <div class="chart-card fade-up d2" style="text-align:center"><div class="impact-num">4,127</div><div class="impact-label">Registered learners on AlgoBridge Learn</div></div>
+        <div class="chart-card fade-up d2" style="text-align:center"><div class="impact-num">5</div><div class="impact-label">NGOs partnered · workshop observations shaped platform features</div></div>
         <div class="chart-card fade-up d3" style="text-align:center"><div class="impact-num">21→81%</div><div class="impact-label">Average quiz score pre/post across 218 students · single session</div></div>
-        <div class="chart-card fade-up d2" style="text-align:center"><div class="impact-num">+23 vs +10</div><div class="impact-label">Point margin, active vs. passive AI use — 39-student JEE study</div></div>
       </div>
-      <div class="fade-up" style="font-size:.78rem;color:var(--text3);margin-top:.6rem">By the numbers: 4,127 registered learners on AlgoBridge Learn · 5 NGOs partnered</div>
 
       <div class="ngo-card fade-up">
         <div class="ngo-head">Workshop → Platform Feedback Loop</div>
-        <div class="ngo-body">Workshops are designed for students aged 11–18 with zero prior coding knowledge. Pre/post comprehension checks showed average quiz scores rise from 21% to 81% in a single session across 218 students. Crucially: every friction point observed in those sessions — students over-relying on hints, failing to recognise their own misconceptions, losing progress between sessions — became a direct platform feature. The Productive Struggle Timer, Mistake Log, and persistent analytics exist because workshop cohorts showed they were needed. <a href="https://independent.academia.edu/Ayushkumar3145" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:underline;text-underline-offset:2px">Read the full study →</a></div>
+        <div class="ngo-body">Workshops are designed for students aged 11–18 with zero prior coding knowledge. Pre/post comprehension checks showed average quiz scores rise from 21% to 81% in a single session across 218 students. Crucially: every friction point observed in those sessions — students over-relying on hints, failing to recognise their own misconceptions, losing progress between sessions — became a direct platform feature. The Productive Struggle Timer, Mistake Log, and persistent analytics exist because workshop cohorts showed they were needed.</div>
       </div>
 
       <div class="divider"></div>
@@ -1589,14 +1587,6 @@ print(two_sum([3, 2, 4], 6))        # → [1, 2]
         <div class="card fade-up d2"><h3>Accessibility is non-negotiable</h3><p>Built for students who cannot afford tutors, bootcamps, or private schools. Everything is free and always will be.</p></div>
         <div class="card fade-up d3"><h3>Evidence over intuition</h3><p>Every pedagogical choice has a citation. "I feel like this works" is not enough — we need to point to the research.</p></div>
       </div>
-
-      <div class="divider"></div>
-
-      <div class="section-label fade-up">Behind the build</div>
-      <div class="section-title fade-up d1" style="font-size:1.3rem">How this was built</div>
-      <p class="mission-text fade-up d2">
-        AlgoBridge Learn is built with vanilla HTML, CSS, and JavaScript — no framework — with Chart.js for the analytics visualizations, Firebase/Firestore for lightweight persistent counters, and the Google Translate API for the language switcher. The algorithm visualizations trace real execution rather than playing back a canned animation. It's a solo, ongoing project: some pieces (like the problem bank and research-to-feature mapping) are hand-authored content, others (charting, translation) lean on existing libraries rather than reinventing them.
-      </p>
 
       <div class="divider"></div>
 
@@ -1619,7 +1609,7 @@ print(two_sum([3, 2, 4], 6))        # → [1, 2]
         <a class="link-card fade-up d3" href="https://itsreadingtimee.blogspot.com" target="_blank" rel="noopener" aria-label="Read Ayush Kumar's blog">
           <div class="link-card-icon"></div>
           <h3>Blog</h3>
-          <p>Research-backed essays on AI and education — 40,000+ readers, 10+ countries.</p>
+          <p>23+ research-backed essays on AI and education — reaching 40,000+ readers across 10+ countries.</p>
           <span class="link-url">itsreadingtimee.blogspot.com →</span>
         </a>
       </div>
@@ -3174,7 +3164,7 @@ const PATHS = {
 };
 
 const APP = {
-  solved:0, mistakes:[], recentActivity:[],
+  solved:0, mistakes:[], recentActivity:[], solvedProblemIds:[],
   currentTopicId:null, currentTopicPath:null, currentProblem:null,
   timerSeconds:STRUGGLE_DURATION, timerDone:false, timerInterval:null,
   hintLevel:0, chartsInited:false,
@@ -3513,7 +3503,10 @@ function buildStreakGrid() {
 }
 
 function initCharts() {
-  if (APP.chartsInited) return;
+  // Previously this bailed out after the very first render, so the charts
+  // (and the numbers baked into them) never updated again after that —
+  // even though the dashboard's text stats kept refreshing. Now it always
+  // rebuilds the charts with current data when the dashboard is opened.
   const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
   const textColor = isDark ? '#5C5A78' : '#9896AB';
   const gridColor = isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.05)';
@@ -3594,60 +3587,218 @@ function showNextHint() {
   else if (APP.hintLevel >= 2 && h3) { h3.style.display = 'block'; if (btn) btn.style.display = 'none'; }
 }
 
-function runCode() {
-  const code = document.getElementById('code-editor').value;
+// ── REAL CODE EXECUTION (Pyodide — actual CPython compiled to WASM) ──
+// Loaded lazily on first Run/Submit so the workspace page itself stays light.
+let __pyodideLoadPromise = null;
+function loadPyodideRuntime() {
+  if (!__pyodideLoadPromise) {
+    __pyodideLoadPromise = new Promise((resolve, reject) => {
+      if (window.loadPyodide) return resolve();
+      const s = document.createElement('script');
+      s.src = 'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js';
+      s.onload = resolve;
+      s.onerror = () => reject(new Error('Could not load the Python runtime (check your connection).'));
+      document.head.appendChild(s);
+    }).then(() => window.loadPyodide({ indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/' }));
+  }
+  return __pyodideLoadPromise;
+}
+
+// Runs the user's code for real and grades each test case against its expected
+// value. Most `expected` fields are plain Python literals ('5.0', "[1, 2, 3]",
+// "'undefined'") and get compared with a real `==`. A handful of harder problems
+// (linked lists, trees, "any valid order", etc.) describe the expected result in
+// prose instead of a literal — those can't be auto-graded, so they're reported
+// as 'manual' (shown separately) rather than silently marked right or wrong.
+const PY_GRADER_DRIVER = `
+import json, ast, re, traceback
+
+tests = json.loads(__tests_json)
+results = []
+ns = {}
+compile_error = None
+try:
+    exec(__user_code, ns)
+except Exception as e:
+    compile_error = ''.join(traceback.format_exception_only(type(e), e)).strip()
+
+def _try_literal(expr):
+    try:
+        return True, ast.literal_eval(expr)
+    except Exception:
+        try:
+            return True, eval(expr, ns)
+        except Exception:
+            return False, None
+
+for t in tests:
+    call, expected_str = t['call'], t['expected']
+    entry = {'call': call, 'expected': expected_str}
+    if compile_error:
+        entry['status'] = 'error'
+        entry['actual'] = compile_error
+        results.append(entry)
+        continue
+
+    raise_match = re.match(r'^\\s*raises\\s+([A-Za-z_][A-Za-z0-9_]*)', expected_str)
+    try:
+        actual = eval(call, ns)
+        actual_repr = repr(actual)
+        if raise_match:
+            entry['status'], entry['actual'] = 'fail', actual_repr
+        else:
+            ok, expected_val = _try_literal(expected_str)
+            if not ok:
+                entry['status'], entry['actual'] = 'manual', actual_repr
+            else:
+                entry['status'] = 'pass' if actual == expected_val else 'fail'
+                entry['actual'] = actual_repr
+    except Exception as e:
+        err_name = type(e).__name__
+        if raise_match and err_name == raise_match.group(1):
+            entry['status'], entry['actual'] = 'pass', err_name + ': ' + str(e)
+        else:
+            entry['status'] = 'error'
+            entry['actual'] = ''.join(traceback.format_exception_only(type(e), e)).strip()
+    results.append(entry)
+
+json.dumps(results)
+`;
+
+async function gradeSubmission(code, tests) {
+  const pyodide = await loadPyodideRuntime();
+  pyodide.globals.set('__user_code', code);
+  pyodide.globals.set('__tests_json', JSON.stringify(tests.map(t => ({ call: t.call, expected: t.expected }))));
+  const resultJson = await pyodide.runPythonAsync(PY_GRADER_DRIVER);
+  return JSON.parse(resultJson);
+}
+
+function setOutputLines(lines) {
   const out = document.getElementById('output-box');
+  out.innerHTML = '';
+  lines.forEach(({ text, cls }) => {
+    const sp = document.createElement('span');
+    sp.className = cls;
+    sp.textContent = text;
+    out.appendChild(sp);
+    out.appendChild(document.createElement('br'));
+  });
+}
+
+async function runCode() {
+  const code = document.getElementById('code-editor').value;
   const statuses = document.querySelectorAll('.tc-status');
   const problem = APP.currentProblem || PROBLEMS[0];
+  const runBtn = document.getElementById('run-btn'), submitBtn = document.getElementById('submit-btn');
 
-  const setOut = (lines) => {
-    out.innerHTML = '';
-    lines.forEach(({text, cls}) => {
-      const sp = document.createElement('span');
-      sp.className = cls;
-      sp.textContent = text;
-      out.appendChild(sp);
-      out.appendChild(document.createElement('br'));
+  statuses.forEach(s => { s.textContent = '…'; s.style.color = 'var(--text3)'; });
+  if (runBtn) runBtn.disabled = true;
+  if (submitBtn) submitBtn.disabled = true;
+  setOutputLines([{
+    text: window.__pyodideReady ? '// Running…' : '// Loading Python runtime (first run only)…',
+    cls: 'info'
+  }]);
+
+  let results;
+  try {
+    results = await gradeSubmission(code, problem.tests);
+    window.__pyodideReady = true;
+  } catch (err) {
+    setOutputLines([{ text: '// ' + err.message, cls: 'fail' }]);
+    if (runBtn) runBtn.disabled = false;
+    if (submitBtn) submitBtn.disabled = false;
+    return null;
+  }
+
+  const lines = [];
+  results.forEach((r, i) => {
+    const status = statuses[i];
+    if (r.status === 'pass') {
+      if (status) { status.textContent = '✓ pass'; status.style.color = 'var(--green)'; }
+      lines.push({ text: `✓ ${r.call} → ${r.actual}`, cls: 'ok' });
+    } else if (r.status === 'manual') {
+      if (status) { status.textContent = '◐ check'; status.style.color = 'var(--amber)'; }
+      lines.push({ text: `◐ ${r.call} → ${r.actual}  (multiple answers can be valid — check manually)`, cls: 'warn' });
+    } else if (r.status === 'error') {
+      if (status) { status.textContent = '✗ error'; status.style.color = 'var(--red, #FF5F7E)'; }
+      lines.push({ text: `✗ ${r.call} raised: ${r.actual}`, cls: 'fail' });
+    } else {
+      if (status) { status.textContent = '✗ fail'; status.style.color = 'var(--red, #FF5F7E)'; }
+      lines.push({ text: `✗ ${r.call} → got ${r.actual}, expected ${r.expected}`, cls: 'fail' });
+      if (r.actual === 'None') lines.push({ text: `  (function returned None — did you add a return statement?)`, cls: 'info' });
+    }
+  });
+
+  const passCount = results.filter(r => r.status === 'pass').length;
+  const failCount = results.filter(r => r.status === 'fail' || r.status === 'error').length;
+  lines.push({
+    text: failCount === 0
+      ? `✓ ${passCount}/${results.length} tests passed` + (results.some(r => r.status === 'manual') ? ' (plus manual-check cases above)' : '.')
+      : `${passCount}/${results.length} tests passed, ${failCount} failed.`,
+    cls: failCount === 0 ? 'info' : 'fail'
+  });
+  setOutputLines(lines);
+
+  if (runBtn) runBtn.disabled = false;
+  if (submitBtn) submitBtn.disabled = false;
+  return results;
+}
+
+async function submitCode() {
+  const results = await runCode();
+  const problem = APP.currentProblem || PROBLEMS[0];
+  const out = document.getElementById('output-box');
+  if (!results) return; // runtime failed to load — already reported
+
+  const failed = results.filter(r => r.status === 'fail' || r.status === 'error');
+  const extra = document.createElement('span');
+  out.appendChild(document.createElement('br'));
+
+  if (failed.length > 0) {
+    extra.className = 'fail';
+    extra.textContent = `✗ Not submitted — ${failed.length} test${failed.length > 1 ? 's' : ''} still failing. Fix those and try again.`;
+    out.appendChild(extra);
+
+    // Wrong submissions were previously silent — nothing recorded them, so the
+    // dashboard's mistake count and metrics never moved when you got a
+    // problem wrong. Log it automatically so the dashboard actually reflects it.
+    APP.mistakes.unshift({
+      mistake: `${failed.length} test${failed.length > 1 ? 's' : ''} failed on "${problem.title}"`,
+      rootCause: null,
+      topic: problem.topic || null,
+      ts: new Date().toISOString(),
+      auto: true
     });
-  };
-
-  const hasReturn = code.includes('return') || /class\s+\w+/.test(code);
-  const hasOnlyPass = /^\s*pass\s*$/m.test(code) && !/class\s+\w+/.test(code);
-  const looksStructured = /(\bseen\b|\bvisited\b|\bmap\b|\bdict\b|\blookup\b|\{\}|\bget\(|\bheapq\b|\bset\(|\bdeque\b)/.test(code);
-
-  if (!hasReturn || hasOnlyPass) {
-    setOut([{text:'// Function returned None — did you add a return statement?', cls:'info'}]);
-    statuses.forEach(s => { s.textContent = 'None'; s.style.color = 'var(--amber)'; });
+    saveMistakesToStorage();
+    refreshMistakeDisplay();
+    APP.recentActivity.unshift(`Attempted "${problem.title}" — ${failed.length} test${failed.length > 1 ? 's' : ''} failed`);
+    updateDashboard();
     return;
   }
 
-  setOut(problem.tests.map(t => ({text: t.expected, cls:'ok'})));
-  statuses.forEach(s => { s.textContent = '✓ pass'; s.style.color = 'var(--green)'; });
-  setTimeout(() => {
-    const extra = document.createElement('span');
-    extra.className = looksStructured ? 'info' : 'warn';
-    extra.textContent = looksStructured
-      ? `✓ All ${problem.tests.length} tests passed — efficient approach detected.`
-      : `✓ All ${problem.tests.length} tests passed — but check your time complexity: could this be faster?`;
-    out.appendChild(document.createElement('br'));
-    out.appendChild(extra);
-  }, 350);
-}
-
-function submitCode() {
-  runCode();
-  const problem = APP.currentProblem || PROBLEMS[0];
-  setTimeout(() => {
+  // Only count a problem as newly solved once, so resubmitting the same
+  // (already-correct) problem doesn't keep inflating the solved count.
+  const alreadySolved = APP.solvedProblemIds.includes(problem.id);
+  if (!alreadySolved) {
     APP.solved++;
-    APP.recentActivity.unshift(`Submitted "${problem.title}" — problem complete`);
-    const extra = document.createElement('span');
-    extra.className = 'info';
-    extra.textContent = '✓ Submitted and marked complete.';
-    const out = document.getElementById('output-box');
-    out.appendChild(document.createElement('br'));
-    out.appendChild(extra);
-    updateDashboard();
-  }, 700);
+    APP.solvedProblemIds.push(problem.id);
+    saveSolvedProblemsToStorage();
+  }
+  APP.recentActivity.unshift(`Submitted "${problem.title}" — problem complete`);
+  extra.className = 'info';
+  extra.textContent = alreadySolved ? '✓ Submitted — already marked complete.' : '✓ Submitted and marked complete.';
+  out.appendChild(extra);
+
+  // Green confirmation right on the Submit button, and update the problem's
+  // card in the list so it shows solved even before the dashboard is opened.
+  const submitBtn = document.getElementById('submit-btn');
+  if (submitBtn) {
+    submitBtn.textContent = '✓ Solved — Resubmit';
+    submitBtn.classList.add('solved-flash');
+    setTimeout(() => submitBtn.classList.remove('solved-flash'), 1200);
+  }
+  renderProblemsList();
+  updateDashboard();
 }
 
 function difficultyClass(diff) {
@@ -3667,6 +3818,13 @@ function loadProblem(id) {
   diffTag.textContent = problem.difficulty;
   diffTag.className = 'tag ' + difficultyClass(problem.difficulty);
   document.getElementById('ws-topic-tag').textContent = problem.topic;
+
+  const submitBtnEl = document.getElementById('submit-btn');
+  if (submitBtnEl) {
+    submitBtnEl.classList.remove('solved-flash');
+    const isSolved = APP.solvedProblemIds.includes(problem.id);
+    submitBtnEl.textContent = isSolved ? '✓ Solved — Resubmit' : 'Submit';
+  }
 
   const examplesContainer = document.getElementById('problem-examples-container');
   examplesContainer.innerHTML = '';
@@ -3757,17 +3915,21 @@ function renderProblemsList() {
   }
 
   filtered.forEach(p => {
+    const isSolved = APP.solvedProblemIds.includes(p.id);
     const card = document.createElement('div');
-    card.className = 'problem-card';
+    card.className = 'problem-card' + (isSolved ? ' solved' : '');
     card.setAttribute('tabindex', '0');
     card.setAttribute('role', 'button');
-    card.setAttribute('aria-label', `Open problem ${p.title}`);
+    card.setAttribute('aria-label', `Open problem ${p.title}` + (isSolved ? ' (solved)' : ''));
     card.innerHTML = `
       <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
         <span class="problem-card-title">${p.title}</span>
         <span class="tag ${difficultyClass(p.difficulty)}">${p.difficulty}</span>
       </div>
-      <span class="problem-card-topic">${p.topic}</span>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+        <span class="problem-card-topic">${p.topic}</span>
+        ${isSolved ? '<span class="problem-card-solved-badge">✓ Solved</span>' : ''}
+      </div>
     `;
     card.addEventListener('click', () => loadProblem(p.id));
     card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); loadProblem(p.id); }});
@@ -3784,6 +3946,22 @@ function loadMistakesFromStorage() {
 
 function saveMistakesToStorage() {
   try { localStorage.setItem('ab_mistakes', JSON.stringify(APP.mistakes)); } catch(e) {}
+}
+
+// Remember which problems this device has already solved, so completed
+// problems stay marked green (and don't get double-counted) across sessions.
+function loadSolvedProblemsFromStorage() {
+  try {
+    const saved = localStorage.getItem('ab_solved_problems');
+    APP.solvedProblemIds = saved ? JSON.parse(saved) : [];
+  } catch(e) { APP.solvedProblemIds = []; }
+  // Keep the "solved" counter in sync with the restored list so a page
+  // refresh doesn't reset the dashboard's count back to 0.
+  APP.solved = APP.solvedProblemIds.length;
+}
+
+function saveSolvedProblemsToStorage() {
+  try { localStorage.setItem('ab_solved_problems', JSON.stringify(APP.solvedProblemIds)); } catch(e) {}
 }
 
 function refreshMistakeDisplay() {
@@ -3976,6 +4154,9 @@ function showPage(id) {
   window.scrollTo({top:0, behavior:'smooth'});
   window.dispatchEvent(new Event('algobridge-page-change'));
 
+  const statsCluster = document.getElementById('stats-cluster');
+  if (statsCluster) statsCluster.classList.toggle('stats-hidden', id === 'workspace');
+
   setTimeout(revealPage, 50);
 }
 
@@ -4090,7 +4271,7 @@ window.addEventListener('scroll', () => {
 const RF_MAP_DATA = [
   { research: 'Bjork, R.A. (1994) — Desirable difficulties improve long-term retention even when performance feels harder in the moment.', feature: 'Productive Struggle Timer', tag: 'Workspace' },
   { research: 'Roediger & Karpicke (2006) — Retrieval practice is dramatically more effective than re-reading for durable memory.', feature: 'Blank Function Bodies — Active Recall Cues', tag: 'Workspace' },
-  { research: 'VanLehn, K. (2011) — AI tutors using targeted hints outperform both no-feedback and answer-giving systems.', feature: 'Socratic AlgoBridge Tutor — Questions before answers', tag: 'AlgoBridge Tutor' },
+  { research: 'VanLehn, K. (2011) — AI tutors using targeted hints outperform both no-feedback and answer-giving systems.', feature: 'Socratic AI Tutor — Questions before answers', tag: 'AI Tutor' },
   { research: 'Dunlosky et al. (2013) — Students who monitor their own errors consistently outperform those who don\'t.', feature: 'Persistent Mistake Log + Root Cause Field', tag: 'Dashboard' },
   { research: 'Sweller, J. (1988) — Cognitive load theory: too much simultaneous information impairs learning.', feature: 'Progressive Topic Unlock — One concept at a time', tag: 'Paths' },
   { research: 'Cepeda et al. (2006) — Spaced retrieval dramatically outperforms massed practice for retention.', feature: 'Retention Forecast + Weak Areas surfacing', tag: 'Analytics' },
@@ -4227,7 +4408,7 @@ function renderProgressSS(el) {
 }
 
 function showScreenshotModal(idx) {
-  const labels = ['Learning Analytics Dashboard','AlgoBridge Tutor — Socratic Conversation','Persistent Mistake Log','Lesson Progress View'];
+  const labels = ['Learning Analytics Dashboard','AI Tutor — Socratic Conversation','Persistent Mistake Log','Lesson Progress View'];
   const renders = [renderDashboardSS, renderTutorSS, renderMistakeSS, renderProgressSS];
   const existing = document.getElementById('ss-modal-overlay');
   if (existing) existing.remove();
@@ -4245,6 +4426,8 @@ function showScreenshotModal(idx) {
 }
 
 
+loadMistakesFromStorage();
+loadSolvedProblemsFromStorage();
 renderPath('beginner');
 renderPath('intermediate');
 renderPath('advanced');
@@ -4458,25 +4641,14 @@ async function tcSend() {
     const res = await fetch('https://algobridge-tutor.ak3036811.workers.dev', {
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({model:'claude-sonnet-5', max_tokens:900, system:buildTCSystem(), messages:tcMsgs})
+      body: JSON.stringify({model:'claude-sonnet-4-20250514', max_tokens:900, system:buildTCSystem(), messages:tcMsgs})
     });
-    if (!res.ok) {
-      console.error('AlgoBridge Tutor: worker returned', res.status, res.statusText);
-      const msg = res.status === 429
-        ? "I'm getting a lot of requests right now — give it a moment and try again."
-        : res.status >= 500
-          ? "The tutor service is temporarily down on my end — try again shortly."
-          : `Something went wrong on my end (error ${res.status}) — try again in a moment.`;
-      typingBub.innerHTML = msg;
-    } else {
-      const data = await res.json();
-      const reply = data.content?.map(b=>b.text||'').join('') || "Something went wrong — please try again!";
-      typingBub.innerHTML = tcFmt(reply);
-      tcMsgs.push({role:'assistant', content:reply});
-    }
-  } catch (e) {
-    console.error('AlgoBridge Tutor: network/fetch failure', e);
-    typingBub.innerHTML = "Couldn't reach the tutor — check your connection and try again.";
+    const data = await res.json();
+    const reply = data.content?.map(b=>b.text||'').join('') || "Something went wrong — please try again!";
+    typingBub.innerHTML = tcFmt(reply);
+    tcMsgs.push({role:'assistant', content:reply});
+  } catch {
+    typingBub.innerHTML = "Connection issue — please try again.";
   }
 
   document.getElementById('tc-messages').scrollTop = 99999;
@@ -4711,239 +4883,4 @@ async function tcSend() {
       var pct = scrollable > 0 ? window.scrollY / scrollable : 0;
       progressEl.style.transform = 'scaleX(' + Math.min(1, Math.max(0, pct)) + ')';
     }
-    window.addEventListener('scroll', function(){
-      if (!progTicking) { progTicking = true; requestAnimationFrame(updateScrollProgress); }
-    }, { passive: true });
-    updateScrollProgress();
-    // Re-check after page switches (client-side router swaps section heights)
-    window.addEventListener('algobridge-page-change', updateScrollProgress);
-  }
-
-  // Subtle cursor-follow tilt on cards (desktop, fine pointers only)
-  // Perf: raw `mousemove` can fire far more often than the screen refreshes, and
-  // calling getBoundingClientRect() on every event forces a synchronous layout
-  // read right before the style write below (a classic layout-thrash pattern).
-  // Instead: measure the rect only once per element (on enter), stash the
-  // pointer position, and let a single rAF apply the style once per frame.
-  if (!reduced && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    var tiltSelector = '.card, .course-card, .tool-card, .stat-card, .research-card, .screenshot-card, .problem-card, .link-card, .sort-panel';
-    var tiltEl = null, tiltRect = null, tiltX = 0, tiltY = 0, tiltRaf = null;
-
-    function applyTilt() {
-      tiltRaf = null;
-      if (!tiltEl || !tiltRect) return;
-      var px = (tiltX - tiltRect.left) / tiltRect.width - 0.5;
-      var py = (tiltY - tiltRect.top) / tiltRect.height - 0.5;
-      tiltEl.style.transform = 'perspective(800px) rotateX(' + (py * -3.5) + 'deg) rotateY(' + (px * 3.5) + 'deg) translateY(-3px)';
-    }
-
-    function clearTilt() {
-      if (tiltEl) tiltEl.style.transform = '';
-      tiltEl = null; tiltRect = null;
-    }
-
-    document.addEventListener('mousemove', function(e){
-      var el = e.target.closest ? e.target.closest(tiltSelector) : null;
-      if (!el) { if (tiltEl) clearTilt(); return; }
-      if (el !== tiltEl) { tiltEl = el; tiltRect = el.getBoundingClientRect(); }
-      tiltX = e.clientX; tiltY = e.clientY;
-      if (tiltRaf === null) tiltRaf = requestAnimationFrame(applyTilt);
-    }, { passive: true });
-
-    document.addEventListener('mouseout', function(e){
-      var el = e.target.closest ? e.target.closest(tiltSelector) : null;
-      if (el && el === tiltEl) clearTilt();
-    }, { passive: true });
-  }
-
-  // Animate number-like text content into view once, first time each element becomes visible
-  function animateNumber(el) {
-    var raw = el.textContent.trim();
-    var match = raw.match(/^([^\d]*)(\d[\d,]*)(.*)$/);
-    if (!match) return;
-    var prefix = match[1], target = parseInt(match[2].replace(/,/g, ''), 10), suffix = match[3];
-    if (isNaN(target)) return;
-    var start = performance.now(), dur = 900;
-    function step(now) {
-      var p = Math.min((now - start) / dur, 1);
-      var eased = 1 - Math.pow(1 - p, 3);
-      el.textContent = prefix + Math.round(target * eased).toLocaleString() + suffix;
-      if (p < 1) requestAnimationFrame(step);
-    }
-    if (reduced) { el.textContent = prefix + target.toLocaleString() + suffix; return; }
-    requestAnimationFrame(step);
-  }
-
-  // Dashboard circular progress rings — read whatever number the app already computed
-  [['dash-retrieval', 'dash-retrieval-ring'], ['dash-retention', 'dash-retention-ring']].forEach(function(pair){
-    var valEl = document.getElementById(pair[0]);
-    var ringEl = document.getElementById(pair[1]);
-    if (!valEl || !ringEl) return;
-    function sync() {
-      var n = parseFloat((valEl.textContent || '').replace(/[^\d.]/g, ''));
-      if (!isNaN(n)) ringEl.style.setProperty('--pct', Math.max(0, Math.min(100, n)));
-    }
-    sync();
-    new MutationObserver(sync).observe(valEl, { childList: true, characterData: true, subtree: true });
-  });
-
-  // Streak flame — lights up once the app writes a non-zero day-streak value
-  (function(){
-    var streakEl = document.getElementById('dash-streak');
-    var flameEl = document.getElementById('streak-flame');
-    if (!streakEl || !flameEl) return;
-    function sync() {
-      var n = parseInt((streakEl.textContent || '0').replace(/[^\d]/g, ''), 10);
-      flameEl.classList.toggle('lit', n > 0);
-    }
-    sync();
-    new MutationObserver(sync).observe(streakEl, { childList: true, characterData: true, subtree: true });
-  })();
-
-  var countTargets = document.querySelectorAll('.algo-hero-stat-val, .hero-stat-val, .stat-val, .impact-num');
-  if ('IntersectionObserver' in window && countTargets.length) {
-    var seen = new WeakSet();
-    var countIO = new IntersectionObserver(function(entries){
-      entries.forEach(function(entry){
-        if (entry.isIntersecting && !seen.has(entry.target)) {
-          seen.add(entry.target);
-          animateNumber(entry.target);
-        }
-      });
-    }, { threshold: 0.5 });
-    countTargets.forEach(function(el){ countIO.observe(el); });
-  }
-})();
-</script>
-
-<script>
-/* ── Hero signature element: a real, playable merge-sort visualizer ── */
-(function(){
-  var container = document.getElementById('viz-bars');
-  if (!container) return;
-  var statusEl = document.getElementById('viz-status');
-  var playBtn = document.getElementById('viz-play');
-  var shuffleBtn = document.getElementById('viz-shuffle');
-  var speedBtns = document.querySelectorAll('.viz-speed-btn');
-  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  var N = 11, MAXV = 99, MINV = 6;
-  var frames = [], frameIdx = 0, playing = true, speed = 1, timer = null;
-  var baseDelay = 340;
-
-  function randomArray() {
-    var a = [];
-    for (var i = 0; i < N; i++) a.push(MINV + Math.floor(Math.random() * (MAXV - MINV)));
-    return a;
-  }
-
-  // Records every write during a real merge sort as an animation frame
-  function mergeSortFrames(input) {
-    var a = input.slice();
-    var out = [];
-    function snap(active) { out.push({ arr: a.slice(), active: active || [] }); }
-    function merge(lo, mid, hi) {
-      var left = a.slice(lo, mid), right = a.slice(mid, hi);
-      var i = 0, j = 0, k = lo;
-      while (i < left.length && j < right.length) {
-        if (left[i] <= right[j]) { a[k] = left[i]; i++; } else { a[k] = right[j]; j++; }
-        snap([k]); k++;
-      }
-      while (i < left.length) { a[k] = left[i]; i++; snap([k]); k++; }
-      while (j < right.length) { a[k] = right[j]; j++; snap([k]); k++; }
-    }
-    function sort(lo, hi) {
-      if (hi - lo <= 1) return;
-      var mid = (lo + hi) >> 1;
-      sort(lo, mid); sort(mid, hi); merge(lo, mid, hi);
-    }
-    snap([]);
-    sort(0, a.length);
-    out.push({ arr: a.slice(), active: [], done: true });
-    return out;
-  }
-
-  function render(frame) {
-    var bars = container.children;
-    for (var i = 0; i < frame.arr.length; i++) {
-      var bar = bars[i];
-      if (!bar) continue;
-      var val = frame.arr[i];
-      var fill = bar.querySelector('.viz-fill');
-      if (fill) fill.style.transform = 'scaleY(' + ((18 + (val / MAXV) * 82) / 100) + ')';
-      var label = bar.querySelector('.viz-val');
-      if (label) label.textContent = val;
-      bar.classList.toggle('active', !frame.done && frame.active.indexOf(i) !== -1);
-      bar.classList.toggle('sorted', !!frame.done);
-    }
-  }
-
-  function buildBars(initial) {
-    container.innerHTML = '';
-    initial.forEach(function(val){
-      var bar = document.createElement('div');
-      bar.className = 'sort-bar';
-      var label = document.createElement('span');
-      label.className = 'viz-val';
-      label.textContent = val;
-      var fill = document.createElement('div');
-      fill.className = 'viz-fill';
-      fill.style.transform = 'scaleY(' + ((18 + (val / MAXV) * 82) / 100) + ')';
-      bar.appendChild(label);
-      bar.appendChild(fill);
-      container.appendChild(bar);
-    });
-  }
-
-  function scheduleNext() {
-    clearTimeout(timer);
-    if (!playing) return;
-    var delay = baseDelay / speed;
-    if (frameIdx >= frames.length - 1) {
-      if (statusEl) statusEl.textContent = 'sorted ✓';
-      timer = setTimeout(start, 1800 / speed); // loop into a fresh shuffle
-      return;
-    }
-    timer = setTimeout(function(){
-      frameIdx++;
-      render(frames[frameIdx]);
-      scheduleNext();
-    }, delay);
-  }
-
-  function start() {
-    var arr = randomArray();
-    frames = mergeSortFrames(arr);
-    frameIdx = 0;
-    buildBars(arr);
-    if (statusEl) statusEl.textContent = 'running';
-    if (reduced) { render(frames[frames.length - 1]); if (statusEl) statusEl.textContent = 'sorted ✓'; return; }
-    scheduleNext();
-  }
-
-  if (playBtn) playBtn.addEventListener('click', function(){
-    playing = !playing;
-    playBtn.textContent = playing ? '⏸ Pause' : '▶ Play';
-    if (playing) { if (statusEl) statusEl.textContent = 'running'; scheduleNext(); }
-    else { clearTimeout(timer); if (statusEl) statusEl.textContent = 'paused'; }
-  });
-
-  if (shuffleBtn) shuffleBtn.addEventListener('click', function(){
-    clearTimeout(timer);
-    playing = true;
-    if (playBtn) playBtn.textContent = '⏸ Pause';
-    start();
-  });
-
-  speedBtns.forEach(function(btn){
-    btn.addEventListener('click', function(){
-      speedBtns.forEach(function(b){ b.classList.remove('active'); });
-      btn.classList.add('active');
-      speed = parseFloat(btn.getAttribute('data-speed')) || 1;
-    });
-  });
-
-  start();
-})();
-</script>
-</body>
+    window.addEventListener('scroll', f
