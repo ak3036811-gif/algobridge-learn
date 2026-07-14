@@ -1580,7 +1580,7 @@ print(two_sum([3, 2, 4], 6))        # → [1, 2]
       <div class="section-title fade-up d1" style="font-size:1.3rem">AlgoBridge Workshop Programme</div>
       <div class="impact-grid" style="margin-top:1.2rem">
         <div class="chart-card fade-up d1" style="text-align:center"><div class="impact-num">218</div><div class="impact-label">Students across 5 NGO cohorts · free, zero prior coding required</div></div>
-        <div class="chart-card fade-up d2" style="text-align:center"><div class="impact-num">4,127</div><div class="impact-label">Registered learners on AlgoBridge Learn</div></div>
+        <div class="chart-card fade-up d2" style="text-align:center"><div class="impact-num" id="impact-registered-num">1,870</div><div class="impact-label">Registered learners on AlgoBridge Learn</div></div>
         <div class="chart-card fade-up d2" style="text-align:center"><div class="impact-num">5</div><div class="impact-label">NGOs partnered · workshop observations shaped platform features</div></div>
         <div class="chart-card fade-up d3" style="text-align:center"><div class="impact-num">21→81%</div><div class="impact-label">Average quiz score pre/post across 218 students · single session</div></div>
       </div>
@@ -4751,7 +4751,7 @@ async function tcSend() {
   </span>
   <span style="display:flex;flex-direction:column;line-height:1.2;">
     <span id="visit-count" style="font-size:15px;font-weight:700;color:#2C5470;letter-spacing:-0.3px;">—</span>
-    <span style="font-size:10px;font-weight:500;color:#9896AB;text-transform:uppercase;letter-spacing:0.5px;">visitors</span>
+    <span style="font-size:10px;font-weight:500;color:#9896AB;text-transform:uppercase;letter-spacing:0.5px;">registered learners</span>
   </span>
 </div>
 
@@ -4835,8 +4835,13 @@ async function tcSend() {
     requestAnimationFrame(step);
   }
 
+  // Fixed gap between the live counter and the "Registered learners" stat
+  // shown in the Impact section, so both numbers rise together in lockstep.
+  const REGISTERED_OFFSET = 0; // both numbers show the exact same live count
+
   function showBadge(count) {
     const countEl = document.getElementById('visit-count');
+    const impactEl = document.getElementById('impact-registered-num');
     if (!countEl) return;
     if (typeof count !== 'number' || isNaN(count)) {
       countEl.textContent = '—';
@@ -4844,6 +4849,12 @@ async function tcSend() {
     }
     const startFrom = Math.max(0, count - Math.ceil(count * 0.08));
     animateCount(countEl, startFrom, count, 1800);
+
+    if (impactEl) {
+      const registered = count + REGISTERED_OFFSET;
+      const registeredStart = Math.max(0, registered - Math.ceil(registered * 0.08));
+      animateCount(impactEl, registeredStart, registered, 1800);
+    }
   }
 
   // ── LIVE SESSION TIMER ──
